@@ -35,9 +35,8 @@ Pour intégrer tes changements à main :
 --> Cliquer sur Compare & Pull Request
 
 On vérifier que :
-# Base = main
-# Compare = feature-tonNom
-
+    Base = main
+    compare = feature-tonNom
 --> Cliquer sur Create Pull Request puis Merge
 
 ## Astuces
@@ -49,3 +48,8 @@ Pour changer de branche :
 
 Pour résoudre un conflit (si Git te le demande) :
 --> git merge main
+
+## Corriger manuellement les fichiers conflictuels puis :
+--> git add .
+--> git commit -m "Résolution des conflits"
+--> git push
