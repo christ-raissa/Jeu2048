@@ -12,7 +12,7 @@ cd Jeu2048
 ## Créer sa branche de travail
 On peut créer une branche avec ton nom ou fonctionnalité :
 
-git checkout -b feature-tonNom
+git checkout -b feature-tapartie
 
 Par exemple :
 
@@ -22,7 +22,7 @@ Personne B → feature-ui
 
 Personne C → feature-storage
 
-git push -u origin feature-tonNom
+git push -u origin feature-tapartie
 
 ## Afficher les branches locales et distances 
 git branch -a 
