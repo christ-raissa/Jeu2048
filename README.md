@@ -6,12 +6,14 @@ Jeu 2048 développé par les étudiants de la **Rochelle Université**, version 
 
 ###  Cloner le projet
 git clone https://github.com/christ-raissa/Jeu2048.git
+
 cd Jeu2048
 
 ## Créer sa branche de travail
 On peut créer une branche avec ton nom ou fonctionnalité :
 
 git checkout -b feature-tonNom
+
 git push -u origin feature-tonNom
 
 ## Synchroniser son projet avant de coder
