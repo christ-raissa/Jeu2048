@@ -20,13 +20,18 @@ git push -u origin feature-tonNom
 Avant de commencer à coder chaque jour, on peut d'abord commencer par : 
 
 git checkout main
+
 git pull origin main
+
 git checkout feature-tonNom
+
 git merge main
 
 ## Valider ses changements et les pousser sur GitHub
 git add .
+
 git commit -m "Description claire de vos modifications"
+
 git push
 
 
@@ -34,24 +39,31 @@ git push
 Pour intégrer tes changements à main :
 
 --> Aller sur le repository GitHub
+
 --> Cliquer sur Compare & Pull Request
 
 On vérifier que :
     Base = main
     compare = feature-tonNom
+    
 --> Cliquer sur Create Pull Request puis Merge
 
 ## Astuces
 Pour voir les branches locales et distantes :
+
 --> git branch -a
 
 Pour changer de branche :
+
 --> git checkout nom-branche
 
 Pour résoudre un conflit (si Git te le demande) :
+
 --> git merge main
 
 ## Corriger manuellement les fichiers conflictuels puis :
 --> git add .
+
 --> git commit -m "Résolution des conflits"
+
 --> git push
