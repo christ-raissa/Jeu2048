@@ -20,7 +20,7 @@
 
     <view
         android:id="@+id/view"
-        class="com.example.jeu2048.gameRender.GameView"
+        class="com.example.jeu2048.game.gameRender.GameView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,20 +1,11 @@
-package com.example.jeu2048.gameRender.cellRenderers;
+package com.example.jeu2048.game.gameRender.cellRenderers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.example.jeu2048.gameRender.CellRenderer;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.example.jeu2048.game.gameRender.CellRenderer;
 
 public class BaseCellRenderer extends CellRenderer {
 
@@ -34,6 +25,10 @@ public class BaseCellRenderer extends CellRenderer {
 
     @Override
     public void drawCell(Canvas canvas, int top, int left, int cellWidth, int cellHeight, long value) {
+        if (value < 1) {
+            return;
+        }
+
         int right = left + cellWidth;
         int bottom = top + cellHeight;
 

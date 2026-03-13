@@ -1,9 +1,8 @@
-package com.example.jeu2048;
+package com.example.jeu2048.game;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -34,8 +33,8 @@ public class Game2048 {
 
         initializeGrid();
 
-        spawnValues();
-        spawnValues();
+        spawnValue();
+        spawnValue();
     }
 
     public Game2048() {
@@ -51,7 +50,7 @@ public class Game2048 {
         }
     }
 
-    public void spawnValues() {
+    public void spawnValue() {
         List<int[]> emptyCells = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -79,7 +78,7 @@ public class Game2048 {
             }
         }
 
-        spawnValues();
+        spawnValue();
     }
 
     public void moveRight() {
@@ -94,7 +93,7 @@ public class Game2048 {
             }
         }
 
-        spawnValues();
+        spawnValue();
     }
 
     public void moveUp() {
@@ -109,7 +108,7 @@ public class Game2048 {
             }
         }
 
-        spawnValues();
+        spawnValue();
     }
 
     public void moveDown() {
@@ -124,7 +123,7 @@ public class Game2048 {
             }
         }
 
-        spawnValues();
+        spawnValue();
     }
 
     private long[] compressLine(long[] line) {

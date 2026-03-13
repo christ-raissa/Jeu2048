@@ -1,4 +1,4 @@
-package com.example.jeu2048.gameRender;
+package com.example.jeu2048.game.gameRender;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,8 +9,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.NonNull;
-import com.example.jeu2048.Game2048;
-import com.example.jeu2048.gameRender.cellRenderers.BaseCellRenderer;
+import com.example.jeu2048.game.Game2048;
+import com.example.jeu2048.game.gameRender.cellRenderers.BaseCellRenderer;
 
 public class GameView extends View {
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
