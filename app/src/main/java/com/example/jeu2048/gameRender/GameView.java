@@ -1,4 +1,4 @@
-package com.example.jeu2048.game.gameRender;
+package com.example.jeu2048.gameRender;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,9 +10,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.NonNull;
 import com.example.jeu2048.game.Game2048;
-import com.example.jeu2048.game.gameRender.cellRenderers.BaseCellRenderer;
+import com.example.jeu2048.game.GameMoveDirection;
+import com.example.jeu2048.gameRender.cellRenderers.BaseCellRenderer;
 
 public class GameView extends View {
+
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;  // min speed (px/s)
 
@@ -58,23 +60,23 @@ public class GameView extends View {
 
     private void onSwipeLeft()  {
         Log.d("GAME2048", "Swipe LEFT");
-        game.moveLeft();
+        game.makeMove(GameMoveDirection.LEFT);
         updateAfterMove();
     }
 
     private void onSwipeRight() {
         Log.d("GAME2048", "Swipe RIGHT");
-        game.moveRight();
+        game.makeMove(GameMoveDirection.RIGHT);
         updateAfterMove();
     }
     private void onSwipeUp()    {
         Log.d("GAME2048", "Swipe UP");
-        game.moveUp();
+        game.makeMove(GameMoveDirection.UP);
         updateAfterMove();
     }
     private void onSwipeDown()  {
         Log.d("GAME2048", "Swipe DOWN");
-        game.moveDown();
+        game.makeMove(GameMoveDirection.DOWN);
         updateAfterMove();
     }
 

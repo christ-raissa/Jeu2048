@@ -1,11 +1,11 @@
-package com.example.jeu2048.game.gameRender.cellRenderers;
+package com.example.jeu2048.gameRender.cellRenderers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.example.jeu2048.game.gameRender.CellRenderer;
+import com.example.jeu2048.gameRender.CellRenderer;
 
 public class BaseCellRenderer extends CellRenderer {
 

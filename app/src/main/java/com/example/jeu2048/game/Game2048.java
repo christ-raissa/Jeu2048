@@ -2,11 +2,23 @@ package com.example.jeu2048.game;
 
 import androidx.annotation.NonNull;
 
+import com.example.jeu2048.game.result.MoveResult;
+import com.example.jeu2048.game.result.TileMod;
+import com.example.jeu2048.game.result.TileMove;
+import com.example.jeu2048.game.result.TilePop;
+import com.example.jeu2048.game.result.TileSpawn;
+import com.example.jeu2048.game.result.TileUpgrade;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Game2048 {
+    private static class LineAndMods {
+        public long[] line;
+        public ArrayList<TileMod> mods;
+    }
+
     private static final int BASE_GRID_WIDTH = 4;
     private static final int BASE_GRID_HEIGHT = 4;
 
@@ -14,10 +26,10 @@ public class Game2048 {
 
     private static final long EMPTY = 0;
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private long[][] grid;
-    private long winValue;
+    private final long winValue;
     private long score;
     private final Random random;
 
@@ -28,17 +40,20 @@ public class Game2048 {
         this.winValue = winValue;
         this.score = 0;
 
-
         this.random = new Random();
 
         initializeGrid();
-
-        spawnValue();
-        spawnValue();
     }
 
     public Game2048() {
         this(BASE_GRID_WIDTH, BASE_GRID_HEIGHT, BASE_WIN_VALUE);
+    }
+
+    public MoveResult initTiles() {
+        MoveResult moveResult = new MoveResult();
+        moveResult.addMod(spawnValue());
+        moveResult.addMod(spawnValue());
+        return moveResult;
     }
 
     private void initializeGrid() {
@@ -50,7 +65,7 @@ public class Game2048 {
         }
     }
 
-    public void spawnValue() {
+    public TileMod spawnValue() {
         List<int[]> emptyCells = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -60,100 +75,183 @@ public class Game2048 {
             }
         }
 
-        if (emptyCells.isEmpty()) return;
+        if (emptyCells.isEmpty()) return new TileMod();
 
         int[] cell = emptyCells.get(random.nextInt(emptyCells.size()));
-        grid[cell[0]][cell[1]] = (random.nextInt(10) == 0) ? 4 : 2;
+        long value = (random.nextInt(10) == 0) ? 4 : 2;
+        grid[cell[0]][cell[1]] = value;
+        return new TileSpawn(cell[1], cell[0], value);
     }
 
-    public void moveLeft() {
+    public MoveResult makeMove(GameMoveDirection direction) {
+        MoveResult moveResult = new MoveResult();
+        switch (direction) {
+            case UP:
+                moveResult = moveUp();
+                break;
+            case DOWN:
+                moveResult = moveDown();
+                break;
+            case RIGHT:
+                moveResult = moveRight();
+                break;
+            case LEFT:
+                moveResult = moveLeft();
+                break;
+        }
+
+        moveResult.addMod(spawnValue());
+
+        return moveResult;
+    }
+
+    private MoveResult moveLeft() {
+        MoveResult result = new MoveResult();
         for (int y = 0; y < height; y++) {
             long[] line = new long[width];
             for (int x = 0; x < width; x++) {
                 line[x] = grid[y][x];
             }
-            line = updateLine(line);
+            LineAndMods res = updateLine(line, 0, y, width - 1, y);
             for (int x = 0; x < width; x++) {
-                grid[y][x] = line[x];
+                grid[y][x] = res.line[x];
             }
-        }
 
-        spawnValue();
+            result.addMods(res.mods);
+        }
+        return result;
     }
 
-    public void moveRight() {
+    private MoveResult moveRight() {
+        MoveResult result = new MoveResult();
         for (int y = 0; y < height; y++) {
             long[] line = new long[width];
             for (int x = 0; x < width; x++) {
                 line[width - 1 - x] = grid[y][x];
             }
-            line = updateLine(line);
+            LineAndMods res = updateLine(line, width - 1, y, 0, y);
             for (int x = 0; x < width; x++) {
-                grid[y][x] = line[width - 1 - x];
+                grid[y][x] = res.line[width - 1 - x];
             }
-        }
 
-        spawnValue();
+            result.addMods(res.mods);
+        }
+        return result;
     }
 
-    public void moveUp() {
+    private MoveResult moveUp() {
+        MoveResult result = new MoveResult();
         for (int x = 0; x < width; x++) {
             long[] line = new long[height];
             for (int y = 0; y < height; y++) {
                 line[y] = grid[y][x];
             }
-            line = updateLine(line);
+            LineAndMods res = updateLine(line, x, 0, x, height - 1);
             for (int y = 0; y < height; y++) {
-                grid[y][x] = line[y];
+                grid[y][x] = res.line[y];
             }
-        }
 
-        spawnValue();
+            result.addMods(res.mods);
+        }
+        return result;
     }
 
-    public void moveDown() {
+    private MoveResult moveDown() {
+        MoveResult result = new MoveResult();
+
         for (int x = 0; x < width; x++) {
             long[] line = new long[height];
             for (int y = 0; y < height; y++) {
                 line[height - 1 - y] = grid[y][x];
             }
-            line = updateLine(line);
+            LineAndMods res = updateLine(line, x, height - 1, x, 0);
             for (int y = 0; y < height; y++) {
-                grid[y][x] = line[height - 1 - y];
+                grid[y][x] = res.line[height - 1 - y];
             }
-        }
 
-        spawnValue();
+            result.addMods(res.mods);
+        }
+        return result;
     }
 
-    private long[] compressLine(long[] line) {
+    private int getDir(int start, int end) {
+        int res = end - start;
+
+        if (res == 0) {
+            return 0;
+        } else if (res < 0) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    private LineAndMods compressLine(long[] line, int startx, int starty, int endx, int endy) {
+        LineAndMods lam = new LineAndMods();
+        lam.mods = new ArrayList<>();
+
+        int dirX = getDir(startx, endx);
+        int dirY = getDir(starty, endy);
+
         long[] compressed = new long[line.length];
         int pos = 0;
         for (int i = 0; i < line.length; i++) {
             if (line[i] != EMPTY) {
+
+                // MOD MOVE
+                lam.mods.add(new TileMove(startx + dirX * i, starty + dirY * i,
+                        startx + dirX * pos, starty + dirY * pos
+                        ));
+
                 compressed[pos++] = line[i];
             }
         }
-        return compressed;
+
+        lam.line = compressed;
+
+        return lam;
     }
 
-    private long[] fuseLine(long[] line) {
+    private LineAndMods fuseLine(long[] line, int startx, int starty, int endx, int endy) {
+        LineAndMods lam = new LineAndMods();
+        lam.mods = new ArrayList<>();
+
+        int dirX = getDir(startx, endx);
+        int dirY = getDir(starty, endy);
+
         for (int i = 0; i < line.length - 1; i++) {
             if (line[i] != EMPTY && line[i] == line[i + 1]) {
                 line[i] = line[i] + line[i + 1];
                 line[i + 1] = EMPTY;
                 score += line[i];
+
+                // MOD UPGRADE AND POP
+                lam.mods.add(new TileUpgrade(startx + dirX * i, starty + dirY * i, line[i] / 2, line[i]));
+                lam.mods.add(new TilePop(startx + dirX * (i+1), starty + dirY * (i+1)));
+
                 i++;
             }
         }
-        return line;
+
+        lam.line = line;
+
+        return lam;
     }
 
-    private long[] updateLine(long[] line) {
-        line = compressLine(line);
-        line = fuseLine(line);
-        line = compressLine(line);
-        return line;
+    private LineAndMods updateLine(long[] line, int startx, int starty, int endx, int endy) {
+        LineAndMods lamTot = new LineAndMods();
+
+        LineAndMods lam1 = compressLine(line, startx, starty, endx, endy);
+        LineAndMods lam2 = fuseLine(lam1.line, startx, starty, endx, endy);
+        LineAndMods lam3 = compressLine(lam2.line, startx, starty, endx, endy);
+
+        lamTot.line = lam3.line;
+        lamTot.mods = new ArrayList<>();
+        lamTot.mods.addAll(lam1.mods);
+        lamTot.mods.addAll(lam2.mods);
+        lamTot.mods.addAll(lam3.mods);
+
+        return lamTot;
     }
 
     public boolean isWon() {
@@ -165,9 +263,6 @@ public class Game2048 {
         return false;
     }
 
-    /**
-     * Returns true if no moves are possible (grid full and no adjacent equal tiles).
-     */
     public boolean isGameOver() {
         // Check for any empty cell
         for (int y = 0; y < height; y++) {
