@@ -7,13 +7,13 @@ import android.graphics.Rect;
 
 import com.example.jeu2048.gameRender.CellRenderer;
 
-public class BaseCellRenderer extends CellRenderer {
+public class DefaultCellRenderer extends CellRenderer {
 
     private Paint backgroundPaint;
     private Paint textPaint;
     private Rect textBounds;
 
-    public BaseCellRenderer() {
+    public DefaultCellRenderer() {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.GRAY);
 
@@ -24,13 +24,13 @@ public class BaseCellRenderer extends CellRenderer {
     }
 
     @Override
-    public void drawCell(Canvas canvas, int top, int left, int cellWidth, int cellHeight, long value) {
+    public void drawCell(Canvas canvas, float top, float left, float cellWidth, float cellHeight, long value) {
         if (value < 1) {
             return;
         }
 
-        int right = left + cellWidth;
-        int bottom = top + cellHeight;
+        float right = left + cellWidth;
+        float bottom = top + cellHeight;
 
         String text = String.valueOf(value);
 

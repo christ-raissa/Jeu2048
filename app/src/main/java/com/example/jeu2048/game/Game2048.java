@@ -83,6 +83,13 @@ public class Game2048 {
         return new TileSpawn(cell[1], cell[0], value);
     }
 
+    public MoveResult spawnValues(int amount) {
+        MoveResult result = new MoveResult();
+        for (int i = 0; i < amount; i++)
+            result.addMod(spawnValue());
+        return result;
+    }
+
     public MoveResult makeMove(GameMoveDirection direction) {
         MoveResult moveResult = new MoveResult();
         switch (direction) {
@@ -199,9 +206,12 @@ public class Game2048 {
             if (line[i] != EMPTY) {
 
                 // MOD MOVE
-                lam.mods.add(new TileMove(startx + dirX * i, starty + dirY * i,
+                TileMove tileMove = new TileMove(startx + dirX * i, starty + dirY * i,
                         startx + dirX * pos, starty + dirY * pos
-                        ));
+                );
+                if ((tileMove.getFromX() != tileMove.getToX()) || (tileMove.getFromY() != tileMove.getToY())) {
+                    lam.mods.add(tileMove);
+                }
 
                 compressed[pos++] = line[i];
             }

@@ -1,5 +1,7 @@
 package com.example.jeu2048.game.result;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class MoveResult {
@@ -21,10 +23,17 @@ public class MoveResult {
         return mods;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "MoveResult{" +
-                "mods=" + mods +
-                '}';
+        StringBuilder repr = new StringBuilder();
+        repr.append("MoveResult{");
+        for (TileMod mod : mods) {
+            repr.append(mod.toString());
+            repr.append("; ");
+        }
+        repr.delete(repr.length() - 2, repr.length() - 1);
+        repr.append("}");
+        return repr.toString();
     }
 }
