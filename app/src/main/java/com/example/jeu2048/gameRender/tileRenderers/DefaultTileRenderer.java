@@ -1,19 +1,19 @@
-package com.example.jeu2048.gameRender.cellRenderers;
+package com.example.jeu2048.gameRender.tileRenderers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.example.jeu2048.gameRender.CellRenderer;
+import com.example.jeu2048.gameRender.TileRenderer;
 
-public class DefaultCellRenderer extends CellRenderer {
+public class DefaultTileRenderer extends TileRenderer {
 
     private Paint backgroundPaint;
     private Paint textPaint;
     private Rect textBounds;
 
-    public DefaultCellRenderer() {
+    public DefaultTileRenderer() {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.GRAY);
 

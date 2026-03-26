@@ -12,12 +12,30 @@ import androidx.annotation.NonNull;
 import com.example.jeu2048.game.Game2048;
 import com.example.jeu2048.game.GameMoveDirection;
 import com.example.jeu2048.game.result.MoveResult;
-import com.example.jeu2048.gameRender.cellRenderers.DefaultCellRenderer;
+import com.example.jeu2048.gameRender.tileRenderers.DefaultTileRenderer;
 import com.example.jeu2048.gameRender.gridRenderers.DefaultGridRenderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameView extends View {
+    private enum AnimationState {
+        FIRST_MOVE,
+        MIDDLE,
+        LAST_MOVE,
+        END
+    }
+
+
+    private final static long firstMoveTimeMillis = 100L;
+    private final static long middleTimeMillis = 100L;
+    private final static long lastMoveTimeMillis = 100L;
+    private final static long endTimeMillis = 100L;
+
+    private final static long firstMoveThreshold = firstMoveTimeMillis;
+    private final static long middleThreshold = firstMoveThreshold + middleTimeMillis;
+    private final static long lastMoveThreshold = middleThreshold + lastMoveTimeMillis;
+    private final static long endThreshold = lastMoveThreshold + endTimeMillis;
 
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;  // min speed (px/s)
@@ -27,15 +45,16 @@ public class GameView extends View {
     float cellWidth = 0;
     float cellHeight = 0;
 
-    private ArrayList<DrawableTile> cells;
+    private AnimationState lastAnimationState;
+
+    private ArrayList<DrawableTile> drawableTiles = new ArrayList<>();
     private MoveResult lastMoveResult;
 
-    private CellRenderer cellRenderer;
+    private TileRenderer cellRenderer;
     private GridRenderer gridRenderer;
     private GestureDetector gestureDetector;
-
-    private final long animationTimeMillis = 1000;
     private long startTime;
+    private boolean firstAnimate;
 
     private final Rect gridRect = new Rect();
 
@@ -69,14 +88,14 @@ public class GameView extends View {
     }
 
     private void initGame() {
-        game = new Game2048(8, 8, 16);
+        game = new Game2048(4, 4, 16);
         MoveResult spawnResult = game.spawnValues(2);
-        syncCells();
+        Log.d("GAME2048", "initGame: \n" + game.toString());
         startTilesAnimation(spawnResult);
     }
 
     private void initDraw() {
-        cellRenderer = new DefaultCellRenderer();
+        cellRenderer = new DefaultTileRenderer();
         gridRenderer = new DefaultGridRenderer();
     }
 
@@ -145,9 +164,7 @@ public class GameView extends View {
     }
 
     private void updateAfterMove(MoveResult results) {
-        if (results.getMods().isEmpty()) {
-            return;
-        }
+        Log.d("GAME2048", "updateAfterMove: \n" + game.toString());
         startTilesAnimation(results);
     }
 
@@ -156,25 +173,76 @@ public class GameView extends View {
             Log.d("GAME2048", "GameView: You won!!! New game starting");
             game = new Game2048();
         }
-        syncCells();
+        syncTiles();
         invalidate();
     }
 
     private void startTilesAnimation(@NonNull MoveResult result) {
         animating = true;
+        firstAnimate = true;
         Log.d("GAME2048", "Starting animation with results : " + result.toString());
         lastMoveResult = result;
-        startTime = System.currentTimeMillis();
         invalidate();
     }
 
     private void animateTiles() {
-        long currentTime = System.currentTimeMillis();
-        double progress = Math.max((currentTime - startTime) / animationTimeMillis, 0);
+        if (firstAnimate) {
+            lastAnimationState = AnimationState.FIRST_MOVE;
+            startTime = System.currentTimeMillis();
+            firstAnimate = false;
+        }
 
-        if (progress > 1) {
+        long currentTime = System.currentTimeMillis();
+        long animateTime = currentTime - startTime;
+        AnimationState animState = getAnimationState(animateTime);
+
+        if (animState != lastAnimationState) {
+            switch (lastAnimationState) {
+                case FIRST_MOVE:
+                    drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getFirstMoves(), 1, cellWidth, cellHeight);
+                    break;
+                case MIDDLE:
+                    drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getUpgrades(), 1, cellWidth, cellHeight);
+                    drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getPops(), 1, cellWidth, cellHeight);
+                    break;
+                case LAST_MOVE:
+                    drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getLastMoves(), 1, cellWidth, cellHeight);
+                    break;
+                case END:
+                    drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getSpawns(), 1, cellWidth, cellHeight);
+                    break;
+            }
+            rebaseDrawableTiles();
+        }
+        lastAnimationState = animState;
+
+        Log.d("GAME2048", "animateTiles: time is " + animateTime + " for " + drawableTiles.toString());
+
+        if (animState == null) {
             endTilesAnimation();
             return;
+        }
+
+        double progress;
+
+        switch (animState) {
+            case FIRST_MOVE:
+                progress = Math.max((animateTime) / firstMoveTimeMillis , 0);
+                drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getFirstMoves(), progress, cellWidth, cellHeight);
+                break;
+            case MIDDLE:
+                progress = Math.max((animateTime - firstMoveThreshold) / middleTimeMillis , 0);
+                drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getUpgrades(), progress, cellWidth, cellHeight);
+                drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getPops(), progress, cellWidth, cellHeight);
+                break;
+            case LAST_MOVE:
+                progress = Math.max((animateTime - middleThreshold) / lastMoveTimeMillis , 0);
+                drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getLastMoves(), progress, cellWidth, cellHeight);
+                break;
+            case END:
+                progress = Math.max((animateTime - lastMoveThreshold) / endTimeMillis , 0);
+                drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getSpawns(), progress, cellWidth, cellHeight);
+                break;
         }
 
         invalidate();
@@ -189,7 +257,6 @@ public class GameView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (animating) {
-            Log.d("GAME2048", "GameView: Animating...");
             animateTiles();
         }
         drawGame(canvas);
@@ -197,21 +264,45 @@ public class GameView extends View {
 
     private void drawGame(Canvas canvas) {
         gridRenderer.drawGrid(canvas, 0, 0, (int) cellWidth, (int) cellHeight, gridRect.width(), gridRect.height());
-        for (DrawableTile cell : cells) {
-            cellRenderer.drawCell(canvas, cell.getY(), cell.getX(), cell.getWidth(), cell.getHeight(), cell.getValue());
+        for (DrawableTile cell : drawableTiles) {
+            cellRenderer.drawCell(canvas, cell.getAnimateX(), cell.getAnimateY(), cell.getWidth(), cell.getHeight(), cell.getValue());
         }
     }
 
-    private void syncCells() {
+    private void syncTiles() {
         if (game == null) return;
 
-        cells = new ArrayList<>();
+        drawableTiles = new ArrayList<>();
 
         long[][] grid = game.getGrid();
         for (int y = 0; y < game.getHeight(); y++) {
             for (int x = 0; x < game.getWidth(); x++) {
-                cells.add(new DrawableTile(x * cellWidth, y * cellHeight, cellWidth, cellHeight, grid[y][x]));
+                if (grid[x][y] > 0) {
+                    drawableTiles.add(new DrawableTile(x * cellWidth, y * cellHeight, cellWidth, cellHeight, grid[x][y]));
+                }
             }
+        }
+    }
+
+    private void rebaseDrawableTiles() {
+        for (DrawableTile tile : drawableTiles) {
+            tile.setX(tile.getAnimateX());
+            tile.setY(tile.getAnimateY());
+        }
+    }
+
+    private AnimationState getAnimationState(long animationTime) {
+
+        if (animationTime < firstMoveThreshold) {
+            return AnimationState.FIRST_MOVE;
+        } else if (animationTime < middleThreshold) {
+            return AnimationState.MIDDLE;
+        } else if (animationTime < lastMoveThreshold) {
+            return AnimationState.LAST_MOVE;
+        } else if (animationTime < endThreshold) {
+            return AnimationState.END;
+        } else {
+            return null;
         }
     }
 }

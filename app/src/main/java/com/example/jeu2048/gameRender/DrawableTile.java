@@ -77,4 +77,17 @@ public class DrawableTile {
     public void setAnimateY(float animateY) {
         this.animateY = animateY;
     }
+
+    @Override
+    public String toString() {
+        return "DrawableTile{" +
+                "x=" + x +
+                ", y=" + y +
+                ", animateX=" + animateX +
+                ", animateY=" + animateY +
+                ", width=" + width +
+                ", height=" + height +
+                ", value=" + value +
+                '}';
+    }
 }
