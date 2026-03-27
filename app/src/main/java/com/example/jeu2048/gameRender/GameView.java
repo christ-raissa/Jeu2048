@@ -93,7 +93,7 @@ public class GameView extends View {
     }
 
     private void initGame() {
-        game = new Game2048(4, 4, 16);
+        game = new Game2048(4, 4, 2048);
         MoveResult spawnResult = game.spawnValues(2);
         Log.d("GAME2048", "initGame: \n" + game.toString());
         startTilesAnimation(spawnResult);
@@ -268,7 +268,7 @@ public class GameView extends View {
     }
 
     private void drawGame(Canvas canvas) {
-        gridRenderer.drawGrid(canvas, gridRect.top, gridRect.left, (int) cellWidth, (int) cellHeight, gridRect.width(), gridRect.height(), tilePaddingWidth, tilePaddingHeight);
+        gridRenderer.drawGrid(canvas, gridRect.top, gridRect.left, (int) cellWidth, (int) cellHeight, game.getWidth(), game.getHeight(), tilePaddingWidth, tilePaddingHeight);
         for (DrawableTile cell : drawableTiles) {
             cellRenderer.drawCell(canvas, cell.getAnimateX(), cell.getAnimateY(), cell.getWidth(), cell.getHeight(), cell.getValue(), tilePaddingWidth, tilePaddingHeight);
         }
