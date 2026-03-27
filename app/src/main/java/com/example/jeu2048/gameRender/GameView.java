@@ -52,7 +52,12 @@ public class GameView extends View {
 
     private TileRenderer cellRenderer;
     private GridRenderer gridRenderer;
+
+    private float tilePaddingWidth = 20;
+    private float tilePaddingHeight = 20;
+
     private GestureDetector gestureDetector;
+
     private long startTime;
     private boolean firstAnimate;
 
@@ -263,9 +268,9 @@ public class GameView extends View {
     }
 
     private void drawGame(Canvas canvas) {
-        gridRenderer.drawGrid(canvas, 0, 0, (int) cellWidth, (int) cellHeight, gridRect.width(), gridRect.height());
+        gridRenderer.drawGrid(canvas, gridRect.top, gridRect.left, (int) cellWidth, (int) cellHeight, gridRect.width(), gridRect.height(), tilePaddingWidth, tilePaddingHeight);
         for (DrawableTile cell : drawableTiles) {
-            cellRenderer.drawCell(canvas, cell.getAnimateX(), cell.getAnimateY(), cell.getWidth(), cell.getHeight(), cell.getValue());
+            cellRenderer.drawCell(canvas, cell.getAnimateX(), cell.getAnimateY(), cell.getWidth(), cell.getHeight(), cell.getValue(), tilePaddingWidth, tilePaddingHeight);
         }
     }
 

@@ -24,13 +24,18 @@ public class DefaultTileRenderer extends TileRenderer {
     }
 
     @Override
-    public void drawCell(Canvas canvas, float top, float left, float cellWidth, float cellHeight, long value) {
+    public void drawCell(Canvas canvas, float top, float left, float cellWidth, float cellHeight, long value, float tilePaddingWidth, float tilePaddingHeight) {
         if (value < 1) {
             return;
         }
 
         float right = left + cellWidth;
         float bottom = top + cellHeight;
+
+        top = top + tilePaddingHeight / 2.0f;
+        bottom = bottom - tilePaddingHeight / 2.0f;
+        left = left + tilePaddingHeight / 2.0f;
+        right = right - tilePaddingHeight / 2.0f;
 
         String text = String.valueOf(value);
 
