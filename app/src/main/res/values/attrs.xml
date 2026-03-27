@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="navBackground" format="color"/>
+    <attr name="buttonFilledBackground" format="color"/>
+    <attr name="buttonOutlineColor" format="color"/>
+    <attr name="gridBackground" format="color"/>
+    <attr name="tuilebackground" format="color"/>
+
+
+
+</resources>

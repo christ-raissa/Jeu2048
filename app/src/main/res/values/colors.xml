@@ -1,5 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Couleurs globales -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Mode clair -->
+    <color name="page_background_light">#FEFEFE</color>   <!-- fond de toutes les pages -->
+    <color name="button_color_light">#F67C5F</color>     <!-- boutons -->
+    <color name="text_color_light">#000000</color>       <!-- texte -->
+
+    <!-- Mode sombre -->
+    <color name="page_background_dark">#2d2d2d</color>
+    <color name="button_color_dark">#535252</color>
+    <color name="text_color_dark">#FFFFFF</color>
+
+    <!-- Bottom nav (neutres pour le thème) -->
+    <color name="bottom_nav_background_light">#F2EFE6</color>
+    <color name="bottom_nav_background_dark">#535252</color>
+
+    <color name="bottom_nav_item_light">#000000</color>
+    <color name="bottom_nav_item_dark">#FFFFFF</color>
+
+    <color name="bottom_nav_item_selected_light">#F67C5F</color>
+    <color name="bottom_nav_item_selected_dark">#F67C5F</color>
+
+
+    <color name="bottom_outline_light">#000000</color>
+    <color name="bottom_outline_dark">#FFFFFF</color>
+
+    <color name="bottom_filled_light">#F67C5F</color>
+    <color name="bottom_filled_dark">#F67C5F</color>
+
+    <color name="grid_background_light">#EEE4DA</color>
+    <color name="grid_background_nigth">#535252</color>
+
+    <color name="tuile_bacground_ligth">#FEFEFE</color>
+    <color name="tuile_bacground_nigth">#2d2d2d</color>
+
+
+    <!-- Couleurs du jeu -->
+    <color name="C2">#EEE4DA</color>
+    <color name="C4">#EDE0C8</color>
+    <color name="C8">#F59563</color>
+    <color name="C16">#F67C5F</color>
+    <color name="C32">#F67C5F</color>
+    <color name="C64">#F65E3B</color>
+    <color name="Ct">#F67C5F</color>
+    <color name="grey">#BBADA0</color>
+    <color name="blackgris">#3C3A33</color>
+    <color name="noir">#3D3B2E</color>
+    <color name="casevide">#CCC0B4</color>
 </resources>
