@@ -76,7 +76,7 @@ public class Game2048 {
         int[] cell = emptyCells.get(random.nextInt(emptyCells.size()));
         long value = (random.nextInt(10) == 0) ? 4 : 2;
         grid[cell[0]][cell[1]] = value;
-        return new TileSpawn(cell[1], cell[0], value);
+        return new TileSpawn(cell[0], cell[1], value);
     }
 
     public MoveResult spawnValues(int amount) {

@@ -30,7 +30,7 @@ public class GameView extends View {
     private final static long firstMoveTimeMillis = 100L;
     private final static long middleTimeMillis = 100L;
     private final static long lastMoveTimeMillis = 100L;
-    private final static long endTimeMillis = 100L;
+    private final static long endTimeMillis = 500L;
 
     private final static long firstMoveThreshold = firstMoveTimeMillis;
     private final static long middleThreshold = firstMoveThreshold + middleTimeMillis;
@@ -227,20 +227,20 @@ public class GameView extends View {
 
         switch (animState) {
             case FIRST_MOVE:
-                progress = Math.max((animateTime) / firstMoveTimeMillis , 0);
+                progress = Math.max((animateTime) / (double) firstMoveTimeMillis , 0);
                 drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getFirstMoves(), progress, cellWidth, cellHeight);
                 break;
             case MIDDLE:
-                progress = Math.max((animateTime - firstMoveThreshold) / middleTimeMillis , 0);
+                progress = Math.max((animateTime - firstMoveThreshold) / (double) middleTimeMillis , 0);
                 drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getUpgrades(), progress, cellWidth, cellHeight);
                 drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getPops(), progress, cellWidth, cellHeight);
                 break;
             case LAST_MOVE:
-                progress = Math.max((animateTime - middleThreshold) / lastMoveTimeMillis , 0);
+                progress = Math.max((animateTime - middleThreshold) / (double) lastMoveTimeMillis , 0);
                 drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getLastMoves(), progress, cellWidth, cellHeight);
                 break;
             case END:
-                progress = Math.max((animateTime - lastMoveThreshold) / endTimeMillis , 0);
+                progress = Math.max((animateTime - lastMoveThreshold) / (double) endTimeMillis , 0);
                 drawableTiles = TileAnimator.animateTiles(drawableTiles, lastMoveResult.getSpawns(), progress, cellWidth, cellHeight);
                 break;
         }
