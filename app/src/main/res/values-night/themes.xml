@@ -1,7 +1,58 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
     <style name="Base.Theme.Jeu2048" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:windowBackground">@color/page_background_dark</item>
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
+        <item name="navBackground">@color/bottom_nav_background_dark</item>
+        <item name="colorPrimary">@color/button_color_dark</item>
+        <item name="colorOnPrimary">@color/text_color_dark</item>
+        <item name="colorPrimaryContainer">@color/button_color_dark</item>
+        <item name="colorOnPrimaryContainer">@color/text_color_dark</item>
+        <item name="colorSecondary">@color/button_color_dark</item>
+        <item name="colorOnSecondary">@color/text_color_dark</item>
+        <item name="colorSecondaryContainer">@color/button_color_dark</item>
+        <item name="colorOnSecondaryContainer">@color/text_color_dark</item>
+        <item name="colorTertiary">@color/button_color_dark</item>
+        <item name="colorOnTertiary">@color/text_color_dark</item>
+        <item name="colorTertiaryContainer">@color/button_color_dark</item>
+        <item name="colorOnTertiaryContainer">@color/text_color_dark</item>
+
+        <item name="buttonFilledBackground">@color/bottom_filled_dark</item>
+        <item name="buttonOutlineColor">@color/bottom_outline_dark</item>
+
+        <item name="gridBackground">@color/grid_background_nigth</item>
+        <item name="tuilebackground">@color/tuile_bacground_nigth</item>
+
     </style>
+
+    <style name="Theme.Jeu2048" parent="Base.Theme.Jeu2048"/>
+
+    <style name="MyBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:textSize">11sp</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="itemActiveIndicatorStyle">@style/MyActiveIndicator</item>
+    </style>
+
+    <style name="MyActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <!-- Indicateur blanc en mode sombre -->
+        <item name="android:color">@color/bottom_nav_item_selected_dark</item>
+        <item name="android:width">48dp</item>
+        <item name="android:height">28dp</item>
+        <item name="shapeAppearance">@style/RoundedIndicator</item>
+    </style>
+
+    <style name="RoundedIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.Jeu2048.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/page_background_dark</item>
+        <item name="postSplashScreenTheme">@style/Theme.Jeu2048</item>
+        <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+    </style>
+
 </resources>

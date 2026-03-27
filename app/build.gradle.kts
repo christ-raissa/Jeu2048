@@ -41,4 +41,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("jp.wasabeef:glide-transformations:4.3.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("nl.joery.animatedbottombar:library:1.1.0")
 }

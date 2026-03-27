@@ -1,9 +1,60 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
     <style name="Base.Theme.Jeu2048" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/page_background_light</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
+        <item name="navBackground">@color/bottom_nav_background_light</item>
+        <item name="colorPrimary">@color/button_color_light</item>
+        <item name="colorOnPrimary">@color/text_color_light</item>
+        <item name="colorPrimaryContainer">@color/button_color_light</item>
+        <item name="colorOnPrimaryContainer">@color/text_color_light</item>
+        <item name="colorSecondary">@color/button_color_light</item>
+        <item name="colorOnSecondary">@color/text_color_light</item>
+        <item name="colorSecondaryContainer">@color/button_color_light</item>
+        <item name="colorOnSecondaryContainer">@color/text_color_light</item>
+        <item name="colorTertiary">@color/button_color_light</item>
+        <item name="colorOnTertiary">@color/text_color_light</item>
+        <item name="colorTertiaryContainer">@color/button_color_light</item>
+        <item name="colorOnTertiaryContainer">@color/text_color_light</item>
+
+        <item name="buttonFilledBackground">@color/bottom_filled_light</item>
+        <item name="buttonOutlineColor">@color/bottom_outline_light</item>
+
+        <item name="gridBackground">@color/grid_background_light</item>
+        <item name="tuilebackground">@color/tuile_bacground_ligth</item>
+
+
+
     </style>
 
-    <style name="Theme.Jeu2048" parent="Base.Theme.Jeu2048" />
+    <style name="Theme.Jeu2048" parent="Base.Theme.Jeu2048"/>
+
+    <style name="MyBottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:textSize">11sp</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="itemActiveIndicatorStyle">@style/MyActiveIndicator</item>
+    </style>
+
+    <style name="MyActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <!-- Indicateur orange/rose en mode clair -->
+        <item name="android:color">@color/bottom_nav_item_selected_light</item>
+        <item name="android:width">48dp</item>
+        <item name="android:height">28dp</item>
+        <item name="shapeAppearance">@style/RoundedIndicator</item>
+    </style>
+
+    <style name="RoundedIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.Jeu2048.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/page_background_light</item>
+        <item name="postSplashScreenTheme">@style/Theme.Jeu2048</item>
+        <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+    </style>
+
 </resources>
