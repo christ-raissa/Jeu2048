@@ -78,7 +78,7 @@ public class TileAnimator {
         for (TileMod mod : mods) {
             Class<? extends TileMod> modClazz = mod.getClass();
 
-            Log.d("GAME2048", "animateTiles: progress is " + progress + " for move " + mod.toString());
+            // Log.d("GAME2048", "animateTiles: progress is " + progress + " for move " + mod.toString());
 
             if (modClazz.equals(TileMove.class)) {
                 TileMove tileMove = (TileMove) mod;
@@ -86,7 +86,7 @@ public class TileAnimator {
                 tilesToAnimate.remove(toAnimate);
                 DrawableTile animated = animateMove(toAnimate, tileMove, progress, tileWidth, tileHeight);
                 tilesToAnimate.add(animated);
-                Log.d("GAME2048", "animateTiles: for " + toAnimate + " after move readding " + animated);
+                // Log.d("GAME2048", "animateTiles: for " + toAnimate + " after move readding " + animated);
             }
             else if (modClazz.equals(TilePop.class)) {
                 TilePop tilePop = (TilePop) mod;
@@ -100,7 +100,7 @@ public class TileAnimator {
                 
                 if (animated != null) {
                     tilesToAnimate.add(animated);
-                    Log.d("GAME2048", "animateTiles: for " + toAnimate + " after pop readding " + animated);
+                    // Log.d("GAME2048", "animateTiles: for " + toAnimate + " after pop readding " + animated);
                 }
             }
             else if (modClazz.equals(TileSpawn.class)) {
@@ -114,7 +114,7 @@ public class TileAnimator {
                 DrawableTile animated = animateSpawn(toAnimate, tileSpawn, progress, tileWidth, tileHeight);
                 if (animated != null) {
                     tilesToAnimate.add(animated);
-                    Log.d("GAME2048", "animateTiles: for " + toAnimate + " after spawn readding " + animated);
+                    // Log.d("GAME2048", "animateTiles: for " + toAnimate + " after spawn readding " + animated);
                 }
             }
             else if (modClazz.equals(TileUpgrade.class)) {
@@ -123,7 +123,7 @@ public class TileAnimator {
                 tilesToAnimate.remove(toAnimate);
                 DrawableTile animated = animateUpgrade(toAnimate, tileUpgrade, progress, tileWidth, tileHeight);
                 tilesToAnimate.add(animated);
-                Log.d("GAME2048", "animateTiles: for " + toAnimate + " after upgrade readding " + animated);
+                // Log.d("GAME2048", "animateTiles: for " + toAnimate + " after upgrade readding " + animated);
             }
         }
 

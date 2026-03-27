@@ -30,7 +30,7 @@ public class GameView extends View {
     private final static long firstMoveTimeMillis = 100L;
     private final static long middleTimeMillis = 100L;
     private final static long lastMoveTimeMillis = 100L;
-    private final static long endTimeMillis = 500L;
+    private final static long endTimeMillis = 100L;
 
     private final static long firstMoveThreshold = firstMoveTimeMillis;
     private final static long middleThreshold = firstMoveThreshold + middleTimeMillis;
@@ -50,6 +50,8 @@ public class GameView extends View {
     private ArrayList<DrawableTile> drawableTiles = new ArrayList<>();
     private MoveResult lastMoveResult;
 
+    private long oldScore;
+
     private TileRenderer cellRenderer;
     private GridRenderer gridRenderer;
 
@@ -65,6 +67,39 @@ public class GameView extends View {
 
     private Boolean animating = false;
 
+    private int gameWidth = 4;
+    private int gameHeight = 4;
+
+    private ArrayList<GameViewListener> subs = new ArrayList<>();
+
+    private void emitScoreChange(long from, long to) {
+        for (GameViewListener sub : subs) {
+            sub.OnScoreChange(from, to);
+        }
+    }
+
+    private void emitGameOver() {
+        for (GameViewListener sub : subs) {
+            sub.OnGameOver();
+        }
+    }
+
+    private void emitGameWon() {
+        for (GameViewListener sub : subs) {
+            sub.OnGameWon();
+        }
+    }
+
+    private void emitStart() {
+        for (GameViewListener sub : subs) {
+            sub.OnStart();
+        }
+    }
+
+    public void sub(GameViewListener newSub) {
+        subs.add(newSub);
+    }
+
     public GameView(Context context) {
         super(context);
         init();
@@ -76,7 +111,7 @@ public class GameView extends View {
     }
 
     private void init() {
-        Log.d("GAME2048", "GameView: Creating gameView!");
+        // Log.d("GAME2048", "GameView: Creating gameView!");
 
         initGame();
         initDraw();
@@ -92,11 +127,12 @@ public class GameView extends View {
         return true; // must return true so we keep receiving events
     }
 
-    private void initGame() {
-        game = new Game2048(4, 4, 2048);
+    public void initGame() {
+        game = new Game2048(gameWidth, gameHeight, 2048);
         MoveResult spawnResult = game.spawnValues(2);
-        Log.d("GAME2048", "initGame: \n" + game.toString());
+        // Log.d("GAME2048", "initGame: \n" + game.toString());
         startTilesAnimation(spawnResult);
+        emitStart();
     }
 
     private void initDraw() {
@@ -106,22 +142,26 @@ public class GameView extends View {
 
     private void onSwipeLeft()  {
         Log.d("GAME2048", "Swipe LEFT");
+        oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.LEFT);
         updateAfterMove(result);
     }
 
     private void onSwipeRight() {
         Log.d("GAME2048", "Swipe RIGHT");
+        oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.RIGHT);
         updateAfterMove(result);
     }
     private void onSwipeUp()    {
         Log.d("GAME2048", "Swipe UP");
+        oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.UP);
         updateAfterMove(result);
     }
     private void onSwipeDown()  {
         Log.d("GAME2048", "Swipe DOWN");
+        oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.DOWN);
         updateAfterMove(result);
     }
@@ -133,6 +173,9 @@ public class GameView extends View {
                     public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2,
                                            float velocityX, float velocityY) {
                         if (e1 == null) return false;
+
+                        if (animating) return false;
+
                         float diffX = e2.getX() - e1.getX();
                         float diffY = e2.getY() - e1.getY();
 
@@ -169,15 +212,19 @@ public class GameView extends View {
     }
 
     private void updateAfterMove(MoveResult results) {
-        Log.d("GAME2048", "updateAfterMove: \n" + game.toString());
+        // Log.d("GAME2048", "updateAfterMove: \n" + game.toString());
         startTilesAnimation(results);
     }
 
     private void updateAfterAnimation() {
         if (game.isWon()) {
-            Log.d("GAME2048", "GameView: You won!!! New game starting");
-            game = new Game2048();
+            emitGameWon();
+        } else if (game.isGameOver()) {
+            emitGameOver();
         }
+
+        emitScoreChange(oldScore, game.getScore());
+
         syncTiles();
         invalidate();
     }
@@ -185,7 +232,7 @@ public class GameView extends View {
     private void startTilesAnimation(@NonNull MoveResult result) {
         animating = true;
         firstAnimate = true;
-        Log.d("GAME2048", "Starting animation with results : " + result.toString());
+        // Log.d("GAME2048", "Starting animation with results : " + result.toString());
         lastMoveResult = result;
         invalidate();
     }
@@ -221,7 +268,7 @@ public class GameView extends View {
         }
         lastAnimationState = animState;
 
-        Log.d("GAME2048", "animateTiles: time is " + animateTime + " for " + drawableTiles.toString());
+        // Log.d("GAME2048", "animateTiles: time is " + animateTime + " for " + drawableTiles.toString());
 
         if (animState == null) {
             endTilesAnimation();

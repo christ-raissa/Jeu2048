@@ -11,16 +11,68 @@ public class DefaultTileRenderer extends TileRenderer {
 
     private Paint backgroundPaint;
     private Paint textPaint;
-    private Rect textBounds;
 
     public DefaultTileRenderer() {
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.GRAY);
+        backgroundPaint.setStyle(Paint.Style.FILL);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setAntiAlias(true);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+    }
 
-        textBounds = new Rect();
+    private void changePaint(long value) {
+        // Default text color
+        textPaint.setColor(Color.parseColor("#776e65"));
+
+        switch ((int) value) {
+            case 2:
+                backgroundPaint.setColor(Color.parseColor("#eee4da"));
+                break;
+            case 4:
+                backgroundPaint.setColor(Color.parseColor("#ede0c8"));
+                break;
+            case 8:
+                backgroundPaint.setColor(Color.parseColor("#f2b179"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 16:
+                backgroundPaint.setColor(Color.parseColor("#f59563"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 32:
+                backgroundPaint.setColor(Color.parseColor("#f67c5f"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 64:
+                backgroundPaint.setColor(Color.parseColor("#f65e3b"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 128:
+                backgroundPaint.setColor(Color.parseColor("#edcf72"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 256:
+                backgroundPaint.setColor(Color.parseColor("#edcc61"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 512:
+                backgroundPaint.setColor(Color.parseColor("#edc850"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 1024:
+                backgroundPaint.setColor(Color.parseColor("#edc53f"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            case 2048:
+                backgroundPaint.setColor(Color.parseColor("#edc22e"));
+                textPaint.setColor(Color.WHITE);
+                break;
+            default:
+                backgroundPaint.setColor(Color.parseColor("#3c3a32"));
+                textPaint.setColor(Color.WHITE);
+                break;
+        }
     }
 
     @Override
@@ -29,24 +81,31 @@ public class DefaultTileRenderer extends TileRenderer {
             return;
         }
 
+        changePaint(value);
+
         float right = left + cellWidth;
         float bottom = top + cellHeight;
 
-        top = top + tilePaddingHeight / 2.0f;
-        bottom = bottom - tilePaddingHeight / 2.0f;
-        left = left + tilePaddingHeight / 2.0f;
-        right = right - tilePaddingHeight / 2.0f;
+        top += tilePaddingHeight / 2.0f;
+        bottom -= tilePaddingHeight / 2.0f;
+        left += tilePaddingWidth / 2.0f;
+        right -= tilePaddingWidth / 2.0f;
 
         String text = String.valueOf(value);
 
-        textPaint.setTextSize(cellWidth * 0.35f);
+        float textSize = cellWidth * 0.35f;
+        if (value >= 1000) {
+            textSize = cellWidth * 0.25f;
+        }
+        textPaint.setTextSize(textSize);
 
-        textPaint.getTextBounds(text, 0, text.length(), textBounds);
+        float centerX = (left + right) / 2f;
+        float centerY = (top + bottom) / 2f;
 
-        float x = left + cellWidth / 2f;
-        float y = top + cellHeight / 2f + textBounds.height() / 2f;
+        Paint.FontMetrics fm = textPaint.getFontMetrics();
+        float textY = centerY - (fm.ascent + fm.descent) / 2f;
 
         canvas.drawRect(left, top, right, bottom, backgroundPaint);
-        canvas.drawText(text, x, y, textPaint);
+        canvas.drawText(text, centerX, textY, textPaint);
     }
 }

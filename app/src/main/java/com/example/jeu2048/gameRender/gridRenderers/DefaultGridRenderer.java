@@ -13,10 +13,10 @@ public class DefaultGridRenderer extends GridRenderer {
 
     public DefaultGridRenderer() {
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.argb(255, 200, 200, 200));
+        backgroundPaint.setColor(Color.argb(255, 150, 150, 150));
 
         slotPaint = new Paint();
-        slotPaint.setColor(Color.argb(255, 80, 80, 80));
+        slotPaint.setColor(Color.argb(255, 200, 200, 200));
     }
 
     @Override
