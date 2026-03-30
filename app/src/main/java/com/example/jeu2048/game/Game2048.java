@@ -34,6 +34,7 @@ public class Game2048 {
     private long[][] grid;
     private final long winValue;
     private long score;
+    private int numMoves = 0;
     private final Random random;
 
     public Game2048(int width, int height, long winValue) {
@@ -111,6 +112,8 @@ public class Game2048 {
         if (spawn != null) {
             moveResult.addSpawn(spawn);
         }
+
+        numMoves++;
 
         return moveResult;
     }
@@ -339,5 +342,9 @@ public class Game2048 {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getNumMoves() {
+        return numMoves;
     }
 }

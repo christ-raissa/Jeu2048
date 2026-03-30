@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="?attr/android:windowBackground">
-    android:padding="16dp">
 
     <!-- ===== ZONE JOUEUR 2 (haut, retournée à 180°) ===== -->
     <LinearLayout
@@ -21,10 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.example.jeu2048.gameRender.GameView
-            android:id="@+id/gridPlayer2"
+            android:id="@+id/gamePlayer2"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:background="@drawable/grid_background"
             android:rotation="0"
             android:padding="6dp">
 
@@ -146,10 +144,9 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.example.jeu2048.gameRender.GameView
-            android:id="@+id/gridPlayer1"
+            android:id="@+id/gamePlayer1"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:background="@drawable/grid_background"
             android:padding="6dp">
             </com.example.jeu2048.gameRender.GameView>
 
@@ -213,5 +210,79 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/endGameMenu"
+
+        android:visibility="gone"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_bg"
+
+        android:padding="10sp"
+
+        >
+
+        <TextView
+            android:id="@+id/endMessageP2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="180"
+
+            android:text="PLAYER 2 WON!"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/replayButton"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/replayButton"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+
+            android:src="@drawable/restart"
+
+            android:backgroundTint="@color/button_color_light"
+
+            android:contentDescription="ReplayButton"
+            android:visibility="visible"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/endMessageP1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="PLAYER 2 WON!"
+
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/replayButton">
+
+
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
