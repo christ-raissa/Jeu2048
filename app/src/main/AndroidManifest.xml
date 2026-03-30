@@ -50,6 +50,9 @@
 
         <activity android:name=".ui.OneUserGameActivity"
             android:exported="false"/>
+
+        <activity android:name=".ui.MultiplayerGameActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
