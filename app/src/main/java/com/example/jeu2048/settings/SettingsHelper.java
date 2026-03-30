@@ -3,16 +3,11 @@ package com.example.jeu2048.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.theme.Theme;
 import com.example.jeu2048.theme.ThemeName;
 
 public class SettingsHelper {
-
-    public enum GameMode {
-        ScoreObjective,
-        TimeLimit,
-    }
-
     private static final String PREF_NAME = "game_settings";
     private final SharedPreferences prefs;
 
@@ -87,7 +82,7 @@ public class SettingsHelper {
     }
 
     public float getAnimationSpeed() {
-        return prefs.getFloat("animation_speed", 1.0f);
+        return prefs.getFloat("animation_speed", 0.1f);
     }
 
     // =========================================================

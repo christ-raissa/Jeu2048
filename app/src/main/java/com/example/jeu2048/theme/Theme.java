@@ -6,8 +6,8 @@ import com.example.jeu2048.gameRender.gridRenderers.DefaultGridRenderer;
 import com.example.jeu2048.gameRender.tileRenderers.DefaultTileRenderer;
 
 public class Theme {
-    private GridRenderer gridRenderer;
-    private TileRenderer tileRenderer;
+    private final GridRenderer gridRenderer;
+    private final TileRenderer tileRenderer;
 
     public Theme(ThemeName name) {
         switch (name) {
