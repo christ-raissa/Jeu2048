@@ -12,11 +12,10 @@ import androidx.annotation.NonNull;
 import com.example.jeu2048.game.Game2048;
 import com.example.jeu2048.game.GameMoveDirection;
 import com.example.jeu2048.game.result.MoveResult;
-import com.example.jeu2048.gameRender.tileRenderers.DefaultTileRenderer;
-import com.example.jeu2048.gameRender.gridRenderers.DefaultGridRenderer;
+import com.example.jeu2048.settings.SettingsHelper;
+import com.example.jeu2048.theme.Theme;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GameView extends View {
     private enum AnimationState {
@@ -27,15 +26,15 @@ public class GameView extends View {
     }
 
 
-    private final static long firstMoveTimeMillis = 100L;
-    private final static long middleTimeMillis = 100L;
-    private final static long lastMoveTimeMillis = 100L;
-    private final static long endTimeMillis = 100L;
+    private long firstMoveTimeMillis;
+    private long middleTimeMillis;
+    private long lastMoveTimeMillis;
+    private long endTimeMillis;
 
-    private final static long firstMoveThreshold = firstMoveTimeMillis;
-    private final static long middleThreshold = firstMoveThreshold + middleTimeMillis;
-    private final static long lastMoveThreshold = middleThreshold + lastMoveTimeMillis;
-    private final static long endThreshold = lastMoveThreshold + endTimeMillis;
+    private long firstMoveThreshold;
+    private long middleThreshold;
+    private long lastMoveThreshold;
+    private long endThreshold;
 
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;  // min speed (px/s)
@@ -51,16 +50,18 @@ public class GameView extends View {
     private MoveResult lastMoveResult;
 
     private long oldScore;
+    private GameMode mode;
+    private long gameStartTime;
 
-    private TileRenderer cellRenderer;
-    private GridRenderer gridRenderer;
+    SettingsHelper settingsHelper;
+    private Theme theme;
 
-    private float tilePaddingWidth = 20;
-    private float tilePaddingHeight = 20;
+    private final static float tilePaddingWidth = 20;
+    private final static float tilePaddingHeight = 20;
 
     private GestureDetector gestureDetector;
 
-    private long startTime;
+    private long animStartTime;
     private boolean firstAnimate;
 
     private final Rect gridRect = new Rect();
@@ -72,7 +73,7 @@ public class GameView extends View {
     private int gameWidth = 4;
     private int gameHeight = 4;
 
-    private ArrayList<GameViewListener> subs = new ArrayList<>();
+    private final ArrayList<GameViewListener> subs = new ArrayList<>();
 
     private void emitScoreChange(long from, long to) {
         for (GameViewListener sub : subs) {
@@ -102,6 +103,8 @@ public class GameView extends View {
         subs.add(newSub);
     }
 
+
+
     public GameView(Context context) {
         super(context);
         init();
@@ -114,6 +117,7 @@ public class GameView extends View {
 
     private void init() {
         // Log.d("GAME2048", "GameView: Creating gameView!");
+        settingsHelper = new SettingsHelper(this.getContext());
 
         initGame();
         initDraw();
@@ -130,16 +134,44 @@ public class GameView extends View {
     }
 
     public void initGame() {
-        game = new Game2048(gameWidth, gameHeight, 2048);
+        gameWidth = settingsHelper.getSingleCols();
+        gameHeight = settingsHelper.getSingleRows();
+        mode = settingsHelper.getSingleMode();
+
+        switch (mode) {
+            case ScoreObjective:
+                game = new Game2048(gameWidth, gameHeight, 2048);
+                break;
+            case TimeLimit:
+                game = new Game2048(gameWidth, gameHeight, 1_000_000_000); // Should never win by points
+                gameStartTime = System.currentTimeMillis();
+                break;
+        }
+
         MoveResult spawnResult = game.spawnValues(2);
-        // Log.d("GAME2048", "initGame: \n" + game.toString());
         startTilesAnimation(spawnResult);
         emitStart();
     }
 
     private void initDraw() {
-        cellRenderer = new DefaultTileRenderer();
-        gridRenderer = new DefaultGridRenderer();
+        theme = settingsHelper.getTheme();
+
+        if (settingsHelper.areAnimationsEnabled()) {
+            firstMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+            middleTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+            lastMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+            endTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+        } else {
+            firstMoveTimeMillis = 0;
+            middleTimeMillis = 0;
+            lastMoveTimeMillis = 0;
+            endTimeMillis = 0;
+        }
+
+        firstMoveThreshold = firstMoveTimeMillis;
+        middleThreshold = firstMoveThreshold + middleTimeMillis;
+        lastMoveThreshold = middleThreshold + lastMoveTimeMillis;
+        endThreshold = lastMoveThreshold + endTimeMillis;
     }
 
     private void onSwipeLeft()  {
@@ -220,7 +252,9 @@ public class GameView extends View {
     }
 
     private void updateAfterAnimation() {
-        if (game.isWon()) {
+        if ((mode == GameMode.ScoreObjective && game.isWon()) ||
+                (mode == GameMode.TimeLimit &&
+                        System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
             emitGameWon();
         } else if (game.isGameOver()) {
             emitGameOver();
@@ -243,12 +277,12 @@ public class GameView extends View {
     private void animateTiles() {
         if (firstAnimate) {
             lastAnimationState = AnimationState.FIRST_MOVE;
-            startTime = System.currentTimeMillis();
+            animStartTime = System.currentTimeMillis();
             firstAnimate = false;
         }
 
         long currentTime = System.currentTimeMillis();
-        long animateTime = currentTime - startTime;
+        long animateTime = currentTime - animStartTime;
         AnimationState animState = getAnimationState(animateTime);
 
         if (animState != lastAnimationState) {
@@ -318,9 +352,9 @@ public class GameView extends View {
     }
 
     private void drawGame(Canvas canvas) {
-        gridRenderer.drawGrid(canvas, gridRect.top, gridRect.left, (int) cellWidth, (int) cellHeight, game.getWidth(), game.getHeight(), tilePaddingWidth, tilePaddingHeight);
-        for (DrawableTile cell : drawableTiles) {
-            cellRenderer.drawCell(canvas, cell.getAnimateX(), cell.getAnimateY(), cell.getWidth(), cell.getHeight(), cell.getValue(), tilePaddingWidth, tilePaddingHeight);
+        theme.getGridRenderer().drawGrid(canvas, gridRect.top, gridRect.left, (int) cellWidth, (int) cellHeight, game.getWidth(), game.getHeight(), tilePaddingWidth, tilePaddingHeight);
+        for (DrawableTile tile : drawableTiles) {
+            theme.getTileRenderer().drawTile(canvas, tile.getAnimateX(), tile.getAnimateY(), tile.getWidth(), tile.getHeight(), tile.getValue(), tilePaddingWidth, tilePaddingHeight);
         }
     }
 
@@ -361,6 +395,12 @@ public class GameView extends View {
         }
     }
 
+    public void setGameWidth(int gameWidth) {
+        this.gameWidth = gameWidth;
+    }
+
+    public void setGameHeight(int gameHeight) {
+        this.gameHeight = gameHeight;
     public long getScore() {
         return game.getScore();
     }

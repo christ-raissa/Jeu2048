@@ -20,7 +20,7 @@ import com.example.jeu2048.storage.ThemeManager;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DELAY = 5000;
+    private static final int SPLASH_DELAY = 2500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

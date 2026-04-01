@@ -11,42 +11,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeu2048">
-
+        <activity
+            android:name=".ui.state_page"
+            android:exported="false" />
         <!-- Splash Screen -->
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/Theme.Jeu2048.Splash"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Jeu2048.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Démo du jeu -->
+        </activity> <!-- Démo du jeu -->
         <activity
             android:name=".ui.DemoActivity"
-            android:exported="false"/>
-
-        <!-- Page principale -->
+            android:exported="false" /> <!-- Page principale -->
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false"/>
-
-        <!-- Page Inventaire -->
+            android:exported="false" />
+      
         <activity
             android:name=".ui.StatistiqueActivity"
             android:exported="false"/>
 
-        <!-- Page Users -->
         <activity
             android:name=".ui.UsersActivity"
-            android:exported="false"/>
-
-        <!-- Page Paramètres -->
+            android:exported="false" /> <!-- Page Paramètres -->
         <activity
             android:name=".ui.SettingActivity"
             android:exported="false"/>
+     
 
         <activity android:name=".ui.OneUserGameActivity"
             android:exported="false"/>

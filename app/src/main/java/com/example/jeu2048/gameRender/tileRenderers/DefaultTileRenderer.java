@@ -76,7 +76,7 @@ public class DefaultTileRenderer extends TileRenderer {
     }
 
     @Override
-    public void drawCell(Canvas canvas, float top, float left, float cellWidth, float cellHeight, long value, float tilePaddingWidth, float tilePaddingHeight) {
+    public void drawTile(Canvas canvas, float top, float left, float cellWidth, float cellHeight, long value, float tilePaddingWidth, float tilePaddingHeight) {
         if (value < 1) {
             return;
         }

@@ -20,11 +20,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title2048"
+        android:id="@+id/signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="JEU"
         android:textColor="@color/text_color_light"
         android:textSize="30sp"
         android:textStyle="bold"
