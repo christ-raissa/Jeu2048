@@ -5,7 +5,9 @@
     <attr name="buttonOutlineColor" format="color"/>
     <attr name="gridBackground" format="color"/>
     <attr name="tuilebackground" format="color"/>
-
+    <attr name="carteMenuBande" format="color"/>
+    <attr name="carteMenu" format="color"/>
+    <attr name="carteBackground" format="color"/>
 
 
 </resources>

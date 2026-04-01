@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_home);
 
         // Bouton Débuter
-        findViewById(R.id.btnStart).setOnClickListener(v -> {
+        findViewById(R.id.btnOnePlayer).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, OneUserGameActivity.class);
             startActivity(intent);
         });

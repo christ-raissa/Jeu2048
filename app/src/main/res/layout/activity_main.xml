@@ -58,32 +58,31 @@
                         android:gravity="center"/>
                 </FrameLayout>
 
-                <!-- Nom + barre XP -->
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="10dp">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="8dp">
 
-                    <TextView
-                        android:id="@+id/playerName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Joueur"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+                    <!-- Petit espace entre icône et animation -->
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content"/>
 
-                    <ProgressBar
-                        android:id="@+id/xpBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:layout_marginTop="4dp"
-                        android:progress="40"
-                        android:max="100"
-                        android:progressDrawable="@drawable/xp_bar"/>
+                    <!-- Animation Lottie -->
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/welcomeAnimation"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/welcome" />
                 </LinearLayout>
+
 
             </LinearLayout>
 
@@ -92,160 +91,183 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="2048"
-                android:textSize="56sp"
+                android:paddingBottom="50dp"
+                android:text=" TO 2048 GAME "
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#776E65"
                 android:layout_marginBottom="32dp"/>
 
-            <!-- ===== LIGNE 1 : 3 CARTES ===== -->
+            <!--- section cartes -->
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_marginBottom="12dp">
 
                 <!-- Carte 1 : Débuter -->
-                <LinearLayout
-                    android:id="@+id/btnStart"
+                <FrameLayout
+                    android:id="@+id/btnOnePlayer"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:layout_height="110dp"
                     android:layout_marginEnd="6dp"
                     android:background="@drawable/carte_menu"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@android:drawable/ic_media_play"
-                        android:layout_marginBottom="8dp"/>
+                    <!-- Animation Lottie centrée en haut -->
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="8dp"
+                        app:lottie_rawRes="@raw/debuter"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
+                    <!-- Bande colorée en bas -->
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/carte_menu_bande"
                         android:text="DÉBUTER"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:gravity="center"/>
-                </LinearLayout>
+
+                </FrameLayout>
 
                 <!-- Carte 2 : Jouer à deux -->
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/btnTwoPlayers"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:layout_height="110dp"
                     android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
                     android:background="@drawable/carte_menu"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@android:drawable/ic_menu_myplaces"
-                        android:layout_marginBottom="8dp"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="8dp"
+                        app:lottie_rawRes="@raw/two_people"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/carte_menu_bande"
                         android:text="JOUER À DEUX"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:gravity="center"/>
-                </LinearLayout>
 
-                <!-- Carte 3 : Inviter un ami -->
-                <LinearLayout
-                    android:id="@+id/btnInvite"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="110dp"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/carte_menu"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                </FrameLayout>
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@android:drawable/ic_menu_share"
-                        android:layout_marginBottom="8dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="INVITER"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:gravity="center"/>
-                </LinearLayout>
             </LinearLayout>
 
-            <!-- ===== LIGNE 2 : 2 CARTES ===== -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp">
 
-                <!-- Carte 4 : Classement -->
-                <LinearLayout
-                    android:id="@+id/btnRanking"
+                <!-- Carte 3 : Classement -->
+                <FrameLayout
+                    android:id="@+id/btnClassement"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:layout_height="110dp"
                     android:layout_marginEnd="6dp"
                     android:background="@drawable/carte_menu"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@android:drawable/ic_menu_sort_by_size"
-                        android:layout_marginBottom="8dp"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="8dp"
+                        app:lottie_rawRes="@raw/classement"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/carte_menu_bande"
                         android:text="CLASSEMENT"
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:gravity="center"/>
-                </LinearLayout>
 
-                <!-- Carte 5 : Aide -->
-                <LinearLayout
-                    android:id="@+id/btnHelp"
+                </FrameLayout>
+
+                <!-- Carte 4 : Inviter -->
+                <FrameLayout
+                    android:id="@+id/btnInvite"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:layout_height="110dp"
                     android:layout_marginStart="6dp"
                     android:background="@drawable/carte_menu"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:clickable="true"
+                    android:focusable="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@android:drawable/ic_menu_help"
-                        android:layout_marginBottom="8dp"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="110dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="top|center_horizontal"
+                        android:layout_marginTop="8dp"
+                        app:lottie_rawRes="@raw/invite"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"/>
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AIDE"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/carte_menu_bande"
+                        android:text="INVITER"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:gravity="center"/>
-                </LinearLayout>
+                        android:gravity="center" />
+
+                </FrameLayout>
+
             </LinearLayout>
 
         </LinearLayout>
     </FrameLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/bottomRightAnimation"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="85dp"
+        app:lottie_rawRes="@raw/game"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintDimensionRatio="H,1:1"/>
 
     <!-- Bottom Navigation -->
     <nl.joery.animatedbottombar.AnimatedBottomBar
