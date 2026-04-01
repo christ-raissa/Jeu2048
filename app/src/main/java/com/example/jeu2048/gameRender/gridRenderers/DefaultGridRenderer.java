@@ -19,6 +19,8 @@ public class DefaultGridRenderer extends GridRenderer {
         slotPaint.setColor(Color.argb(255, 200, 200, 200));
     }
 
+
+
     @Override
     public void drawGrid(Canvas canvas, float top, float left, int cellWidth, int cellHeight, int gridWidth, int gridHeight, float tilePaddingWidth, float tilePaddingHeight) {
         canvas.drawRoundRect(left, top, gridWidth * cellWidth, gridHeight * cellHeight, 5, 5, backgroundPaint);

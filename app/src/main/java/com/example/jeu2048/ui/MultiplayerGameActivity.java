@@ -59,12 +59,12 @@ public class MultiplayerGameActivity extends AppCompatActivity {
             }
 
             @Override
-            public void OnGameOver() {
+            public void OnGameOver(long dureeMillis) {
                 triggerWin(2);
             }
 
             @Override
-            public void OnGameWon() {
+            public void OnGameWon(long dureeMillis) {
                 triggerWin(1);
             }
         });
@@ -82,12 +82,12 @@ public class MultiplayerGameActivity extends AppCompatActivity {
             public void OnStart() {}
 
             @Override
-            public void OnGameOver() {
+            public void OnGameOver(long dureeMillis) {
                 triggerWin(1);
             }
 
             @Override
-            public void OnGameWon() {
+            public void OnGameWon(long dureeMillis) {
                 triggerWin(2);
             }
         });

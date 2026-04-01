@@ -52,6 +52,7 @@ public class GameView extends View {
     private long oldScore;
     private GameMode mode;
     private long gameStartTime;
+    private long gameEndTime;
 
     SettingsHelper settingsHelper;
     private Theme theme;
@@ -83,13 +84,13 @@ public class GameView extends View {
 
     private void emitGameOver() {
         for (GameViewListener sub : subs) {
-            sub.OnGameOver();
+            sub.OnGameOver(gameEndTime);
         }
     }
 
     private void emitGameWon() {
         for (GameViewListener sub : subs) {
-            sub.OnGameWon();
+            sub.OnGameWon(gameEndTime);
         }
     }
 
@@ -144,9 +145,11 @@ public class GameView extends View {
                 break;
             case TimeLimit:
                 game = new Game2048(gameWidth, gameHeight, 1_000_000_000); // Should never win by points
-                gameStartTime = System.currentTimeMillis();
                 break;
         }
+
+        gameStartTime = System.currentTimeMillis();
+        gameEndTime = -1;
 
         MoveResult spawnResult = game.spawnValues(2);
         startTilesAnimation(spawnResult);
@@ -255,8 +258,10 @@ public class GameView extends View {
         if ((mode == GameMode.ScoreObjective && game.isWon()) ||
                 (mode == GameMode.TimeLimit &&
                         System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
+            gameEndTime = System.currentTimeMillis() - gameStartTime;
             emitGameWon();
         } else if (game.isGameOver()) {
+            gameEndTime = System.currentTimeMillis() - gameStartTime;
             emitGameOver();
         }
 
@@ -401,6 +406,8 @@ public class GameView extends View {
 
     public void setGameHeight(int gameHeight) {
         this.gameHeight = gameHeight;
+    }
+
     public long getScore() {
         return game.getScore();
     }
@@ -411,5 +418,12 @@ public class GameView extends View {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public long getGameDuration() {
+        if (endTimeMillis == -1) {
+            return System.currentTimeMillis() - gameStartTime;
+        }
+        return endTimeMillis;
     }
 }

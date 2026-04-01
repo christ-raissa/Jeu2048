@@ -1,5 +1,6 @@
 package com.example.jeu2048.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,20 +11,23 @@ import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
+import com.example.jeu2048.settings.SettingsHelper;
 
 public class OneUserGameActivity extends AppCompatActivity implements GameViewListener {
 
     OneUserGameActivityBinding binding;
     private long meilleur = 0;
     private long numMoves = 0;
-    private String nom_Joueur = "Anonyme";
     Dbhelper dba;
+    SettingsHelper settingsHelper;
     private Boolean isGameWon = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = OneUserGameActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        settingsHelper = new SettingsHelper(this);
 
         GameView gameView = binding.gameView;
         gameView.sub(this);
@@ -32,6 +36,16 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
             numMoves = 0;
             gameView.initGame();
 
+        });
+
+        binding.btnClassement.setOnClickListener(v -> {
+            Intent intent = new Intent(OneUserGameActivity.this, StatistiqueActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(OneUserGameActivity.this, SettingActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -51,22 +65,18 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         binding.scoreText.setText("0");
     }
 
-
-    public void OnGameOver() {
-        if (!isGameWon){
-            SauvegardePartie("Perdu");
-        }else {
-            SauvegardePartie("Partie gagné fini");
-        }
+    public void OnGameOver(long dureeMillis) {
+        isGameWon = false;
+        SauvegardePartie("Perdu", dureeMillis);
     }
 
     @Override
-    public void OnGameWon() {
+    public void OnGameWon(long dureeMillis) {
        isGameWon = true;
-       SauvegardePartie("Partie gagné");
+       SauvegardePartie("Partie gagné", dureeMillis);
     }
 
-    public void SauvegardePartie(String resultat){
+    public void SauvegardePartie(String resultat, long dureeMillis){
         String scoreStr = binding.scoreText.getText().toString().trim();
         long scoreFinal = 0;
 
@@ -81,6 +91,6 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         if (dba == null) {
             dba = new Dbhelper(this);
         }
-        dba.insertScore(nom_Joueur, scoreFinal, numMoves, resultat);
+        dba.insertScore(settingsHelper.getSingleUsername(), scoreFinal, numMoves, resultat);
     }
 }

@@ -9,9 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.jeu2048.R;
+import com.example.jeu2048.databinding.ActivityMainBinding;
+
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
 public class MainActivity extends AppCompatActivity {
+
+    ActivityMainBinding binding;
 
     AnimatedBottomBar bottomNavigation;
 
@@ -19,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -32,12 +37,17 @@ public class MainActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
 
-        bottomNavigation = findViewById(R.id.bottomNavigation);
+        bottomNavigation = binding.bottomNavigation;
         NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_home);
 
         // Bouton Débuter
-        findViewById(R.id.btnOnePlayer).setOnClickListener(v -> {
+        binding.btnOnePlayer.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, OneUserGameActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnTwoPlayers.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MultiplayerGameActivity.class);
             startActivity(intent);
         });
     }
