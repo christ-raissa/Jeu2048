@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="15dp"
     android:background="?attr/android:windowBackground"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:layout_editor_absoluteY="15dp">
 
     <!-- ===== BARRE DU HAUT ===== -->
 
@@ -16,81 +16,82 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@mipmap/ic_launcher"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="JEU"
+        android:textColor="@color/text_color_light"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toTopOf="@id/logoApp"
         app:layout_constraintBottom_toBottomOf="@id/logoApp"
-        app:layout_constraintStart_toEndOf="@id/logoApp"/>
+        app:layout_constraintStart_toEndOf="@id/logoApp"
+        app:layout_constraintTop_toTopOf="@id/logoApp" />
 
     <!-- Icônes à droite -->
     <LinearLayout
         android:id="@+id/topIcons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="@id/logoApp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/logoApp"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/logoApp">
 
         <!-- Bouton Classement -->
         <ImageButton
             android:id="@+id/btnClassement"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/medail"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@android:color/black"
             android:contentDescription="Classement"
-            android:layout_marginEnd="8dp"/>
+            app:srcCompat="@drawable/medail"
+            app:tint="@android:color/black" />
 
         <!-- Bouton Restart -->
         <ImageButton
             android:id="@+id/btnRestart"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/restart"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@android:color/black"
             android:contentDescription="Restart"
-            android:layout_marginEnd="8dp"/>
+            app:srcCompat="@drawable/restart"
+            app:tint="@android:color/black" />
 
         <!-- Bouton Settings -->
         <ImageButton
             android:id="@+id/btnSettings"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@drawable/gear"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@android:color/black"
-            android:contentDescription="Settings"/>
+            android:contentDescription="Settings"
+            app:srcCompat="@drawable/gear"
+            app:tint="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/scoreContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/logoApp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/logoApp">
 
         <!-- Boîte SCORE -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
             android:background="@drawable/score_box_bacground"
             android:gravity="center"
             android:orientation="vertical"
@@ -100,11 +101,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
                 android:text="SCORE"
                 android:textColor="#EEE4DA"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.1"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/scoreText"
                 android:layout_width="wrap_content"
@@ -112,14 +114,14 @@
                 android:text="0"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Boîte MEILLEUR SCORE -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/score_box_outline"
             android:gravity="center"
             android:orientation="vertical"
@@ -129,111 +131,36 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
                 android:text="MEILLEUR SCORE"
                 android:textColor="#EEE4DA"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.1"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/bestScoreText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- GRILLE 4x4 -->
-    <GridLayout
-        android:id="@+id/gridOneUser"
+    <!-- GRILLE -->
+    <com.example.jeu2048.gameRender.GameView
+        android:id="@+id/gameView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:columnCount="4"
-        android:rowCount="4"
-        android:background="@drawable/grid_background"
-        android:padding="6dp"
-        app:layout_constraintTop_toBottomOf="@id/scoreContainer"
-        app:layout_constraintBottom_toTopOf="@id/gameInfo"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/gameInfo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreContainer">
 
-        <!-- Ligne 1 -->
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-
-        <!-- Ligne 2 -->
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-
-        <!-- Ligne 3 -->
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-
-        <!-- Ligne 4 -->
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-        <TextView android:layout_width="0dp" android:layout_height="0dp"
-            android:layout_rowWeight="1" android:layout_columnWeight="1"
-            android:layout_margin="4dp" android:background="@drawable/title_2048"
-            android:gravity="center" android:textStyle="bold" android:textSize="20sp"/>
-    </GridLayout>
+    </com.example.jeu2048.gameRender.GameView>
 
     <!-- ===== TIMER + COUPS (sous la grille) ===== -->
     <LinearLayout
@@ -241,34 +168,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/gridOneUser"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <!-- Timer -->
         <TextView
             android:id="@+id/timerText"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="00:00"
+            android:textColor="#776E65"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#776E65"/>
+            android:textStyle="bold" />
 
         <!-- Nombre de coups -->
         <TextView
             android:id="@+id/movesText"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
             android:text="0 COUPS"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:textColor="#776E65"
-            android:gravity="end"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
