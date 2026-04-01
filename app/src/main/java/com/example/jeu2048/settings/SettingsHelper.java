@@ -2,6 +2,7 @@ package com.example.jeu2048.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 
 import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.theme.Theme;
@@ -32,6 +33,25 @@ public class SettingsHelper {
 
     public float getMusicVolume() {
         return prefs.getFloat("music_volume", 1.0f);
+    }
+
+    public void setMusicEnabled(boolean enabled) {
+        prefs.edit().putBoolean("music_enabled", enabled).apply();
+    }
+
+    public boolean isMusicEnabled() {
+        return prefs.getBoolean("music_enabled", false);
+    }
+    public float getSystemMusicVolume(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager != null) {
+            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+            // On calcule le ratio : volume actuel / volume max
+            return (float) currentVolume / maxVolume;
+        }
+        return getMusicVolume(); // Valeur par défaut si erreur
     }
 
     /**
