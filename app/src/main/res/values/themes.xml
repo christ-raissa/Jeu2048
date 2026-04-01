@@ -2,6 +2,10 @@
 <resources>
 
     <style name="Base.Theme.Jeu2048" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="android:fontFamily">@font/robotomono_regular</item>
+        <item name="fontFamily">@font/robotomono_regular</item>
+
         <item name="android:windowBackground">@color/page_background_light</item>
         <item name="android:textColor">@color/text_color_light</item>
         <item name="bottomNavigationStyle">@style/MyBottomNavStyle</item>
@@ -25,6 +29,13 @@
         <item name="gridBackground">@color/grid_background_light</item>
         <item name="tuilebackground">@color/tuile_bacground_ligth</item>
 
+
+        <!-- gestion des themes pour les cartes -->
+        <item name="carteMenu">@color/carte_menu_ligth</item>
+        <item name="carteMenuBande">@color/carte_menu_bande_light</item>
+
+        <!-- carte background -->
+        <item name="carteBackground">@color/carte_background_ligth</item>
 
 
     </style>

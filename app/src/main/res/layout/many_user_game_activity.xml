@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="?attr/android:windowBackground">
-    android:padding="16dp">
 
     <!-- ===== ZONE JOUEUR 2 (haut, retournée à 180°) ===== -->
     <LinearLayout
@@ -20,52 +19,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <GridLayout
-            android:id="@+id/gridPlayer2"
+        <com.example.jeu2048.gameRender.GameView
+            android:id="@+id/gamePlayer2"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:columnCount="3"
-            android:rowCount="3"
-            android:background="@drawable/grid_background"
+            android:rotation="0"
             android:padding="6dp">
 
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-        </GridLayout>
+        </com.example.jeu2048.gameRender.GameView>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -73,6 +34,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
+            android:rotation="0"
             android:layout_marginStart="8dp">
 
             <LinearLayout
@@ -129,6 +91,22 @@
     </LinearLayout>
 
     <!-- ===== ESPACE CENTRAL ===== -->
+    <TextView
+        android:id="@+id/timerP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:rotation="180"
+        android:textSize="30sp"
+
+        app:layout_constraintBottom_toTopOf="@id/centerSpace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:text="TIMER P2"
+        >
+    </TextView>
+
     <Space
         android:id="@+id/centerSpace"
         android:layout_width="match_parent"
@@ -137,6 +115,22 @@
         app:layout_constraintBottom_toTopOf="@id/zone1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/timerP1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:rotation="0"
+        android:textSize="30sp"
+
+        app:layout_constraintTop_toBottomOf="@id/centerSpace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:text="TIMER P1"
+        >
+    </TextView>
 
     <!-- ===== ZONE JOUEUR 1 (bas, sens normal) ===== -->
     <LinearLayout
@@ -149,52 +143,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <GridLayout
-            android:id="@+id/gridPlayer1"
+        <com.example.jeu2048.gameRender.GameView
+            android:id="@+id/gamePlayer1"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:columnCount="3"
-            android:rowCount="3"
-            android:background="@drawable/grid_background"
             android:padding="6dp">
-
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-            <TextView android:layout_width="0dp" android:layout_height="0dp"
-                android:layout_rowWeight="1" android:layout_columnWeight="1"
-                android:layout_margin="4dp" android:background="@drawable/title_2048"
-                android:gravity="center" android:textStyle="bold" android:textSize="18sp"/>
-        </GridLayout>
+            </com.example.jeu2048.gameRender.GameView>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -256,5 +210,79 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/endGameMenu"
+
+        android:visibility="gone"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_bg"
+
+        android:padding="10sp"
+
+        >
+
+        <TextView
+            android:id="@+id/endMessageP2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="180"
+
+            android:text="PLAYER 2 WON!"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/replayButton"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/replayButton"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+
+            android:src="@drawable/restart"
+
+            android:backgroundTint="@color/button_color_light"
+
+            android:contentDescription="ReplayButton"
+            android:visibility="visible"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/endMessageP1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="0"
+            android:text="PLAYER 2 WON!"
+
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/replayButton">
+
+
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

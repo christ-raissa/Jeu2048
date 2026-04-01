@@ -30,19 +30,25 @@
             android:exported="false" /> <!-- Page principale -->
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false" /> <!-- Page Inventaire -->
+            android:exported="false" />
+      
         <activity
-            android:name=".ui.InventoryActivity"
-            android:exported="false" /> <!-- Page Users -->
+            android:name=".ui.StatistiqueActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".ui.UsersActivity"
             android:exported="false" /> <!-- Page Paramètres -->
         <activity
             android:name=".ui.SettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.OneUserGameActivity"
-            android:exported="false" />
+            android:exported="false"/>
+     
+
+        <activity android:name=".ui.OneUserGameActivity"
+            android:exported="false"/>
+
+        <activity android:name=".ui.MultiplayerGameActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

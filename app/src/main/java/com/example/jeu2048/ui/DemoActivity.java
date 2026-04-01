@@ -3,9 +3,9 @@ package com.example.jeu2048.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
+import android.media.MediaPlayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,15 +24,16 @@ public class DemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
 
         videoView   = findViewById(R.id.tutorialVideo);
-        btnNext     = findViewById(R.id.btnNext);
         messageText = findViewById(R.id.messageText);
+        btnNext = findViewById(R.id.btnNext);
 
-        // texte simple
+        // Texte explicatif
         messageText.setText(
                 "Fusionnez les tuiles pour atteindre 2048.\n" +
                         "La partie se termine lorsque la grille est pleine."
         );
 
+        // Boutons
         findViewById(R.id.btnSkip).setOnClickListener(v -> goToGame());
         btnNext.setOnClickListener(v -> goToGame());
 
@@ -41,24 +42,16 @@ public class DemoActivity extends AppCompatActivity {
 
     private void playVideo() {
 
-        Uri uri = Uri.parse("android.resource://"
-                + getPackageName()
-                + "/"
-                + R.raw.demo);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.demo);
 
         videoView.setVideoURI(uri);
+        videoView.setOnPreparedListener(mp -> mp.setLooping(true));
         videoView.start();
-
-        // boucle infinie
-        videoView.setOnCompletionListener(mp -> videoView.start());
     }
 
     private void goToGame() {
         startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(
-                android.R.anim.fade_in,
-                android.R.anim.fade_out
-        );
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 }

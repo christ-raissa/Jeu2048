@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Glide.with(this)
                 .asGif()
-                .load(R.drawable.load)
+                .load(R.drawable.logo)
                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(cornerRadius)))
                 .into(logo);
 

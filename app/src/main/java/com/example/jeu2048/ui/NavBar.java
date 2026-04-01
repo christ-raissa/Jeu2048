@@ -67,8 +67,8 @@ public class NavBar {
                     activity.startActivity(new Intent(activity, MainActivity.class));
                     activity.overridePendingTransition(0, 0);
                     activity.finish();
-                } else if (id == R.id.nav_inventory && !(activity instanceof InventoryActivity)) {
-                    activity.startActivity(new Intent(activity, InventoryActivity.class));
+                } else if (id == R.id.nav_inventory && !(activity instanceof StatistiqueActivity)) {
+                    activity.startActivity(new Intent(activity, StatistiqueActivity.class));
                     activity.overridePendingTransition(0, 0);
                     activity.finish();
                 } else if (id == R.id.nav_users && !(activity instanceof UsersActivity)) {

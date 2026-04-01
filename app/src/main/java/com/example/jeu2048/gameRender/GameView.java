@@ -68,6 +68,8 @@ public class GameView extends View {
 
     private Boolean animating = false;
 
+    private boolean paused = false;
+
     private int gameWidth = 4;
     private int gameHeight = 4;
 
@@ -206,6 +208,7 @@ public class GameView extends View {
                                            float velocityX, float velocityY) {
                         if (e1 == null) return false;
 
+                        if (paused) return false;
                         if (animating) return false;
 
                         float diffX = e2.getX() - e1.getX();
@@ -398,5 +401,15 @@ public class GameView extends View {
 
     public void setGameHeight(int gameHeight) {
         this.gameHeight = gameHeight;
+    public long getScore() {
+        return game.getScore();
+    }
+
+    public int getNumMoves() {
+        return game.getNumMoves();
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

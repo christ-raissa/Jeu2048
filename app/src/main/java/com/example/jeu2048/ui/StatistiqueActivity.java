@@ -6,21 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.jeu2048.R;
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
-public class InventoryActivity extends AppCompatActivity {
+public class StatistiqueActivity extends AppCompatActivity {
 
     AnimatedBottomBar bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventor);
+        setContentView(R.layout.activity_statistique);
 
+        // Mode plein écran
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
 
+        // Barre de navigation
         bottomNavigation = findViewById(R.id.bottomNavigation);
         NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_inventory);
+
     }
 }

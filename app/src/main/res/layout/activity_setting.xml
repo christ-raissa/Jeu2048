@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/page_background_dark">
 
-    <!-- Contenu principal -->
-    <FrameLayout
+    <ScrollView
         android:id="@+id/containerContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -253,7 +252,6 @@
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 
-    <!-- Bottom Navigation -->
     <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
