@@ -1,3 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jeu 2048</string>
+
+    <!-- Tutoriel / Demo -->
+    <string name="ignorer">Ignorer</string>
+    <string name="jouer">Jouer</string>
+    <string name="afficher">Fusionnez les tuiles pour atteindre 2048</string>
+    <string name="question">Comment Jouer ?</string>
+
+    <!-- Menu principal -->
+    <string name="menu_title">TO 2048 GAME</string>
+    <string name="btn_debuter">DÉBUTER</string>
+    <string name="btn_two_players">JOUER À DEUX</string>
+    <string name="btn_classement">CLASSEMENT</string>
+    <string name="btn_inviter">INVITER</string>
+
+    <!-- Jeu solo -->
+    <string name="score">SCORE</string>
+    <string name="meilleur_score">MEILLEUR SCORE</string>
+    <string name="coups">%d COUPS</string>
+
+    <!-- Jeu à deux -->
+    <string name="timer_p1">TIMER P1</string>
+    <string name="timer_p2">TIMER P2</string>
+    <string name="best">BEST</string>
+    <string name="player2_won">PLAYER 2 WON!</string>
+    <string name="player1_won">PLAYER 1 WON!</string>
+
+    <!-- Paramètres -->
+    <string name="titre_parametres">Paramètres</string>
+    <string name="titre_statistiques">Statistiques</string>
+    <string name="stats_avertissement">Les parties en cours ne sont pas comptabilisées</string>
+
+    <!-- Profil -->
+    <string name="profil_utilisateur">Profil Utilisateur</string>
+    <string name="username_hint">Cliquez ici pour saisir votre nom</string>
+    <string name="username_greeting">Salut : </string>
+    <string name="avatar_select">Sélectionner votre avatar</string>
+    <string name="avatar_label">Avatar du joueur</string>
+    <string name="dialog_username_title">Définir votre nom</string>
+    <string name="dialog_avatar_title">Choisissez votre avatar</string>
+    <string name="dialog_valider">Valider</string>
+    <string name="dialog_annuler">Annuler</string>
+
+    <!-- Apparence -->
+    <string name="apparence">Apparence</string>
+    <string name="theme_clair">Thème clair</string>
+    <string name="theme_sombre">Thème sombre</string>
+    <string name="theme_systeme">Thème système</string>
+
+    <!-- Son -->
+    <string name="parametres_son">Paramètres de son</string>
+    <string name="son_activer">Activer</string>
+    <string name="son_desactiver">Désactiver</string>
+    <string name="choisir_son">Choisissez votre son</string>
+
+    <!-- Langue -->
+    <string name="langue">Langue</string>
+
+    <!-- Police -->
+    <string name="polices">Polices</string>
+
+    <!-- Statistiques détaillées -->
+    <string name="resume_general">Résumé général</string>
+    <string name="stat_meilleur_score">Meilleur Score</string>
+    <string name="stat_score_total">Score Total</string>
+    <string name="stat_tuile_max">Tuile Maximum</string>
+    <string name="stat_parties_jouees">Parties jouées</string>
+    <string name="stat_temps_total">Temps total</string>
+    <string name="tuile_128">Tuile 128</string>
+    <string name="parties_atteignantes">Parties atteignantes</string>
+    <string name="temps_minimum">Temps minimum</string>
+    <string name="moins_mouvements">Moins de mouvements</string>
+    <string name="top3_scores">Top 3 Meilleurs Scores</string>
+    <string name="premier">Premier</string>
+    <string name="deuxieme">Deuxième</string>
+    <string name="troisieme">Troisième</string>
 </resources>

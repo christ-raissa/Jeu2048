@@ -7,14 +7,9 @@
         android:title="Accueil"/>
 
     <item
-        android:id="@+id/nav_inventory"
+        android:id="@+id/nav_statistique"
         android:icon="@drawable/statistique"
         android:title="Statistiques"/>
-
-    <item
-        android:id="@+id/nav_users"
-        android:icon="@drawable/users"
-        android:title="Users"/>
 
     <item
         android:id="@+id/nav_settings"

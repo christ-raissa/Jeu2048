@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">2048 Game</string>
+
+    <!-- Tutorial / Demo -->
+    <string name="ignorer">Skip</string>
+    <string name="jouer">Play</string>
+    <string name="afficher">Merge tiles to reach 2048</string>
+    <string name="question">How to play?</string>
+
+    <!-- Main menu -->
+    <string name="menu_title">TO 2048 GAME</string>
+    <string name="btn_debuter">START</string>
+    <string name="btn_two_players">TWO PLAYERS</string>
+    <string name="btn_classement">RANKINGS</string>
+    <string name="btn_inviter">INVITE</string>
+
+    <!-- Solo game -->
+    <string name="score">SCORE</string>
+    <string name="meilleur_score">BEST SCORE</string>
+    <string name="coups">%d MOVES</string>
+
+    <!-- Two player game -->
+    <string name="timer_p1">TIMER P1</string>
+    <string name="timer_p2">TIMER P2</string>
+    <string name="best">BEST</string>
+    <string name="player2_won">PLAYER 2 WON!</string>
+    <string name="player1_won">PLAYER 1 WON!</string>
+
+    <!-- Settings -->
+    <string name="titre_parametres">Settings</string>
+    <string name="titre_statistiques">Statistics</string>
+    <string name="stats_avertissement">Ongoing games are not counted</string>
+
+    <!-- Profile -->
+    <string name="profil_utilisateur">User Profile</string>
+    <string name="username_hint">Click here to enter your name</string>
+    <string name="username_greeting">Hello: </string>
+    <string name="avatar_select">Select your avatar</string>
+    <string name="avatar_label">Player avatar</string>
+    <string name="dialog_username_title">Set your name</string>
+    <string name="dialog_avatar_title">Choose your avatar</string>
+    <string name="dialog_valider">Confirm</string>
+    <string name="dialog_annuler">Cancel</string>
+
+    <!-- Appearance -->
+    <string name="apparence">Appearance</string>
+    <string name="theme_clair">Light theme</string>
+    <string name="theme_sombre">Dark theme</string>
+    <string name="theme_systeme">System theme</string>
+
+    <!-- Sound -->
+    <string name="parametres_son">Sound settings</string>
+    <string name="son_activer">Enable</string>
+    <string name="son_desactiver">Disable</string>
+    <string name="choisir_son">Choose your sound</string>
+
+    <!-- Language -->
+    <string name="langue">Language</string>
+
+    <!-- Font -->
+    <string name="polices">Fonts</string>
+
+    <!-- Detailed statistics -->
+    <string name="resume_general">General summary</string>
+    <string name="stat_meilleur_score">Best Score</string>
+    <string name="stat_score_total">Total Score</string>
+    <string name="stat_tuile_max">Maximum Tile</string>
+    <string name="stat_parties_jouees">Games played</string>
+    <string name="stat_temps_total">Total time</string>
+    <string name="tuile_128">Tile 128</string>
+    <string name="parties_atteignantes">Games reaching it</string>
+    <string name="temps_minimum">Minimum time</string>
+    <string name="moins_mouvements">Fewest moves</string>
+    <string name="top3_scores">Top 3 Best Scores</string>
+    <string name="premier">First</string>
+    <string name="deuxieme">Second</string>
+    <string name="troisieme">Third</string>
+</resources>

@@ -3,11 +3,14 @@ package com.example.jeu2048.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 import com.example.jeu2048.R;
+import com.example.jeu2048.settings.FontActivity;
 
-public class NavBar {
+public class NavBar extends FontActivity {
 
     public static void setupBottomNavigation(
             Activity activity,
@@ -44,12 +47,10 @@ public class NavBar {
         // Sélectionner l'onglet actif
         if (selectedItemId == R.id.nav_home) {
             bottomBar.selectTabAt(0, false);
-        } else if (selectedItemId == R.id.nav_inventory) {
+        } else if (selectedItemId == R.id.nav_statistique) {
             bottomBar.selectTabAt(1, false);
-        } else if (selectedItemId == R.id.nav_users) {
-            bottomBar.selectTabAt(2, false);
         } else if (selectedItemId == R.id.nav_settings) {
-            bottomBar.selectTabAt(3, false);
+            bottomBar.selectTabAt(2, false);
         }
 
         // Gérer les clics
@@ -67,12 +68,8 @@ public class NavBar {
                     activity.startActivity(new Intent(activity, MainActivity.class));
                     activity.overridePendingTransition(0, 0);
                     activity.finish();
-                } else if (id == R.id.nav_inventory && !(activity instanceof StatistiqueActivity)) {
+                } else if (id == R.id.nav_statistique && !(activity instanceof StatistiqueActivity)) {
                     activity.startActivity(new Intent(activity, StatistiqueActivity.class));
-                    activity.overridePendingTransition(0, 0);
-                    activity.finish();
-                } else if (id == R.id.nav_users && !(activity instanceof UsersActivity)) {
-                    activity.startActivity(new Intent(activity, UsersActivity.class));
                     activity.overridePendingTransition(0, 0);
                     activity.finish();
                 } else if (id == R.id.nav_settings && !(activity instanceof SettingActivity)) {

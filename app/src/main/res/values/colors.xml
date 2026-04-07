@@ -30,6 +30,10 @@
     <color name="bottom_filled_light">#F67C5F</color>
     <color name="bottom_filled_dark">#F67C5F</color>
 
+    <!-- color bouton widget-->
+    <color name="bouton_widget_ligth">#F67C5F</color>
+    <color name="bouton_widget_dark">#F67C5F</color>
+
     <color name="grid_background_light">#EEE4DA</color>
     <color name="grid_background_nigth">#535252</color>
 
@@ -52,15 +56,4 @@
 
     <color name="blackgris">#3C3A33</color>
 
-    <!-- Couleurs du jeu -->
-    <color name="C2">#F7F7F7</color>
-    <color name="C4">#EDEDEB</color>
-    <color name="C8">#F59563</color>
-    <color name="C16">#F67C5F</color>
-    <color name="C32">#F67C5F</color>
-    <color name="C64">#F65E3B</color>
-    <color name="Ct">#F67C5F</color>
-    <color name="grey">#BBADA0</color>
-    <color name="noir">#3D3B2E</color>
-    <color name="casevide">#CCC0B4</color>
 </resources>

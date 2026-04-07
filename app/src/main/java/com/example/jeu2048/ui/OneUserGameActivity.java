@@ -11,9 +11,10 @@ import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
+import com.example.jeu2048.settings.FontActivity;
 import com.example.jeu2048.settings.SettingsHelper;
 
-public class OneUserGameActivity extends AppCompatActivity implements GameViewListener {
+public class OneUserGameActivity extends FontActivity implements GameViewListener {
 
     OneUserGameActivityBinding binding;
     private long meilleur = 0;

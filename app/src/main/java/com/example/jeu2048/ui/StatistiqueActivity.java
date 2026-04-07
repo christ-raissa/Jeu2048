@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.jeu2048.R;
+import com.example.jeu2048.settings.FontActivity;
+
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
-public class StatistiqueActivity extends AppCompatActivity {
+public class StatistiqueActivity extends FontActivity {
 
     AnimatedBottomBar bottomNavigation;
 
@@ -23,7 +25,7 @@ public class StatistiqueActivity extends AppCompatActivity {
 
         // Barre de navigation
         bottomNavigation = findViewById(R.id.bottomNavigation);
-        NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_inventory);
+        NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_statistique);
 
     }
 }

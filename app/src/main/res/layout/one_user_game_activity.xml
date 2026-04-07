@@ -45,34 +45,34 @@
         <!-- Bouton Classement -->
         <ImageButton
             android:id="@+id/btnClassement"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Classement"
             app:srcCompat="@drawable/medail"
-            app:tint="@android:color/black" />
+            app:tint="?android:textColorSecondary" />
 
         <!-- Bouton Restart -->
         <ImageButton
             android:id="@+id/btnRestart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Restart"
             app:srcCompat="@drawable/restart"
-            app:tint="@android:color/black" />
+            app:tint="?android:textColorSecondary" />
 
         <!-- Bouton Settings -->
         <ImageButton
             android:id="@+id/btnSettings"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Settings"
             app:srcCompat="@drawable/gear"
-            app:tint="@android:color/black" />
+            app:tint="?android:textColorSecondary" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.1"
                 android:text="SCORE"
-                android:textColor="#EEE4DA"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="#FFFFFF"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.1"
                 android:text="MEILLEUR SCORE"
-                android:textColor="#EEE4DA"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textColor="#000000"
+                android:textColor="?android:textColorSecondary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -152,14 +152,14 @@
         android:id="@+id/gameView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toTopOf="@+id/gameInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreContainer">
-
-    </com.example.jeu2048.gameRender.GameView>
+        app:layout_constraintTop_toBottomOf="@+id/scoreContainer"
+        app:layout_constraintVertical_bias="0.5" />
 
     <!-- ===== TIMER + COUPS (sous la grille) ===== -->
     <LinearLayout
@@ -178,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="00:00"
-            android:textColor="#776E65"
+            android:textColor="?android:textColorSecondary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -190,7 +190,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:text="0 COUPS"
-            android:textColor="#776E65"
+            android:textColor="?android:textColorSecondary"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>

@@ -8,6 +8,7 @@
     <attr name="carteMenuBande" format="color"/>
     <attr name="carteMenu" format="color"/>
     <attr name="carteBackground" format="color"/>
+    <attr name="boutonWidget" format="color" />
 
 
 </resources>

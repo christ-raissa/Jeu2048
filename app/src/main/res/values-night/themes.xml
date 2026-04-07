@@ -26,6 +26,9 @@
         <item name="buttonFilledBackground">@color/bottom_filled_dark</item>
         <item name="buttonOutlineColor">@color/bottom_outline_dark</item>
 
+        <!-- boutonWidget-->
+        <item name="boutonWidget">@color/bouton_widget_dark</item>
+
         <item name="gridBackground">@color/grid_background_nigth</item>
         <item name="tuilebackground">@color/tuile_bacground_nigth</item>
 
@@ -37,6 +40,11 @@
         <!-- carte background -->
         <item name="carteBackground">@color/carte_background_black</item>
 
+        <!-- gestion boutons radio -->
+        <item name="colorControlActivated">@color/bottom_filled_dark</item>
+        <item name="colorControlNormal">@color/text_color_dark</item>
+
+        <item name="alertDialogTheme">@style/MonStyleDialogueSombre</item>
 
     </style>
 

@@ -11,8 +11,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.jeu2048.databinding.ManyUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
+import com.example.jeu2048.settings.FontActivity;
 
-public class MultiplayerGameActivity extends AppCompatActivity {
+public class MultiplayerGameActivity extends FontActivity {
 
     ManyUserGameActivityBinding binding;
 

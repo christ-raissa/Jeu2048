@@ -4,12 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="35dp"
-    android:layout_marginBottom="35dp"
     android:background="?android:windowBackground">
 
-    <!-- IMAGE DE FOND -->
     <ImageView
+        android:id="@+id/background_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/back"
@@ -20,95 +18,141 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Bouton Ignorer -->
+    <LinearLayout
+        android:id="@+id/languageAndLottieContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:background="@color/separateur"
+            android:clipToOutline="true">
+
+            <TextView
+                android:id="@+id/langFR"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="FR"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="?attr/selectableItemBackground"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="?attr/buttonOutlineColor" />
+
+            <TextView
+                android:id="@+id/langEN"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="EN"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="?attr/selectableItemBackground"/>
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            app:lottie_rawRes="@raw/show"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="30dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSkip"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="Ignorer"
-        android:textColor="?attr/buttonOutlineColor"
-        android:textSize="15sp"
+        android:text="@string/ignorer"
         android:background="@drawable/bouton_outline"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideTop"
+        app:layout_constraintBottom_toTopOf="@+id/stepTitle"
         app:layout_constraintStart_toStartOf="@id/gameContainer"
-        app:layout_constraintEnd_toEndOf="@id/gameContainer"/>
+        app:layout_constraintEnd_toEndOf="@id/gameContainer"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.3" />
 
-    <!-- TITRE -->
     <TextView
         android:id="@+id/stepTitle"
-        android:text="Comment jouer ?"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/question"
         android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="?android:textColor"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/btnSkip"
+        app:layout_constraintBottom_toTopOf="@+id/gameContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- CONTAINER VIDEO -->
     <FrameLayout
         android:id="@+id/gameContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
-        android:background="@color/blackgris"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/stepTitle"
+        app:layout_constraintBottom_toTopOf="@id/messageText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/arrowImage"
         app:layout_constraintDimensionRatio="1:1">
-
-        <VideoView
-            android:id="@+id/tutorialVideo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+        <VideoView android:id="@+id/tutorialVideo" android:layout_width="match_parent" android:layout_height="match_parent"/>
     </FrameLayout>
 
-    <!-- FLECHE -->
-    <ImageView
-        android:id="@+id/arrowImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/house"
-        android:visibility="gone"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/gameContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- TEXTE -->
     <TextView
         android:id="@+id/messageText"
-        android:text="Fusionnez les tuiles pour atteindre 2048"
-        android:textSize="16sp"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?android:textColor"
-        app:layout_constraintTop_toBottomOf="@id/arrowImage"
+        android:text="@string/afficher"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/gameContainer"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintStart_toStartOf="@id/gameContainer"
         app:layout_constraintEnd_toEndOf="@id/gameContainer"/>
 
-    <!-- BOUTON JOUER -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:text="Jouer"
-        android:textSize="15sp"
-        android:textColor="@android:color/white"
+        android:text="@string/jouer"
+        android:layout_marginTop="15dp"
         android:background="@drawable/bouton_filled"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="40dp"
         app:layout_constraintTop_toBottomOf="@id/messageText"
+        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
         app:layout_constraintStart_toStartOf="@id/gameContainer"
-        app:layout_constraintEnd_toEndOf="@id/gameContainer"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@id/gameContainer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

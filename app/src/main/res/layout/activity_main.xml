@@ -41,21 +41,10 @@
                         android:id="@+id/avatarImage"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:src="@drawable/avatar"
-                        android:background="@drawable/avatar_background"
+                        android:src="@drawable/user_regular"
+                        android:background="@drawable/bg_dialog_circle"
                         android:scaleType="centerCrop"/>
 
-                    <TextView
-                        android:id="@+id/playerLevel"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="bottom|end"
-                        android:background="@drawable/score_box_bacground"
-                        android:text="1"
-                        android:textColor="#FFFFFF"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:gravity="center"/>
                 </FrameLayout>
 
                 <LinearLayout

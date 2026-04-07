@@ -26,6 +26,11 @@
         <item name="buttonFilledBackground">@color/bottom_filled_light</item>
         <item name="buttonOutlineColor">@color/bottom_outline_light</item>
 
+        <!-- boutonWidget-->
+        <item name="boutonWidget">@color/bouton_widget_ligth</item>
+
+
+
         <item name="gridBackground">@color/grid_background_light</item>
         <item name="tuilebackground">@color/tuile_bacground_ligth</item>
 
@@ -37,7 +42,24 @@
         <!-- carte background -->
         <item name="carteBackground">@color/carte_background_ligth</item>
 
+        <!-- gestion des boutons radio -->
+        <item name="colorControlActivated">@color/bottom_filled_light</item>
+        <item name="colorControlNormal">@color/text_color_light</item>
 
+        <item name="alertDialogTheme">@style/MonStyleDialogue</item>
+
+    </style>
+
+    <style name="MonStyleDialogueSombre" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="colorPrimary">@color/bottom_filled_dark</item>
+        <item name="colorSurface">@color/carte_background_black</item>
+        <item name="android:textColorPrimary">@color/text_color_dark</item>
+    </style>
+
+    <style name="MonStyleDialogue" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/bottom_filled_light</item>
+        <item name="colorSurface">@color/carte_background_ligth</item>
+        <item name="android:textColorPrimary">@color/text_color_light</item>
     </style>
 
     <style name="Theme.Jeu2048" parent="Base.Theme.Jeu2048"/>

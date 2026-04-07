@@ -11,9 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeu2048">
-        <activity
-            android:name=".ui.state_page"
-            android:exported="false" />
+
         <!-- Splash Screen -->
         <activity
             android:name=".ui.SplashActivity"
@@ -36,9 +34,6 @@
             android:name=".ui.StatistiqueActivity"
             android:exported="false"/>
 
-        <activity
-            android:name=".ui.UsersActivity"
-            android:exported="false" /> <!-- Page Paramètres -->
         <activity
             android:name=".ui.SettingActivity"
             android:exported="false"/>
