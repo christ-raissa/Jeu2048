@@ -151,7 +151,7 @@ public class SettingsHelper {
     }
 
     public GameMode getSingleMode() {
-        int ordinal = prefs.getInt("sp_mode", 1);
+        int ordinal = prefs.getInt("sp_mode", 0);
         return GameMode.values()[ordinal];
     }
 
