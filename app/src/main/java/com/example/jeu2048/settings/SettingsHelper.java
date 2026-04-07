@@ -151,7 +151,7 @@ public class SettingsHelper {
     }
 
     public GameMode getSingleMode() {
-        int ordinal = prefs.getInt("sp_mode", 0);
+        int ordinal = prefs.getInt("sp_mode", 1);
         return GameMode.values()[ordinal];
     }
 
@@ -171,12 +171,12 @@ public class SettingsHelper {
      * Time limit in seconds (assumed).
      * Used only for time-based mode.
      */
-    public void setSingleTimeLimit(int time) {
-        prefs.edit().putInt("sp_time_limit", time).apply();
+    public void setSingleTimeLimit(long time) {
+        prefs.edit().putLong("sp_time_limit", time).apply();
     }
 
-    public int getSingleTimeLimit() {
-        return prefs.getInt("sp_time_limit", 60);
+    public long getSingleTimeLimit() {
+        return prefs.getLong("sp_time_limit", 60_000);
     }
 
     // =========================================================
@@ -253,11 +253,11 @@ public class SettingsHelper {
      * Time limit for multiplayer mode.
      * Unit and synchronization between players not defined.
      */
-    public void setMultiTimeLimit(int time) {
-        prefs.edit().putInt("mp_time_limit", time).apply();
+    public void setMultiTimeLimit(long time) {
+        prefs.edit().putLong("mp_time_limit", time).apply();
     }
 
-    public int getMultiTimeLimit() {
-        return prefs.getInt("mp_time_limit", 60);
+    public long getMultiTimeLimit() {
+        return prefs.getLong("mp_time_limit", 60_000);
     }
 }

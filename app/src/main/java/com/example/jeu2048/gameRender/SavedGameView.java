@@ -13,6 +13,8 @@ public class SavedGameView implements Serializable {
 
     private long gameEndTime;
 
+    private long elapsedTime;
+
     public SavedGameView() {}
 
     public static SavedGameView fromGameView(GameView view) {
@@ -24,6 +26,14 @@ public class SavedGameView implements Serializable {
         save.gameEndTime = view.getGameEndTime();
 
         return save;
+    }
+
+    public void setElapsedTime(long time) {
+        elapsedTime = time;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
     }
 
     public void applyTo(GameView view) {
