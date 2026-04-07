@@ -12,7 +12,6 @@
         android:background="@drawable/carte_background"
         android:orientation="vertical"
         android:padding="8dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

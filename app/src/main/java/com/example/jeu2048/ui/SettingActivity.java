@@ -27,11 +27,11 @@ public class SettingActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
-        swithtmusic = findViewById(R.id.music_select);
+        //swithtmusic = findViewById(R.id.music_select);
 
         SettingsHelper settingsHelper = new SettingsHelper(this);
 
-        swithtmusic.setChecked(settingsHelper.isMusicEnabled());
+       /* swithtmusic.setChecked(settingsHelper.isMusicEnabled());
 
         swithtmusic.setOnCheckedChangeListener((buttonView, isChecked) -> {
             settingsHelper.setMusicEnabled(isChecked);
@@ -40,7 +40,7 @@ public class SettingActivity extends AppCompatActivity {
             } else {
                 Music_Manager.stop();
             }
-        });
+        }); */
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
         NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_settings);

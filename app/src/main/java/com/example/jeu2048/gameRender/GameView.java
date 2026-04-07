@@ -35,6 +35,8 @@ public class GameView extends View {
     private long middleThreshold;
     private long lastMoveThreshold;
     private long endThreshold;
+    // pour informer le programme que le user a atteint le Tuile 128
+    private  boolean hasReached128 = false;
 
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;  // min speed (px/s)
@@ -135,6 +137,7 @@ public class GameView extends View {
     }
 
     public void initGame() {
+        hasReached128 = false;
         gameWidth = settingsHelper.getSingleCols();
         gameHeight = settingsHelper.getSingleRows();
         mode = settingsHelper.getSingleMode();
@@ -178,6 +181,7 @@ public class GameView extends View {
     }
 
     private void onSwipeLeft()  {
+        if (game.isGameOver()) return;
         Log.d("GAME2048", "Swipe LEFT");
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.LEFT);
@@ -255,20 +259,62 @@ public class GameView extends View {
     }
 
     private void updateAfterAnimation() {
+        boolean isFinished = false;
+
+        // 1. Vérification Victoire/Défaite
         if ((mode == GameMode.ScoreObjective && game.isWon()) ||
                 (mode == GameMode.TimeLimit &&
                         System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
             gameEndTime = System.currentTimeMillis() - gameStartTime;
             emitGameWon();
+            isFinished = true;
         } else if (game.isGameOver()) {
             gameEndTime = System.currentTimeMillis() - gameStartTime;
             emitGameOver();
+            isFinished = true;
         }
 
-        emitScoreChange(oldScore, game.getScore());
+        // 2. Détection de la Tuile 128
+        if (!hasReached128) {
+            long[][] grid = game.getGrid();
+            for (int x = 0; x < game.getWidth(); x++) {
+                for (int y = 0; y < game.getHeight(); y++) {
+                    if (grid[x][y] == 128) {
+                        hasReached128 = true;
+                        long duration = System.currentTimeMillis() - gameStartTime;
+                        for (GameViewListener sub : subs) {
+                            sub.onTuile128Reached(game.getNumMoves(), duration);
+                        }
+                        break;
+                    }
+                }
+                if (hasReached128) break;
+            }
+        }
 
+        // 3. Mise à jour des scores
+        emitScoreChange(oldScore, game.getScore());
         syncTiles();
-        invalidate();
+
+        if (!isFinished) {
+            invalidate();
+        }
+    }
+
+    public long getMaxTile() {
+        if (game == null) return 0;
+
+        long max = 0;
+        long[][] grid = game.getGrid();
+
+        for (int x = 0; x < game.getWidth(); x++) {
+            for (int y = 0; y < game.getHeight(); y++) {
+                if (grid[x][y] > max) {
+                    max = grid[x][y];
+                }
+            }
+        }
+        return max;
     }
 
     private void startTilesAnimation(@NonNull MoveResult result) {
@@ -421,9 +467,9 @@ public class GameView extends View {
     }
 
     public long getGameDuration() {
-        if (endTimeMillis == -1) {
+        if (gameEndTime == -1) {
             return System.currentTimeMillis() - gameStartTime;
         }
-        return endTimeMillis;
+        return gameEndTime;
     }
 }

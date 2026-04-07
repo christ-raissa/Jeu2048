@@ -2,6 +2,7 @@ package com.example.jeu2048.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
     private long numMoves = 0;
     Dbhelper dba;
     SettingsHelper settingsHelper;
+    private boolean isSaving = false; // Pour éviter les doubles sauvegardes
     private Boolean isGameWon = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +68,23 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
     }
 
     public void OnGameOver(long dureeMillis) {
+        if (isSaving) return;
+        isSaving = true;
+
         isGameWon = false;
         SauvegardePartie("Perdu", dureeMillis);
+        showGameEndDialog("Perdu", dureeMillis);
     }
 
     @Override
     public void OnGameWon(long dureeMillis) {
        isGameWon = true;
        SauvegardePartie("Partie gagné", dureeMillis);
+        showGameEndDialog("Gagné ", dureeMillis);
     }
 
     public void SauvegardePartie(String resultat, long dureeMillis){
+
         String scoreStr = binding.scoreText.getText().toString().trim();
         long scoreFinal = 0;
 
@@ -91,6 +99,57 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         if (dba == null) {
             dba = new Dbhelper(this);
         }
-        dba.insertScore(settingsHelper.getSingleUsername(), scoreFinal, numMoves, resultat);
+
+        GameView gameView = binding.gameView;
+
+
+        long maxTile = gameView.getMaxTile();
+
+        dba.insertScore(
+                settingsHelper.getSingleUsername(),
+                scoreFinal,
+                numMoves,
+                resultat,
+                maxTile,
+                dureeMillis
+        );
     }
+    @Override
+    public void onTuile128Reached(long moves, long duration) {
+
+    }
+
+    private void ouvrirStatistiques() {
+        Intent intent = new Intent(OneUserGameActivity.this, StatistiqueActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    private void showGameEndDialog(String resultat, long dureeMillis) {
+
+        String scoreStr = binding.scoreText.getText().toString();
+        String message =
+                "Résultat : " + resultat + "\n" +
+                        "Score : " + scoreStr + "\n" +
+                        "Mouvements : " + numMoves + "\n" +
+                        "Durée : " + (dureeMillis / 1000) + " sec";
+
+        new AlertDialog.Builder(this)
+                .setTitle("Partie terminée 🎮")
+                .setMessage(message)
+                .setCancelable(false)
+
+                // Aller aux stats
+                .setPositiveButton("Voir statistiques", (dialog, which) -> {
+                    ouvrirStatistiques();
+                })
+
+                // Rejouer
+                .setNegativeButton("Rejouer", (dialog, which) -> {
+                    numMoves = 0;
+                    binding.gameView.initGame();
+                })
+
+                .show();
+    }
+
 }

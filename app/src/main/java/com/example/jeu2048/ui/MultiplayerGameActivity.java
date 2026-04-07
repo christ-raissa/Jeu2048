@@ -28,6 +28,8 @@ public class MultiplayerGameActivity extends AppCompatActivity {
 
     long gameDurationMillis = 60_000;
 
+    Dbhelper dba;
+
 
 
     @Override
@@ -43,6 +45,7 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         gameP2 = binding.gamePlayer2;
 
         replayButton = binding.replayButton;
+        dba = new Dbhelper(this);
 
         gameP1.sub(new GameViewListener() {
             @Override
@@ -67,6 +70,10 @@ public class MultiplayerGameActivity extends AppCompatActivity {
             public void OnGameWon(long dureeMillis) {
                 triggerWin(1);
             }
+            @Override
+            public void onTuile128Reached(long moves, long duration) {
+
+            }
         });
 
         gameP2.sub(new GameViewListener() {
@@ -89,6 +96,10 @@ public class MultiplayerGameActivity extends AppCompatActivity {
             @Override
             public void OnGameWon(long dureeMillis) {
                 triggerWin(2);
+            }
+            @Override
+            public void onTuile128Reached(long moves, long duration) {
+
             }
         });
 
