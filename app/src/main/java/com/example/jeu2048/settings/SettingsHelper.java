@@ -77,9 +77,9 @@ public class SettingsHelper {
         prefs.edit().putInt("theme", theme.ordinal()).apply();
     }
 
-    public Theme getTheme() {
+    public Theme getTheme(Context context) {
         int ordinal = prefs.getInt("theme", 0);
-        return new Theme(ThemeName.values()[ordinal]);
+        return new Theme(context, ThemeName.values()[ordinal]);
     }
 
     /**

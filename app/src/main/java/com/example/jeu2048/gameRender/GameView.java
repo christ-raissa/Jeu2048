@@ -157,7 +157,7 @@ public class GameView extends View {
     }
 
     private void initDraw() {
-        theme = settingsHelper.getTheme();
+        theme = settingsHelper.getTheme(this.getContext());
 
         if (settingsHelper.areAnimationsEnabled()) {
             firstMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
