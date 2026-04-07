@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Dbhelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "jeu2048.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public static final String TABLE_SCORES = "scores";
 
@@ -51,7 +51,6 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     public void insertScore(String name, long score, long cout, String statut, long maxTile, long duree) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_PLAYER_NAME, name);
         cv.put(COLUMN_SCORE, score);
@@ -64,19 +63,93 @@ public class Dbhelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //  TOP 3
+    // --- SECTION SOLO ---
+
     public Cursor getTop3Scores() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
                 "SELECT " + COLUMN_SCORE + ", " + COLUMN_DATE +
                         " FROM " + TABLE_SCORES +
+                        " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'" +
                         " ORDER BY " + COLUMN_SCORE + " DESC LIMIT 3",
                 null
         );
     }
 
-    // TEMPS TOTAL
-    public long getTotalTime() {
+    public long getBestScore() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'", null);
+        if (c.moveToFirst()) {
+            long val = c.getLong(0);
+            c.close();
+            return val;
+        }
+        return 0;
+    }
+
+    public long getTotalScoreSolo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'", null);
+        if (c.moveToFirst()) {
+            long val = c.getLong(0);
+            c.close();
+            return val;
+        }
+        return 0;
+    }
+
+    // --- SECTION MULTIJOUEUR ---
+
+    public Cursor getTop3Multiplayer() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT " + COLUMN_SCORE + ", " + COLUMN_DATE + ", " + COLUMN_PLAYER_NAME +
+                        " FROM " + TABLE_SCORES +
+                        " WHERE " + COLUMN_STATUT + " LIKE '%Multi%'" +
+                        " ORDER BY " + COLUMN_SCORE + " DESC LIMIT 3",
+                null
+        );
+    }
+
+    public long getBestScoreMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%'", null);
+        long val = 0;
+        if (c.moveToFirst()) val = c.getLong(0);
+        c.close();
+        return val;
+    }
+
+    public long getTotalScoreMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%'", null);
+        if (c.moveToFirst()) {
+            long val = c.getLong(0);
+            c.close();
+            return val;
+        }
+        return 0;
+    }
+    // NOMBRE DE PARTIES JOUÉES EN MULTIJOUEUR
+    public int getGamesPlayedMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%'", null);
+        if (c.moveToFirst()) {
+            int val = c.getInt(0);
+            c.close();
+            return val;
+        }
+        return 0;
+    }
+
+    // --- STATISTIQUES ---
+
+    public long getTotalTimeMilti() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES, null);
         if (c.moveToFirst()) {
@@ -87,34 +160,10 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    //  MEILLEUR SCORE
-    public long getBestScore() {
+    public int getGamesPlayedSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES, null);
-        if (c.moveToFirst()) {
-            long val = c.getLong(0);
-            c.close();
-            return val;
-        }
-        return 0;
-    }
-
-    // SCORE TOTAL
-    public long getTotalScore() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_SCORE + ") FROM " + TABLE_SCORES, null);
-        if (c.moveToFirst()) {
-            long val = c.getLong(0);
-            c.close();
-            return val;
-        }
-        return 0;
-    }
-
-    // PARTIES JOUÉES
-    public int getGamesPlayed() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SCORES, null);
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'", null);
         if (c.moveToFirst()) {
             int val = c.getInt(0);
             c.close();
@@ -123,10 +172,11 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // TUILE MAX
-    public long getTopTile() {
+    // LE TEMPS TOTAL EN MODE SOLO
+    public long getTotalTimeSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_MAX_TILE + ") FROM " + TABLE_SCORES, null);
+        Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'", null);
         if (c.moveToFirst()) {
             long val = c.getLong(0);
             c.close();
@@ -135,49 +185,5 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // STATS 128
-    public int get128Games() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT COUNT(*) FROM " + TABLE_SCORES +
-                        " WHERE " + COLUMN_MAX_TILE + " >= 128",
-                null
-        );
-        if (c.moveToFirst()) {
-            int val = c.getInt(0);
-            c.close();
-            return val;
-        }
-        return 0;
-    }
 
-    public long get128MinTime() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT MIN(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
-                        " WHERE " + COLUMN_MAX_TILE + " >= 128",
-                null
-        );
-        if (c.moveToFirst()) {
-            long val = c.getLong(0);
-            c.close();
-            return val;
-        }
-        return 0;
-    }
-
-    public long get128MinMoves() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT MIN(" + COLUMN_COUT + ") FROM " + TABLE_SCORES +
-                        " WHERE " + COLUMN_MAX_TILE + " >= 128",
-                null
-        );
-        if (c.moveToFirst()) {
-            long val = c.getLong(0);
-            c.close();
-            return val;
-        }
-        return 0;
-    }
 }

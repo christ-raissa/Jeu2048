@@ -59,6 +59,7 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
             gameView.initGame();
 
         });
+        dba = new Dbhelper(this);
 
         binding.btnClassement.setOnClickListener(v -> {
             Intent intent = new Intent(OneUserGameActivity.this, StatistiqueActivity.class);
@@ -95,15 +96,18 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         if (isSaving) return;
         isSaving = true;
         SauvegardePartie("Perdu", dureeMillis);
-        showGameEndDialog("Perdu", dureeMillis);
         clearSavedGame();
+        pauseTimers();
+        displayEndMenu("GAME OVER", "Perdu", dureeMillis);
     }
 
     @Override
     public void OnGameWon(long dureeMillis) {
        SauvegardePartie("Partie gagné", dureeMillis);
-        showGameEndDialog("Gagné ", dureeMillis);
+
         clearSavedGame();
+        pauseTimers();
+        displayEndMenu("VICTOIRE !", "Gagné", dureeMillis);
     }
 
     public void SauvegardePartie(String resultat, long dureeMillis){
@@ -117,10 +121,6 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
             }
         } catch (NumberFormatException e) {
             scoreFinal = 0;
-        }
-
-        if (dba == null) {
-            dba = new Dbhelper(this);
         }
 
         GameView gameView = binding.gameView;
@@ -143,33 +143,41 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         startActivity(intent);
         finish();
     }
-    private void showGameEndDialog(String resultat, long dureeMillis) {
+    private void displayEndMenu(String titre, String resultat, long dureeMillis) {
+        binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
+        binding.gameView.setPaused(true);
+
+        binding.tvEndStatus.setText(titre);
 
         String scoreStr = binding.scoreText.getText().toString();
-        String message =
-                "Résultat : " + resultat + "\n" +
-                        "Score : " + scoreStr + "\n" +
-                        "Mouvements : " + numMoves + "\n" +
-                        "Durée : " + (dureeMillis / 1000) + " sec";
+        String message = "Score : " + scoreStr + "\n" +
+                "Mouvements : " + numMoves + "\n" +
+                "Durée : " + (dureeMillis / 1000) + " sec";
 
-        new AlertDialog.Builder(this)
-                .setTitle("Partie terminée 🎮")
-                .setMessage(message)
-                .setCancelable(false)
+        binding.endMessageSolo.setText(message);
 
-                // Aller aux stats
-                .setPositiveButton("Voir statistiques", (dialog, which) -> {
-                    ouvrirStatistiques();
-                })
+        // Bouton Rejouer
+        binding.replayButton.setOnClickListener(v -> {
+            isSaving = false;
+            numMoves = 0;
+            binding.endGameMenu.setVisibility(android.view.View.GONE);
+            binding.gameView.setPaused(false);
+            binding.gameView.initGame();
+            startTimer(); // Relancer le chrono
+        });
 
-                // Rejouer
-                .setNegativeButton("Rejouer", (dialog, which) -> {
-                    numMoves = 0;
-                    binding.gameView.setPaused(false);
-                    binding.gameView.initGame();
-                })
+        // Bouton Statistiques
+        binding.btnStats.setOnClickListener(v -> {
+            ouvrirStatistiques();
+        });
 
-                .show();
+
+        binding.btnShare.setOnClickListener(v -> {
+            android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Mon score au 2048 : " + scoreStr);
+            startActivity(android.content.Intent.createChooser(shareIntent, "Partager mon score"));
+        });
     }
 
     private void startTimer() {

@@ -210,79 +210,85 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/endGameMenu"
-
-        android:visibility="gone"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         android:background="@drawable/rounded_bg"
-
-        android:padding="10sp"
-
-        >
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/endMessageP2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:rotation="180"
-
-            android:text="PLAYER 2 WON!"
-            android:textSize="40sp"
-            app:layout_constraintBottom_toTopOf="@+id/replayButton"
+            android:text="Résultat P2..."
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/layoutButtons"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="20dp"/>
 
-
-        </TextView>
-
-        <ImageButton
-            android:id="@+id/replayButton"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-
-            android:src="@drawable/restart"
-
-            android:backgroundTint="@color/button_color_light"
-
-            android:contentDescription="ReplayButton"
-            android:visibility="visible"
-
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </ImageButton>
+            <ImageButton
+                android:id="@+id/btnStats"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/outline_statis_24"
+                android:backgroundTint="@color/button_color_light"
+                android:contentDescription="Stats" />
+
+            <ImageButton
+                android:id="@+id/replayButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/restart"
+                android:backgroundTint="@color/button_color_light"
+                android:contentDescription="Replay" />
+
+            <ImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/baseline_share_24"
+                android:backgroundTint="@color/button_color_light"
+                android:contentDescription="Partager" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/endMessageP1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rotation="0"
-            android:text="PLAYER 2 WON!"
-
-            android:textSize="40sp"
+            android:gravity="center"
+            android:text="Résultat P1..."
+            android:textSize="18sp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/replayButton">
-
-
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/layoutButtons"
+            android:layout_marginTop="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
