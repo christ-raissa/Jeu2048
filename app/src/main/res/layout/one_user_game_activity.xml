@@ -249,7 +249,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_margin="8dp"
-                android:src="@drawable/outline_statis_24"
+                android:src="@drawable/statistique"
                 android:backgroundTint="@color/button_color_light"
                 android:contentDescription="Statistiques" />
 

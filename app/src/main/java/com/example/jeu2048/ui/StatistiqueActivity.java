@@ -34,7 +34,7 @@ public class StatistiqueActivity extends AppCompatActivity {
 
         // Barre de navigation
         bottomNavigation = findViewById(R.id.bottomNavigation);
-        NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_inventory);
+        NavBar.setupBottomNavigation(this, bottomNavigation, R.id.nav_statistique);
 
         updateUI();
 
