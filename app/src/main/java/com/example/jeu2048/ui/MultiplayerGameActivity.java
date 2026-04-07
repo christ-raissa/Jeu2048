@@ -123,7 +123,6 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         binding.endGameMenu.setVisibility(ConstraintLayout.GONE);
     }
 
-    /** --- TIMER LOGIC --- **/
 
     private void startCountdown(long durationMillis) {
         remainingTimeMillis = durationMillis;
@@ -162,7 +161,6 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         timerP2.setText(String.valueOf(seconds));
     }
 
-    /** --- PAUSE / RESUME --- **/
 
     private void pauseGame() {
         if (countDownTimer != null) { countDownTimer.cancel(); countDownTimer = null; }
@@ -183,7 +181,6 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         }
     }
 
-    /** --- SAVE / LOAD --- **/
 
     private void pauseAndSaveGames() {
         pauseGame();
@@ -233,7 +230,6 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         deleteFile("saveP2.dat");
     }
 
-    /** --- GAME END LOGIC --- **/
 
     private void triggerWin(int numPlayer) {
         pauseAndSaveGames();
@@ -267,7 +263,6 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         return 1;
     }
 
-    /** --- LIFECYCLE --- **/
 
     @Override
     protected void onPause() { super.onPause(); pauseAndSaveGames(); }
