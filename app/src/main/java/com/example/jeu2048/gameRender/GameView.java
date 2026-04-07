@@ -35,8 +35,6 @@ public class GameView extends View {
     private long middleThreshold;
     private long lastMoveThreshold;
     private long endThreshold;
-    // pour informer le programme que le user a atteint le Tuile 128
-    private  boolean hasReached128 = false;
 
     private static final int SWIPE_THRESHOLD = 100;  // min distance (px)
     private static final int SWIPE_VELOCITY_THRESHOLD = 100;  // min speed (px/s)
@@ -137,14 +135,13 @@ public class GameView extends View {
     }
 
     public void initGame() {
-        hasReached128 = false;
         gameWidth = settingsHelper.getSingleCols();
         gameHeight = settingsHelper.getSingleRows();
         mode = settingsHelper.getSingleMode();
 
         switch (mode) {
             case ScoreObjective:
-                game = new Game2048(gameWidth, gameHeight, 2048);
+                game = new Game2048(gameWidth, gameHeight, settingsHelper.getSingleTargetScore());
                 break;
             case TimeLimit:
                 game = new Game2048(gameWidth, gameHeight, 1_000_000_000); // Should never win by points
@@ -152,7 +149,7 @@ public class GameView extends View {
         }
 
         gameStartTime = System.currentTimeMillis();
-        gameEndTime = -1;
+        gameEndTime = 0;
 
         MoveResult spawnResult = game.spawnValues(2);
         startTilesAnimation(spawnResult);
@@ -258,6 +255,13 @@ public class GameView extends View {
         startTilesAnimation(results);
     }
 
+    private void updateGameEndTime() {
+        if (gameStartTime > 0) {
+            gameEndTime += System.currentTimeMillis() - gameStartTime;
+            gameStartTime = System.currentTimeMillis();
+        }
+    }
+
     private void updateAfterAnimation() {
         boolean isFinished = false;
 
@@ -265,31 +269,13 @@ public class GameView extends View {
         if ((mode == GameMode.ScoreObjective && game.isWon()) ||
                 (mode == GameMode.TimeLimit &&
                         System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
-            gameEndTime = System.currentTimeMillis() - gameStartTime;
+            updateGameEndTime();
             emitGameWon();
             isFinished = true;
         } else if (game.isGameOver()) {
-            gameEndTime = System.currentTimeMillis() - gameStartTime;
+            updateGameEndTime();
             emitGameOver();
             isFinished = true;
-        }
-
-        // 2. Détection de la Tuile 128
-        if (!hasReached128) {
-            long[][] grid = game.getGrid();
-            for (int x = 0; x < game.getWidth(); x++) {
-                for (int y = 0; y < game.getHeight(); y++) {
-                    if (grid[x][y] == 128) {
-                        hasReached128 = true;
-                        long duration = System.currentTimeMillis() - gameStartTime;
-                        for (GameViewListener sub : subs) {
-                            sub.onTuile128Reached(game.getNumMoves(), duration);
-                        }
-                        break;
-                    }
-                }
-                if (hasReached128) break;
-            }
         }
 
         // 3. Mise à jour des scores
@@ -409,7 +395,7 @@ public class GameView extends View {
         }
     }
 
-    private void syncTiles() {
+     void syncTiles() {
         if (game == null) return;
 
         drawableTiles = new ArrayList<>();
@@ -432,7 +418,6 @@ public class GameView extends View {
     }
 
     private AnimationState getAnimationState(long animationTime) {
-
         if (animationTime < firstMoveThreshold) {
             return AnimationState.FIRST_MOVE;
         } else if (animationTime < middleThreshold) {
@@ -446,14 +431,6 @@ public class GameView extends View {
         }
     }
 
-    public void setGameWidth(int gameWidth) {
-        this.gameWidth = gameWidth;
-    }
-
-    public void setGameHeight(int gameHeight) {
-        this.gameHeight = gameHeight;
-    }
-
     public long getScore() {
         return game.getScore();
     }
@@ -464,12 +441,37 @@ public class GameView extends View {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+
+        if (paused) {
+            updateGameEndTime();
+            gameStartTime = -1;
+        } else {
+            gameStartTime = System.currentTimeMillis();
+        }
     }
 
-    public long getGameDuration() {
-        if (gameEndTime == -1) {
-            return System.currentTimeMillis() - gameStartTime;
-        }
+    public void setEndGameTime(long time) {
+        gameEndTime = time;
+    }
+
+    public Game2048 getGame() {
+        return game;
+    }
+
+    public GameMode getMode() {
+        return mode;
+    }
+
+    public long getGameEndTime() {
+        updateGameEndTime();
         return gameEndTime;
+    }
+
+    public void setGame(Game2048 game) {
+        this.game = game;
+    }
+
+    public void setMode(GameMode mode) {
+        this.mode = mode;
     }
 }

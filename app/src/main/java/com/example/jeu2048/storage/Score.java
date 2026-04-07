@@ -1,4 +1,4 @@
-package com.example.jeu2048.ui;
+package com.example.jeu2048.storage;
 
 public class Score {
 

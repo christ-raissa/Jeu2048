@@ -12,7 +12,13 @@ import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
+import com.example.jeu2048.gameRender.SavedGameView;
 import com.example.jeu2048.settings.SettingsHelper;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class OneUserGameActivity extends AppCompatActivity implements GameViewListener {
 
@@ -35,6 +41,7 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         gameView.sub(this);
 
         binding.btnRestart.setOnClickListener(v -> {
+            clearSavedGame();
             numMoves = 0;
             gameView.initGame();
 
@@ -59,7 +66,9 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
             binding.bestScoreText.setText("" + meilleur);
         }
         binding.scoreText.setText("" + to);
-        binding.movesText.setText("" + numMoves++);
+
+        numMoves = binding.gameView.getNumMoves();
+        binding.movesText.setText("" + numMoves);
     }
 
     @Override
@@ -74,6 +83,7 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
         isGameWon = false;
         SauvegardePartie("Perdu", dureeMillis);
         showGameEndDialog("Perdu", dureeMillis);
+        clearSavedGame();
     }
 
     @Override
@@ -81,6 +91,7 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
        isGameWon = true;
        SauvegardePartie("Partie gagné", dureeMillis);
         showGameEndDialog("Gagné ", dureeMillis);
+        clearSavedGame();
     }
 
     public void SauvegardePartie(String resultat, long dureeMillis){
@@ -113,10 +124,6 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
                 maxTile,
                 dureeMillis
         );
-    }
-    @Override
-    public void onTuile128Reached(long moves, long duration) {
-
     }
 
     private void ouvrirStatistiques() {
@@ -152,4 +159,59 @@ public class OneUserGameActivity extends AppCompatActivity implements GameViewLi
                 .show();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveGame();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveGame();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveGame();
+    }
+
+
+    private void saveGame() {
+        try {
+            FileOutputStream fos = openFileOutput("save.dat", MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            SavedGameView save = SavedGameView.fromGameView(binding.gameView);
+
+            oos.writeObject(save);
+            oos.close();
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGame() {
+        try {
+            FileInputStream fis = openFileInput("save.dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            SavedGameView save = (SavedGameView) ois.readObject();
+            ois.close();
+            fis.close();
+
+            save.applyTo(binding.gameView);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            binding.gameView.initGame(); // fallback
+        }
+    }
+
+    private void clearSavedGame() {
+        deleteFile("save.dat");
+    }
 }
