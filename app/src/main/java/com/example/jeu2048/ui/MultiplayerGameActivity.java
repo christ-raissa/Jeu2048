@@ -11,9 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.jeu2048.databinding.ManyUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.gameRender.SavedGameView;
 
-public class MultiplayerGameActivity extends FontActivity {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public class MultiplayerGameActivity extends AppCompatActivity {
 
     ManyUserGameActivityBinding binding;
 
@@ -28,6 +33,9 @@ public class MultiplayerGameActivity extends FontActivity {
     ImageButton replayButton;
 
     long gameDurationMillis = 60_000;
+    long remainingTimeMillis;
+
+    Dbhelper dba;
 
 
 
@@ -44,6 +52,7 @@ public class MultiplayerGameActivity extends FontActivity {
         gameP2 = binding.gamePlayer2;
 
         replayButton = binding.replayButton;
+        dba = new Dbhelper(this);
 
         gameP1.sub(new GameViewListener() {
             @Override
@@ -97,21 +106,25 @@ public class MultiplayerGameActivity extends FontActivity {
             startGames();
         });
 
-        startGames();
+        loadGames();
     }
 
     private void startTimer(long durationMillis, Runnable onFinish) {
+        remainingTimeMillis = durationMillis;
+
         gameTimer = new CountDownTimer(durationMillis, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                long seconds = millisUntilFinished / 1000;
-                timerP1.setText(String.valueOf(seconds));
-                timerP2.setText(String.valueOf(seconds));
+                remainingTimeMillis = millisUntilFinished;
+
+                updateTimerUI();
             }
 
             @Override
             public void onFinish() {
+                remainingTimeMillis = 0;
+
                 timerP1.setText("0");
                 timerP2.setText("0");
                 onFinish.run();
@@ -136,18 +149,31 @@ public class MultiplayerGameActivity extends FontActivity {
     }
 
     private void triggerWin(int numPlayer) {
+        clearSavedGames();
+
         gameP1.setPaused(true);
         gameP2.setPaused(true);
+        if (gameTimer != null) gameTimer.cancel();
 
-        if (numPlayer == 1) {
-            setEndMessagesText("Player 1 WON !!!");
-        }
+        String resP1 = (numPlayer == 1) ? "GAGNÉ" : "PERDU";
+        String resP2 = (numPlayer == 2) ? "GAGNÉ" : "PERDU";
+        long dureeSec = gameDurationMillis / 1000;
 
-        if (numPlayer == 2) {
-            setEndMessagesText("Player 2 WON !!!");
-        }
+        binding.endMessageP1.setText("Résultat : " + resP1 + "\nScore : " + gameP1.getScore() + "\nDurée : " + dureeSec + "s");
+        binding.endMessageP2.setText("Résultat : " + resP2 + "\nScore : " + gameP2.getScore() + "\nDurée : " + dureeSec + "s");
 
-        binding.endGameMenu.setVisibility(ConstraintLayout.VISIBLE);
+        binding.btnStats.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(this, StatistiqueActivity.class);
+            intent.putExtra("MODE_JEU", "MULTI");
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
+
+
+
+        binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
+
+        saveMultiplayerScores(numPlayer);
     }
 
     private void onTimeUp() {
@@ -177,10 +203,125 @@ public class MultiplayerGameActivity extends FontActivity {
         }
     }
 
+    private void updateTimerUI() {
+        long seconds = remainingTimeMillis / 1000;
+        timerP1.setText(String.valueOf(seconds));
+        timerP2.setText(String.valueOf(seconds));
+    }
+
+    private void pauseGame() {
+        if (gameTimer != null) gameTimer.cancel();
+
+        gameP1.setPaused(true);
+        gameP2.setPaused(true);
+    }
+
+    private void resumeGame() {
+        gameP1.setPaused(false);
+        gameP2.setPaused(false);
+
+        startTimer(remainingTimeMillis, this::onTimeUp);
+    }
+
+    private void pauseAndSaveGames() {
+        pauseGame();
+
+        try {
+            // Save Player 1
+            SavedGameView saveP1 = SavedGameView.fromGameView(gameP1);
+            FileOutputStream fos1 = openFileOutput("saveP1.dat", MODE_PRIVATE);
+            ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
+            oos1.writeObject(saveP1);
+            oos1.close();
+            fos1.close();
+
+            // Save Player 2
+            SavedGameView saveP2 = SavedGameView.fromGameView(gameP2);
+            FileOutputStream fos2 = openFileOutput("saveP2.dat", MODE_PRIVATE);
+            ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+            oos2.writeObject(saveP2);
+            oos2.close();
+            fos2.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGames() {
+        try {
+            // Load Player 1
+            FileInputStream fis1 = openFileInput("saveP1.dat");
+            ObjectInputStream ois1 = new ObjectInputStream(fis1);
+            SavedGameView saveP1 = (SavedGameView) ois1.readObject();
+            saveP1.applyTo(gameP1);
+            ois1.close();
+            fis1.close();
+
+            // Load Player 2
+            FileInputStream fis2 = openFileInput("saveP2.dat");
+            ObjectInputStream ois2 = new ObjectInputStream(fis2);
+            SavedGameView saveP2 = (SavedGameView) ois2.readObject();
+            saveP2.applyTo(gameP2);
+            ois2.close();
+            fis2.close();
+
+            // Pause until user resumes
+            gameP1.setPaused(true);
+            gameP2.setPaused(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            startGames(); // fallback fresh game
+        }
+    }
+
+    private void clearSavedGames() {
+        deleteFile("saveP1.dat");
+        deleteFile("saveP2.dat");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseAndSaveGames();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        pauseAndSaveGames();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (gameTimer != null) gameTimer.cancel();
+    }
+
+    // Sauvergarde dans la base de donnée
+    private void saveMultiplayerScores(int winnerNum) {
+        String p1Status = (winnerNum == 1) ? "Gagné (Multi)" : "Perdu (Multi)";
+        String p2Status = (winnerNum == 2) ? "Gagné (Multi)" : "Perdu (Multi)";
+
+        // Sauvegarde pour le Joueur 1
+        dba.insertScore(
+                "Joueur 1",
+                gameP1.getScore(),
+                gameP1.getNumMoves(),
+                p1Status,
+                gameP1.getMaxTile(),
+                gameDurationMillis
+        );
+
+        // Sauvegarde pour le Joueur 2
+        dba.insertScore(
+                "Joueur 2",
+                gameP2.getScore(),
+                gameP2.getNumMoves(),
+                p2Status,
+                gameP2.getMaxTile(),
+                gameDurationMillis
+        );
     }
 }

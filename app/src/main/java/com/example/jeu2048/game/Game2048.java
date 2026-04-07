@@ -33,18 +33,22 @@ public class Game2048 {
     private final int height;
     private long[][] grid;
     private final long winValue;
+
     private long score;
     private int numMoves = 0;
-    private final Random random;
+
+    private transient Random random;
+    private long randomSeed;
 
     public Game2048(int width, int height, long winValue) {
         this.width = width;
         this.height = height;
-
         this.winValue = winValue;
+
         this.score = 0;
 
-        this.random = new Random();
+        this.randomSeed = System.currentTimeMillis();
+        this.random = new Random(randomSeed);
 
         initializeGrid();
     }
@@ -73,6 +77,8 @@ public class Game2048 {
         }
 
         if (emptyCells.isEmpty()) return null;
+
+        initRandom();
 
         int[] cell = emptyCells.get(random.nextInt(emptyCells.size()));
         long value = (random.nextInt(10) == 0) ? 4 : 2;
@@ -332,6 +338,12 @@ public class Game2048 {
         return repr.toString();
     }
 
+    public void initRandom() {
+        if (random == null) {
+            random = new Random(randomSeed);
+        }
+    }
+
     public long[][] getGrid() {
         return grid;
     }
@@ -346,5 +358,26 @@ public class Game2048 {
 
     public int getNumMoves() {
         return numMoves;
+    }
+
+    public long getRandomSeed() {
+        return randomSeed;
+    }
+
+    public void setGrid(long[][] grid) {
+        this.grid = grid;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
+    }
+
+    public void setNumMoves(int numMoves) {
+        this.numMoves = numMoves;
+    }
+
+    public void setRandomSeed(long seed) {
+        this.randomSeed = seed;
+        this.random = new Random(seed);
     }
 }

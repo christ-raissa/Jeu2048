@@ -141,7 +141,7 @@ public class GameView extends View {
 
         switch (mode) {
             case ScoreObjective:
-                game = new Game2048(gameWidth, gameHeight, 2048);
+                game = new Game2048(gameWidth, gameHeight, settingsHelper.getSingleTargetScore());
                 break;
             case TimeLimit:
                 game = new Game2048(gameWidth, gameHeight, 1_000_000_000); // Should never win by points
@@ -149,7 +149,7 @@ public class GameView extends View {
         }
 
         gameStartTime = System.currentTimeMillis();
-        gameEndTime = -1;
+        gameEndTime = 0;
 
         MoveResult spawnResult = game.spawnValues(2);
         startTilesAnimation(spawnResult);
@@ -157,7 +157,7 @@ public class GameView extends View {
     }
 
     private void initDraw() {
-        theme = settingsHelper.getTheme();
+        theme = settingsHelper.getTheme(this.getContext());
 
         if (settingsHelper.areAnimationsEnabled()) {
             firstMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
@@ -178,6 +178,7 @@ public class GameView extends View {
     }
 
     private void onSwipeLeft()  {
+        if (game.isGameOver()) return;
         Log.d("GAME2048", "Swipe LEFT");
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.LEFT);
@@ -254,21 +255,52 @@ public class GameView extends View {
         startTilesAnimation(results);
     }
 
+    private void updateGameEndTime() {
+        if (gameStartTime > 0) {
+            gameEndTime += System.currentTimeMillis() - gameStartTime;
+            gameStartTime = System.currentTimeMillis();
+        }
+    }
+
     private void updateAfterAnimation() {
+        boolean isFinished = false;
+
+        // 1. Vérification Victoire/Défaite
         if ((mode == GameMode.ScoreObjective && game.isWon()) ||
                 (mode == GameMode.TimeLimit &&
                         System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
-            gameEndTime = System.currentTimeMillis() - gameStartTime;
+            updateGameEndTime();
             emitGameWon();
+            isFinished = true;
         } else if (game.isGameOver()) {
-            gameEndTime = System.currentTimeMillis() - gameStartTime;
+            updateGameEndTime();
             emitGameOver();
+            isFinished = true;
         }
 
+        // 3. Mise à jour des scores
         emitScoreChange(oldScore, game.getScore());
-
         syncTiles();
-        invalidate();
+
+        if (!isFinished) {
+            invalidate();
+        }
+    }
+
+    public long getMaxTile() {
+        if (game == null) return 0;
+
+        long max = 0;
+        long[][] grid = game.getGrid();
+
+        for (int x = 0; x < game.getWidth(); x++) {
+            for (int y = 0; y < game.getHeight(); y++) {
+                if (grid[x][y] > max) {
+                    max = grid[x][y];
+                }
+            }
+        }
+        return max;
     }
 
     private void startTilesAnimation(@NonNull MoveResult result) {
@@ -363,7 +395,7 @@ public class GameView extends View {
         }
     }
 
-    private void syncTiles() {
+     void syncTiles() {
         if (game == null) return;
 
         drawableTiles = new ArrayList<>();
@@ -386,7 +418,6 @@ public class GameView extends View {
     }
 
     private AnimationState getAnimationState(long animationTime) {
-
         if (animationTime < firstMoveThreshold) {
             return AnimationState.FIRST_MOVE;
         } else if (animationTime < middleThreshold) {
@@ -400,14 +431,6 @@ public class GameView extends View {
         }
     }
 
-    public void setGameWidth(int gameWidth) {
-        this.gameWidth = gameWidth;
-    }
-
-    public void setGameHeight(int gameHeight) {
-        this.gameHeight = gameHeight;
-    }
-
     public long getScore() {
         return game.getScore();
     }
@@ -418,12 +441,37 @@ public class GameView extends View {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+
+        if (paused) {
+            updateGameEndTime();
+            gameStartTime = -1;
+        } else {
+            gameStartTime = System.currentTimeMillis();
+        }
     }
 
-    public long getGameDuration() {
-        if (endTimeMillis == -1) {
-            return System.currentTimeMillis() - gameStartTime;
-        }
-        return endTimeMillis;
+    public void setEndGameTime(long time) {
+        gameEndTime = time;
+    }
+
+    public Game2048 getGame() {
+        return game;
+    }
+
+    public GameMode getMode() {
+        return mode;
+    }
+
+    public long getGameEndTime() {
+        updateGameEndTime();
+        return gameEndTime;
+    }
+
+    public void setGame(Game2048 game) {
+        this.game = game;
+    }
+
+    public void setMode(GameMode mode) {
+        this.mode = mode;
     }
 }
