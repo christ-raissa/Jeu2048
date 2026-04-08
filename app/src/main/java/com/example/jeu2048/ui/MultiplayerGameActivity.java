@@ -179,7 +179,7 @@ public class MultiplayerGameActivity extends FontActivity {
         binding.btnShare.setOnClickListener( v->{
             String gagnant = (numPlayer == 1) ? "Joueur 1" : "Joueur 2";
 
-            String messageSMS = "🎮 Duel 2048 terminé !\n" +
+            String messageSMS = "Duel 2048 terminé !\n" +
                     "Vainqueur : " + gagnant + "\n\n" +
                     "Détails :\n" +
                     "• J1 : " + gameP1.getScore() + " pts (Tuile: " + gameP1.getMaxTile() + ")\n" +
