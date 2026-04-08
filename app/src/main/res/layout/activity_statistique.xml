@@ -67,9 +67,12 @@
                     android:textSize="13sp"/>
 
                 <ImageView
+                    android:id="@+id/btnRestartDba"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/restart"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:tint="?android:textColorSecondary"/>
             </LinearLayout>
 

@@ -244,5 +244,12 @@ public class Dbhelper extends SQLiteOpenHelper {
         return val;
     }
 
+    // Renitialiser la base de donnée
+    public void clearAllScores() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_SCORES, null, null);
+        db.close();
+    }
+
 
 }
