@@ -9,12 +9,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.airbnb.lottie.FontAssetDelegate;
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
 import com.example.jeu2048.gameRender.SavedGameView;
+import com.example.jeu2048.settings.FontActivity;
 import com.example.jeu2048.settings.SettingsHelper;
 import com.example.jeu2048.utils.CountUpTimer;
 
@@ -23,7 +26,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class OneUserGameActivity extends AppCompatActivity implements GameViewListener {
+public class OneUserGameActivity extends FontActivity implements GameViewListener {
 
     OneUserGameActivityBinding binding;
     private long meilleur = 0;

@@ -2,6 +2,7 @@ package com.example.jeu2048.ui;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -12,13 +13,14 @@ import com.example.jeu2048.databinding.ManyUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
 import com.example.jeu2048.gameRender.SavedGameView;
+import com.example.jeu2048.settings.FontActivity;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class MultiplayerGameActivity extends AppCompatActivity {
+public class MultiplayerGameActivity extends FontActivity {
 
     ManyUserGameActivityBinding binding;
 
@@ -44,6 +46,11 @@ public class MultiplayerGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ManyUserGameActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
 
         timerP1 = binding.timerP1;
         timerP2 = binding.timerP2;

@@ -5,33 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:windowBackground"
-    android:padding="16dp"
-    tools:layout_editor_absoluteY="15dp">
+    android:padding="16dp">
 
-    <!-- ===== BARRE DU HAUT ===== -->
-
-    <!-- Logo + Titre -->
     <ImageView
-        android:id="@+id/logoApp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/logoApp"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:src="@mipmap/ic_launcher"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/signature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/text_color_light"
-        android:textSize="30sp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/logoApp"
         app:layout_constraintStart_toEndOf="@id/logoApp"
         app:layout_constraintTop_toTopOf="@id/logoApp" />
 
-    <!-- Icônes à droite -->
+
     <LinearLayout
         android:id="@+id/topIcons"
         android:layout_width="wrap_content"
@@ -42,35 +38,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/logoApp">
 
-        <!-- Bouton Classement -->
         <ImageButton
             android:id="@+id/btnClassement"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Classement"
             app:srcCompat="@drawable/medail"
             app:tint="?android:textColorSecondary" />
 
-        <!-- Bouton Restart -->
         <ImageButton
             android:id="@+id/btnRestart"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Restart"
             app:srcCompat="@drawable/restart"
             app:tint="?android:textColorSecondary" />
 
-        <!-- Bouton Settings -->
         <ImageButton
             android:id="@+id/btnSettings"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Settings"
             app:srcCompat="@drawable/gear"
             app:tint="?android:textColorSecondary" />
     </LinearLayout>
@@ -79,13 +75,12 @@
         android:id="@+id/scoreContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logoApp">
 
-        <!-- Boîte SCORE -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -94,16 +89,14 @@
             android:background="@drawable/score_box_bacground"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:padding="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:letterSpacing="0.1"
                 android:text="SCORE"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -112,11 +105,10 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Boîte MEILLEUR SCORE -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -124,16 +116,14 @@
             android:background="@drawable/score_box_outline"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:padding="8dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:letterSpacing="0.1"
-                android:text="MEILLEUR SCORE"
+                android:text="MEILLEUR"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -142,36 +132,33 @@
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="?android:textColorSecondary"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- GRILLE -->
     <com.example.jeu2048.gameRender.GameView
         android:id="@+id/gameView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintBottom_toTopOf="@+id/gameInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreContainer"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.3" />
 
-    <!-- ===== TIMER + COUPS (sous la grille) ===== -->
     <LinearLayout
         android:id="@+id/gameInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/gameView"
+        app:layout_constraintEnd_toEndOf="@id/gameView"
+        app:layout_constraintStart_toStartOf="@id/gameView">
 
-        <!-- Timer -->
         <TextView
             android:id="@+id/timerText"
             android:layout_width="0dp"
@@ -179,10 +166,9 @@
             android:layout_weight="1"
             android:text="00:00"
             android:textColor="?android:textColorSecondary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
-        <!-- Nombre de coups -->
         <TextView
             android:id="@+id/movesText"
             android:layout_width="0dp"
@@ -191,16 +177,17 @@
             android:gravity="end"
             android:text="0 COUPS"
             android:textColor="?android:textColorSecondary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/endGameMenuSolo"
+        android:id="@+id/endGameMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:background="@drawable/rounded_bg"
-        android:padding="24dp"
+        android:padding="20dp"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -212,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PARTIE TERMINÉE"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="parent"
@@ -223,55 +210,53 @@
             android:id="@+id/endMessageSolo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Score : 2048\nDurée : 02:30"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/tvEndStatus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
-            android:id="@+id/layoutButtons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/endMessageSolo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/endMessageSolo">
 
             <ImageButton
-                android:id="@+id/btnStatsSolo"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_margin="8dp"
+                android:id="@+id/btnStats"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:src="@drawable/statistique"
-                android:backgroundTint="@color/button_color_light"
-                android:contentDescription="Statistiques" />
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/button_color_light" />
 
             <ImageButton
-                android:id="@+id/replayButtonSolo"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_margin="8dp"
+                android:id="@+id/replayButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
                 android:src="@drawable/restart"
-                android:backgroundTint="@color/button_color_light"
-                android:contentDescription="Rejouer" />
+                android:padding="15dp"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/button_color_light" />
 
             <ImageButton
-                android:id="@+id/btnShareSolo"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_margin="8dp"
+                android:id="@+id/btnShare"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:src="@drawable/baseline_share_24"
-                android:backgroundTint="@color/button_color_light"
-                android:contentDescription="Partager" />
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/button_color_light" />
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
