@@ -45,7 +45,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Statistiques"
+                    android:text="@string/titre_statistiques"
                     android:textStyle="bold"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="22sp"/>
@@ -62,7 +62,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Les parties en cours ne sont pas comptabilisées"
+                    android:text="@string/les_parties_en_cours_ne_sont_pas_comptabilis_es"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="13sp"/>
 

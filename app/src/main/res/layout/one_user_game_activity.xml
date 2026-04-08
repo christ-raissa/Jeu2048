@@ -121,7 +121,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MEILLEUR"
+                android:text="@string/best"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="0 COUPS"
+            android:text="@string/coups"
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -198,7 +198,7 @@
             android:id="@+id/tvEndStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PARTIE TERMINÉE"
+            android:text="@string/partie_termine"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"

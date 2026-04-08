@@ -74,6 +74,8 @@ public class GameView extends View {
     private int gameWidth = 4;
     private int gameHeight = 4;
 
+    private boolean isSolo = true;
+
     private final ArrayList<GameViewListener> subs = new ArrayList<>();
 
     private void emitScoreChange(long from, long to) {
@@ -108,17 +110,19 @@ public class GameView extends View {
 
     public GameView(Context context) {
         super(context);
-        init();
+        init(true);
     }
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(true);
     }
 
-    private void init() {
+    private void init(boolean solo) {
         // Log.d("GAME2048", "GameView: Creating gameView!");
         settingsHelper = new SettingsHelper(this.getContext());
+
+        isSolo = solo;
 
         initGame();
         initDraw();
@@ -135,13 +139,13 @@ public class GameView extends View {
     }
 
     public void initGame() {
-        gameWidth = settingsHelper.getSingleCols();
-        gameHeight = settingsHelper.getSingleRows();
-        mode = settingsHelper.getSingleMode();
+        gameWidth = isSolo ? settingsHelper.getSingleCols() : settingsHelper.getMultiCols();
+        gameHeight = isSolo ? settingsHelper.getSingleRows() : settingsHelper.getMultiRows();
+        mode = isSolo ? settingsHelper.getSingleMode() : settingsHelper.getMultiMode();
 
         switch (mode) {
             case ScoreObjective:
-                game = new Game2048(gameWidth, gameHeight, settingsHelper.getSingleTargetScore());
+                game = new Game2048(gameWidth, gameHeight, isSolo ? settingsHelper.getSingleTargetScore() : settingsHelper.getMultiTargetScore());
                 break;
             case TimeLimit:
                 game = new Game2048(gameWidth, gameHeight, 1_000_000_000); // Should never win by points
@@ -268,7 +272,7 @@ public class GameView extends View {
         // 1. Vérification Victoire/Défaite
         if ((mode == GameMode.ScoreObjective && game.isWon()) ||
                 (mode == GameMode.TimeLimit &&
-                        System.currentTimeMillis() - gameStartTime > settingsHelper.getSingleTimeLimit() * 1000L)) {
+                        System.currentTimeMillis() - gameStartTime > (isSolo ? settingsHelper.getSingleTimeLimit() : settingsHelper.getMultiTimeLimit()) * 1000L)) {
             updateGameEndTime();
             emitGameWon();
             isFinished = true;

@@ -87,7 +87,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         binding.scoreText.setText("" + to);
 
         numMoves = binding.gameView.getNumMoves();
-        binding.movesText.setText("" + numMoves);
+        binding.movesText.setText(numMoves + " " + getString(R.string.coups));
     }
 
     @Override
@@ -153,9 +153,9 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         binding.tvEndStatus.setText(titre);
 
         String scoreStr = binding.scoreText.getText().toString();
-        String message = "Score : " + scoreStr + "\n" +
-                "Mouvements : " + numMoves + "\n" +
-                "Durée : " + (dureeMillis / 1000) + " sec";
+        String message = getText(R.string.partage_score) + " : " + scoreStr + "\n" +
+                getText(R.string.partage_coups) + " : " + numMoves + "\n" +
+                getText(R.string.partage_duree) + " : " + (dureeMillis / 1000) + " sec";
 
         binding.endMessageSolo.setText(message);
 

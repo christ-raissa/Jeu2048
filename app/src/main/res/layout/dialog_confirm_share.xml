@@ -12,7 +12,7 @@
     android:id="@+id/tvConfirmTitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="PARTAGER CETTE PARTIE ?"
+    android:text="@string/partager_cette_partie"
     android:textSize="18sp"
     android:textStyle="bold"
     android:textColor="?android:attr/textColorPrimary" />
@@ -45,7 +45,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ANNULER"
+            android:text="@string/dialog_annuler"
             android:background="@drawable/bouton_outline"
             android:textColor="?android:attr/textColorSecondary" />
 
@@ -55,7 +55,7 @@
             android:id="@+id/btnConfirmActionShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ENVOYER"
+            android:text="@string/dialog_valider"
             android:background="@drawable/bouton_filled"
             android:backgroundTint="?attr/colorPrimary"
             android:textColor="?attr/colorOnPrimary"

@@ -3,8 +3,8 @@
 
     <style name="Base.Theme.Jeu2048" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <item name="android:fontFamily">@font/robotomono_regular</item>
-        <item name="fontFamily">@font/robotomono_regular</item>
+        <item name="android:fontFamily">@font/comicneue_regular</item>
+        <item name="fontFamily">@font/comicneue_regular</item>
 
         <item name="android:windowBackground">@color/page_background_light</item>
         <item name="android:textColor">@color/text_color_light</item>

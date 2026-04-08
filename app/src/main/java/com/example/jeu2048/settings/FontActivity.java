@@ -111,6 +111,7 @@ public class FontActivity extends AppCompatActivity {
         }
     }
 
+    /*
     // --- SECTION POLICE ---
     @Override
     public void setContentView(int layoutResID) {
@@ -131,6 +132,7 @@ public class FontActivity extends AppCompatActivity {
         try {
             Typeface typeface = ResourcesCompat.getFont(this, fonts[index]);
             applyRecursively(view, typeface);
+            view.invalidate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,4 +145,5 @@ public class FontActivity extends AppCompatActivity {
             for (int i = 0; i < group.getChildCount(); i++) { applyRecursively(group.getChildAt(i), typeface); }
         }
     }
+    */
 }

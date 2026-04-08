@@ -8,7 +8,7 @@
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Taper votre ici ..."
+        android:hint="@string/taper_votre_nom_ici"
         android:inputType="textPersonName"
         android:padding="15dp"
         android:background="@drawable/carte_menu"

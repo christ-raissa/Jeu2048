@@ -57,7 +57,7 @@ public class SettingActivity extends FontActivity {
         setupUsernameSettings();
         setupAvatarSettings();
         setupLanguageSpinner();
-        setupPoliceSpinner();
+        // setupPoliceSpinner();
         setupMusicSpinner();
     }
 
@@ -93,7 +93,7 @@ public class SettingActivity extends FontActivity {
 
     private void refreshUsernameUI(String name) {
         if (name == null || name.isEmpty()) {
-            tvUsername.setText("Cliquez ici pour saisir votre nom");
+            tvUsername.setText(getString(R.string.username_hint));
             tvUsername.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             ivEditUsername.setVisibility(View.GONE);
         } else {
@@ -103,7 +103,7 @@ public class SettingActivity extends FontActivity {
     }
 
     private void updateUsernameText(String name) {
-        String prefix = "Salut : ";
+        String prefix = (String) getText(R.string.parametre_pseudo_pre);
         String fullName = prefix + name;
         SpannableStringBuilder spannable = new SpannableStringBuilder(fullName);
         int colorRose = ContextCompat.getColor(this, R.color.bottom_filled_dark);
@@ -125,14 +125,14 @@ public class SettingActivity extends FontActivity {
         input.setTextColor(ContextCompat.getColor(this, android.R.color.primary_text_light));
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Définir votre nom")
+                .setTitle(getText(R.string.parametre_changer_nom))
                 .setView(input)
-                .setPositiveButton("Valider", (d, which) -> {
+                .setPositiveButton(getText(R.string.dialog_valider), (d, which) -> {
                     String name = input.getText().toString().trim();
                     settingsHelper.setUsername(name);
                     refreshUsernameUI(name);
                 })
-                .setNegativeButton("Annuler", null)
+                .setNegativeButton(getText(R.string.dialog_annuler), null)
                 .create();
 
         colorizeDialog(dialog);
@@ -154,13 +154,13 @@ public class SettingActivity extends FontActivity {
     private void refreshAvatarUI(String avatarKey) {
         if (avatarKey == null || avatarKey.isEmpty()) {
             imgAvatar.setImageResource(R.drawable.user_regular);
-            tvAvatarStatus.setText("Sélectionner votre avatar");
+            tvAvatarStatus.setText(getText(R.string.avatar_select));
             ivChangeAvatar.setVisibility(View.GONE);
         } else {
             try {
                 int index = Integer.parseInt(avatarKey.replace("avatar_", ""));
                 imgAvatar.setImageResource(getAvatarsArray()[index]);
-                tvAvatarStatus.setText("Avatar du joueur");
+                tvAvatarStatus.setText(getText(R.string.avatar_select));
                 ivChangeAvatar.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 imgAvatar.setImageResource(R.drawable.user_regular);
@@ -182,9 +182,9 @@ public class SettingActivity extends FontActivity {
         GridLayout grid = dialogView.findViewById(R.id.gridAvatars);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Choisissez votre avatar")
+                .setTitle(getText(R.string.avatar_select))
                 .setView(dialogView)
-                .setNegativeButton("Annuler", null)
+                .setNegativeButton(getText(R.string.dialog_annuler), null)
                 .create();
 
         for (int i = 0; i < avatars.length; i++) {
@@ -321,6 +321,7 @@ public class SettingActivity extends FontActivity {
         });
     }
 
+    /*
     // methode pour la gestion de la police
     private void setupPoliceSpinner() {
         spinnerPolice = findViewById(R.id.spinnerPolice);
@@ -339,4 +340,5 @@ public class SettingActivity extends FontActivity {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
+    */
 }
