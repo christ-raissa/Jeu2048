@@ -63,8 +63,6 @@ public class Dbhelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // --- SECTION SOLO ---
-
     public Cursor getTop3Scores() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
@@ -100,7 +98,6 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // --- SECTION MULTIJOUEUR ---
 
     public Cursor getTop3Multiplayer() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -134,7 +131,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         }
         return 0;
     }
-    // NOMBRE DE PARTIES JOUÉES EN MULTIJOUEUR
+    // nombre de partie jouer en multijoueur
     public int getGamesPlayedMulti() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SCORES +
@@ -147,8 +144,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // --- STATISTIQUES ---
-
+    // le temps total en multi joueur
     public long getTotalTimeMilti() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES, null);
@@ -172,7 +168,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    // LE TEMPS TOTAL EN MODE SOLO
+    // LE temps total en mode solo
     public long getTotalTimeSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT SUM(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
