@@ -166,7 +166,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
             binding.endGameMenuSolo.setVisibility(android.view.View.GONE);
             binding.gameView.setPaused(false);
             binding.gameView.initGame();
-            startTimer(); // Relancer le chrono
+            startTimer();
         });
 
         // Bouton Statistiques

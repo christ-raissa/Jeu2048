@@ -3,6 +3,9 @@ package com.example.jeu2048.ui;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.ActivityStatistiqueBinding;
@@ -17,9 +20,6 @@ public class StatistiqueActivity extends FontActivity {
     Dbhelper dba = new Dbhelper(this);
     ActivityStatistiqueBinding binding;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,13 @@ public class StatistiqueActivity extends FontActivity {
         );
         binding = ActivityStatistiqueBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ImageView btnRenitialise = findViewById(R.id.btnRestartDba);
+
+        btnRenitialise.setOnClickListener(v ->{
+           showResetConfirmation();
+        });
+
 
         // Barre de navigation
         bottomNavigation = findViewById(R.id.bottomNavigation);
@@ -79,7 +86,7 @@ public class StatistiqueActivity extends FontActivity {
             binding.layoutStatsGeneral.tv128Games.setText(String.valueOf(dba.getMaxTileMulti()));
 
             long bestMovesMulti = dba.getBestMovesMulti();
-            binding.layoutStatsGeneral.tv128Mvt.setText(bestMovesMulti > 0 ? String.valueOf(bestMovesMulti) : "N/A");
+            binding.layoutStatsGeneral.tv128Mvt.setText(bestMovesMulti > 0 ? String.valueOf(bestMovesMulti) : "0");
 
             binding.layoutStatsGeneral.tv128Time.setText(String.valueOf(dba.getBestTimeMulti()));
 
@@ -101,11 +108,11 @@ public class StatistiqueActivity extends FontActivity {
             if (bestTime > 0) {
                 binding.layoutStatsGeneral.tv128Time.setText(formatDuration(bestTime));
             } else {
-                binding.layoutStatsGeneral.tv128Time.setText("N/A");
+                binding.layoutStatsGeneral.tv128Time.setText("0");
             }
 
             long bestMoves = dba.getBestMovesSolo();
-            binding.layoutStatsGeneral.tv128Mvt.setText(bestMoves > 0 ? String.valueOf(bestMoves) : "N/A");
+            binding.layoutStatsGeneral.tv128Mvt.setText(bestMoves > 0 ? String.valueOf(bestMoves) : "0");
 
             top3 = dba.getTop3Scores();
         }
@@ -113,6 +120,18 @@ public class StatistiqueActivity extends FontActivity {
         if (top3 != null) {
             fillTop3(top3, modeChoice.equals("MULTI"));
         }
+    }
+    // Renitialiser la base de donnée
+    private void showResetConfirmation() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Réinitialiser les statistiques")
+                .setMessage("Voulez-vous vraiment supprimer tous vos scores ?")
+                .setPositiveButton("Supprimer", (dialog, which) -> {
+                    dba.clearAllScores();
+                    updateUI();
+                })
+                .setNegativeButton("Annuler", null)
+                .show();
     }
 
     private void fillTop3(Cursor cursor, boolean isMulti) {
