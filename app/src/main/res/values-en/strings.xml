@@ -90,4 +90,7 @@
 
     <string name="parametre_pseudo_pre">Hello : </string>
     <string name="parametre_changer_nom">Choose a username : </string>
+
+    <string name="partage_entete">My 2048 score : </string>
+    <string name="partage_valider">Share my score</string>
 </resources>
