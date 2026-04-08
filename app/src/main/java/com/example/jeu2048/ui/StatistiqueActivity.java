@@ -7,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.ActivityStatistiqueBinding;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
+import com.example.jeu2048.settings.FontActivity;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
-public class StatistiqueActivity extends AppCompatActivity {
+public class StatistiqueActivity extends FontActivity {
 
     AnimatedBottomBar bottomNavigation;
     Dbhelper dba = new Dbhelper(this);

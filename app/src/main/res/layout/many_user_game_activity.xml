@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="15dp"
     android:background="?attr/android:windowBackground">
 
-    <!-- ===== ZONE JOUEUR 2 (haut, retournée à 180°) ===== -->
     <LinearLayout
         android:id="@+id/zone2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
         android:rotation="180"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,10 +23,7 @@
             android:id="@+id/gamePlayer2"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:rotation="0"
-            android:padding="6dp">
-
-        </com.example.jeu2048.gameRender.GameView>
+            android:padding="6dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -34,8 +31,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:rotation="0"
             android:layout_marginStart="8dp">
+
+            <TextView
+                android:id="@+id/timerP2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,8 +50,7 @@
                 android:background="@drawable/score_box_bacground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp">
+                android:padding="6dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,8 +74,7 @@
                 android:background="@drawable/score_box_bacground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp">
+                android:padding="6dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,53 +94,48 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ===== ESPACE CENTRAL ===== -->
-    <TextView
-        android:id="@+id/timerP2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:rotation="180"
-        android:textSize="30sp"
-
-        app:layout_constraintBottom_toTopOf="@id/centerSpace"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        android:text="TIMER P2"
-        >
-    </TextView>
-
-    <Space
-        android:id="@+id/centerSpace"
+    <LinearLayout
+        android:id="@+id/centerControlArea"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        app:layout_constraintTop_toBottomOf="@id/zone2"
-        app:layout_constraintBottom_toTopOf="@id/zone1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/timerP1"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/zone2"
+        app:layout_constraintBottom_toTopOf="@id/zone1">
 
-        android:rotation="0"
-        android:textSize="30sp"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimation"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="15dp"
+            app:lottie_rawRes="@raw/sablier"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
 
-        app:layout_constraintTop_toBottomOf="@id/centerSpace"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="50dp"
+            android:background="@color/separateur" />
 
-        android:text="TIMER P1"
-        >
-    </TextView>
+        <ImageButton
+            android:id="@+id/btnSetTimer"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/rounded_bg"
+            android:backgroundTint="@color/button_color_light"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/bouton_filled"
+            android:contentDescription="Régler le temps" />
 
-    <!-- ===== ZONE JOUEUR 1 (bas, sens normal) ===== -->
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/zone1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -147,8 +146,7 @@
             android:id="@+id/gamePlayer1"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:padding="6dp">
-            </com.example.jeu2048.gameRender.GameView>
+            android:padding="6dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -158,6 +156,16 @@
             android:gravity="center"
             android:layout_marginStart="8dp">
 
+            <TextView
+                android:id="@+id/timerP1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,8 +173,7 @@
                 android:background="@drawable/score_box_bacground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp">
+                android:padding="6dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,8 +197,7 @@
                 android:background="@drawable/score_box_bacground"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp">
+                android:padding="6dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -210,6 +216,7 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/endGameMenu"
         android:layout_width="wrap_content"
@@ -217,6 +224,7 @@
         android:visibility="gone"
         android:background="@drawable/rounded_bg"
         android:padding="20dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -291,4 +299,5 @@
             android:layout_marginTop="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
