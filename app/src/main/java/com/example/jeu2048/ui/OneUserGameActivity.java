@@ -211,14 +211,24 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         });
 
         binding.btnShareSolo.setOnClickListener(v -> {
+            long maxTileValue = binding.gameView.getMaxTile();
+            String messageSMS = getString(R.string.partage_entete) + " :\n" +
+                    getString(R.string.partage_score) + ": " + scoreStr + "\n" +
+                    getString(R.string.partage_tuile_meilleur) + " : " + maxTileValue + "\n" +
+                    getString(R.string.partage_coups) + " : " + numMoves + "\n\n";
 
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-
-            intent.putExtra(Intent.EXTRA_TEXT, message);
-
-            startActivity(Intent.createChooser(intent, "Partager via"));
+            partagerTout(messageSMS);
         });
+
+
+    }
+
+    // Ouvrir un toutes les applications
+    private void partagerTout(String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(intent, "Partager via"));
     }
 
     // ================= TIMER =================
