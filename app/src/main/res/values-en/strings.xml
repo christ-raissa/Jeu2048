@@ -101,4 +101,9 @@
     <string name="multi_defaite">Deafeat</string>
     <string name="joueur">Player</string>
     <string name="multi_fin">2048 duel finished</string>
+    <string name="text_renitialisé">Reset</string>
+    <string name="message">Do you want to reset the page?</string>
+    <string name="suppimer">Reset this page</string>
+
+
 </resources>

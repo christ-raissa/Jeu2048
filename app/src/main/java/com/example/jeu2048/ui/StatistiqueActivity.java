@@ -2,6 +2,7 @@ package com.example.jeu2048.ui;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -102,13 +103,12 @@ public class StatistiqueActivity extends FontActivity {
             binding.layoutStatsGeneral.tvTotalTime.setText(formatDuration(totalTimeSolo));
 
             // --- Record Solo ---
-            binding.layoutStatsGeneral.tv128Games.setText(String.valueOf(dba.getMaxTileReachedSolo()));
-
+            long maxTile = dba.getMaxTileReachedSolo();
+            Log.d("DEBUG_STATS", "Max Tile: " + maxTile);
+            binding.layoutStatsGeneral.tv128Games.setText(String.valueOf(maxTile));
             long bestTime = dba.getBestTimeSolo();
             if (bestTime > 0) {
                 binding.layoutStatsGeneral.tv128Time.setText(formatDuration(bestTime));
-            } else {
-                binding.layoutStatsGeneral.tv128Time.setText("0");
             }
 
             long bestMoves = dba.getBestMovesSolo();
@@ -124,13 +124,21 @@ public class StatistiqueActivity extends FontActivity {
     // Renitialiser la base de donnée
     private void showResetConfirmation() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Réinitialiser les statistiques")
-                .setMessage("Voulez-vous vraiment supprimer tous vos scores ?")
-                .setPositiveButton("Supprimer", (dialog, which) -> {
+                .setTitle(getText(R.string.text_renitialisé))
+                .setMessage(R.string.message)
+                .setPositiveButton(getText(R.string.suppimer), (dialog, which) -> {
                     dba.clearAllScores();
+
+                    if (getIntent() != null) {
+                        getIntent().removeExtra("CURRENT_TIME_128");
+                        getIntent().removeExtra("CURRENT_MOVES_128");
+                    }
+
                     updateUI();
                 })
-                .setNegativeButton("Annuler", null)
+                .setNegativeButton(getText(R.string.dialog_annuler), (dialog, which) -> {
+                    dialog.dismiss();
+                })
                 .show();
     }
 

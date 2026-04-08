@@ -99,4 +99,8 @@
     <string name="multi_defaite">Defaite</string>
     <string name="joueur">Joueur</string>
     <string name="multi_fin">Duel 2048 terminé</string>
+
+    <string name="text_renitialisé">Réinitialisation</string>
+    <string name="message">Voulez vous renitialiser la page ?</string>
+    <string name="suppimer">Renitialiser</string>
 </resources>

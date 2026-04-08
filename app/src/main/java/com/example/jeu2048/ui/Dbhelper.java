@@ -225,10 +225,16 @@ public class Dbhelper extends SQLiteOpenHelper {
     // Récupérer le temps minimal pour une partie GAGNÉE (Le record de vitesse)
     public long getBestTimeSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
-                " WHERE " + COLUMN_STATUT + " = 'Gagné' AND " + COLUMN_DUREE + " > 0", null);
+        String query = "SELECT MIN(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'" +
+                " AND " + COLUMN_MAX_TILE + " >= 128" +
+                " AND " + COLUMN_DUREE + " > 0";
+
+        Cursor c = db.rawQuery(query, null);
         long val = 0;
-        if (c.moveToFirst()) val = c.getLong(0);
+        if (c.moveToFirst()) {
+            val = c.getLong(0);
+        }
         c.close();
         return val;
     }
@@ -236,10 +242,16 @@ public class Dbhelper extends SQLiteOpenHelper {
     // Récupérer le nombre de mouvements minimal pour une partie GAGNÉE
     public long getBestMovesSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_COUT + ") FROM " + TABLE_SCORES +
-                " WHERE " + COLUMN_STATUT + " = 'Gagné' AND " + COLUMN_COUT + " > 0", null);
+        String query = "SELECT MIN(" + COLUMN_COUT + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'" +
+                " AND " + COLUMN_MAX_TILE + " >= 128" +
+                " AND " + COLUMN_COUT + " > 0";
+
+        Cursor c = db.rawQuery(query, null);
         long val = 0;
-        if (c.moveToFirst()) val = c.getLong(0);
+        if (c.moveToFirst()) {
+            val = c.getLong(0);
+        }
         c.close();
         return val;
     }
