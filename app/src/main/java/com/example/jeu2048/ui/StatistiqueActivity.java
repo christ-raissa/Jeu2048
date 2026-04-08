@@ -42,42 +42,77 @@ public class StatistiqueActivity extends FontActivity {
     }
 
     private String formatDuration(long millis) {
-        long seconds = millis / 1000;
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        minutes = minutes % 60;
-        return hours + "h " + String.format("%02dm", minutes);
+        if (millis <= 0) return "0s";
+        long seconde = (millis / 1000) % 60;
+        long minuite = (millis / (1000 * 60)) % 60;
+        long heure = (millis / (1000 * 60 *60));
+        StringBuffer sb = new StringBuffer();
+        if (heure > 0){
+            sb.append(heure).append("h");
+        }
+        if (minuite > 0){
+            sb.append(String.format("%02dm" , minuite));
+        }
+        if (heure == 0){
+            sb.append(String.format("%02ds", seconde));
+        }
+        return  sb.toString().trim();
     }
 
     private void updateUI() {
         String modeChoice = getIntent().getStringExtra("MODE_JEU");
         if (modeChoice == null) modeChoice = "SOLO";
 
-        Cursor top3;
+        Cursor top3 = null;
 
         if (modeChoice.equals("MULTI")) {
-            // --- STATS MULTI ---
+            // --- States multi joueur ---
             binding.layoutStatsGeneral.tvBestScore.setText(String.valueOf(dba.getBestScoreMulti()));
             binding.layoutStatsGeneral.tvTotalScore.setText(String.valueOf(dba.getTotalScoreMulti()));
             binding.layoutStatsGeneral.tvGamesPlayed.setText(String.valueOf(dba.getGamesPlayedMulti()));
 
-            binding.layoutStatsGeneral.tvTotalTime.setText(String.valueOf(dba.getTotalTimeMilti()));
+
+            long totalTimeMulti = dba.getTotalTimeMilti();
+            binding.layoutStatsGeneral.tvTotalTime.setText(formatDuration(totalTimeMulti));
+
+            // --- Record Multi joueur ---
+            binding.layoutStatsGeneral.tv128Games.setText(String.valueOf(dba.getMaxTileMulti()));
+
+            long bestMovesMulti = dba.getBestMovesMulti();
+            binding.layoutStatsGeneral.tv128Mvt.setText(bestMovesMulti > 0 ? String.valueOf(bestMovesMulti) : "N/A");
+
+            binding.layoutStatsGeneral.tv128Time.setText(String.valueOf(dba.getBestTimeMulti()));
 
             top3 = dba.getTop3Multiplayer();
+
         } else {
-            // --- STATS SOLO ---
+            //--- State Solo----
             binding.layoutStatsGeneral.tvBestScore.setText(String.valueOf(dba.getBestScore()));
             binding.layoutStatsGeneral.tvTotalScore.setText(String.valueOf(dba.getTotalScoreSolo()));
-
             binding.layoutStatsGeneral.tvGamesPlayed.setText(String.valueOf(dba.getGamesPlayedSolo()));
 
-            long totalMillis = dba.getTotalTimeSolo();
-            binding.layoutStatsGeneral.tvTotalTime.setText(formatDuration(totalMillis));
+            long totalTimeSolo = dba.getTotalTimeSolo();
+            binding.layoutStatsGeneral.tvTotalTime.setText(formatDuration(totalTimeSolo));
+
+            // --- Record Solo ---
+            binding.layoutStatsGeneral.tv128Games.setText(String.valueOf(dba.getMaxTileReachedSolo()));
+
+            long bestTime = dba.getBestTimeSolo();
+            if (bestTime > 0) {
+                binding.layoutStatsGeneral.tv128Time.setText(formatDuration(bestTime));
+            } else {
+                binding.layoutStatsGeneral.tv128Time.setText("N/A");
+            }
+
+            long bestMoves = dba.getBestMovesSolo();
+            binding.layoutStatsGeneral.tv128Mvt.setText(bestMoves > 0 ? String.valueOf(bestMoves) : "N/A");
 
             top3 = dba.getTop3Scores();
         }
 
-        fillTop3(top3, modeChoice.equals("MULTI"));
+        if (top3 != null) {
+            fillTop3(top3, modeChoice.equals("MULTI"));
+        }
     }
 
     private void fillTop3(Cursor cursor, boolean isMulti) {

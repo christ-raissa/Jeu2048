@@ -156,6 +156,37 @@ public class Dbhelper extends SQLiteOpenHelper {
         return 0;
     }
 
+    public long getBestTimeMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%' AND " + COLUMN_DUREE + " > 0", null);
+
+        long val = 0;
+        if (c.moveToFirst()) {
+            val = c.getLong(0);
+        }
+        c.close();
+        return val;
+    }
+
+    // Record de la plus haute tuile en Multi
+    public long getMaxTileMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_MAX_TILE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%'", null);
+        long val = 0; if (c.moveToFirst()) val = c.getLong(0); c.close();
+        return val;
+    }
+
+    // Record du nombre de mouvements en Multi
+    public long getBestMovesMulti() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_COUT + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " LIKE '%Multi%' AND " + COLUMN_COUT + " > 0", null);
+        long val = 0; if (c.moveToFirst()) val = c.getLong(0); c.close();
+        return val;
+    }
+
     public int getGamesPlayedSolo() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_SCORES +
@@ -179,6 +210,38 @@ public class Dbhelper extends SQLiteOpenHelper {
             return val;
         }
         return 0;
+    }
+    // Récupérer la tuile la plus haute jamais atteinte (Solo)
+    public long getMaxTileReachedSolo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX(" + COLUMN_MAX_TILE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " NOT LIKE '%Multi%'", null);
+        long val = 0;
+        if (c.moveToFirst()) val = c.getLong(0);
+        c.close();
+        return val;
+    }
+
+    // Récupérer le temps minimal pour une partie GAGNÉE (Le record de vitesse)
+    public long getBestTimeSolo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_DUREE + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " = 'Gagné' AND " + COLUMN_DUREE + " > 0", null);
+        long val = 0;
+        if (c.moveToFirst()) val = c.getLong(0);
+        c.close();
+        return val;
+    }
+
+    // Récupérer le nombre de mouvements minimal pour une partie GAGNÉE
+    public long getBestMovesSolo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MIN(" + COLUMN_COUT + ") FROM " + TABLE_SCORES +
+                " WHERE " + COLUMN_STATUT + " = 'Gagné' AND " + COLUMN_COUT + " > 0", null);
+        long val = 0;
+        if (c.moveToFirst()) val = c.getLong(0);
+        c.close();
+        return val;
     }
 
 

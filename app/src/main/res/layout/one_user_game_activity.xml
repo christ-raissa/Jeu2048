@@ -182,7 +182,7 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/endGameMenu"
+        android:id="@+id/endGameMenuSolo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -228,7 +228,7 @@
             app:layout_constraintTop_toBottomOf="@id/endMessageSolo">
 
             <ImageButton
-                android:id="@+id/btnStats"
+                android:id="@+id/btnStatsSolo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="6dp"
@@ -238,7 +238,7 @@
                 android:backgroundTint="@color/button_color_light" />
 
             <ImageButton
-                android:id="@+id/replayButton"
+                android:id="@+id/replayButtonSolo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="6dp"
@@ -248,7 +248,7 @@
                 android:backgroundTint="@color/button_color_light" />
 
             <ImageButton
-                android:id="@+id/btnShare"
+                android:id="@+id/btnShareSolo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="6dp"
