@@ -164,10 +164,15 @@ public class GameView extends View {
         theme = settingsHelper.getTheme(this.getContext());
 
         if (settingsHelper.areAnimationsEnabled()) {
-            firstMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
-            middleTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
-            lastMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
-            endTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+
+            // Durée totale idéale ~180ms
+            long total = (long) (settingsHelper.getAnimationSpeed() * 280);
+
+            firstMoveTimeMillis = (long) (total * 0.65);  // deplacement
+            middleTimeMillis = (long) (total * 0.15);
+            lastMoveTimeMillis = (long) (total * 0.05);
+            endTimeMillis = (long) (total * 0.15);     // apparition
+
         } else {
             firstMoveTimeMillis = 0;
             middleTimeMillis = 0;
@@ -180,7 +185,6 @@ public class GameView extends View {
         lastMoveThreshold = middleThreshold + lastMoveTimeMillis;
         endThreshold = lastMoveThreshold + endTimeMillis;
     }
-
     private void onSwipeLeft()  {
         if (game.isGameOver()) return;
         Log.d("GAME2048", "Swipe LEFT");
@@ -382,6 +386,8 @@ public class GameView extends View {
         animating = false;
         updateAfterAnimation();
     }
+
+
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {

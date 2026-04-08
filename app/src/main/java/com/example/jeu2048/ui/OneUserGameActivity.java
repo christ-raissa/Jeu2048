@@ -1,16 +1,13 @@
 package com.example.jeu2048.ui;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.airbnb.lottie.FontAssetDelegate;
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameMode;
@@ -29,21 +26,26 @@ import java.io.ObjectOutputStream;
 public class OneUserGameActivity extends FontActivity implements GameViewListener {
 
     OneUserGameActivityBinding binding;
+
     private long meilleur = 0;
     private long numMoves = 0;
+
     Dbhelper dba;
     SettingsHelper settingsHelper;
-    private boolean isSaving = false; // Pour éviter les doubles sauvegardes
+
+    private boolean isSaving = false;
 
     private CountDownTimer countDownTimer;
     private CountUpTimer countUpTimer;
-    private long elapsedTimeMillis = 0; // track elapsed time
+
+    private long elapsedTimeMillis = 0;
 
     private GameMode mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = OneUserGameActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -56,35 +58,50 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         GameView gameView = binding.gameView;
         gameView.sub(this);
 
+        dba = new Dbhelper(this);
+
         binding.btnRestart.setOnClickListener(v -> {
             clearSavedGame();
             numMoves = 0;
-            gameView.initGame();
+            elapsedTimeMillis = 0;
 
+            gameView.initGame();
+            startTimer();
         });
-        dba = new Dbhelper(this);
 
         binding.btnClassement.setOnClickListener(v -> {
-            Intent intent = new Intent(OneUserGameActivity.this, StatistiqueActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, StatistiqueActivity.class));
         });
 
         binding.btnSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(OneUserGameActivity.this, SettingActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, SettingActivity.class));
         });
 
         startTimer();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseTimers();
+        saveGame();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTimer();
+    }
+
+    // ================= SCORE =================
     @Override
     public void OnScoreChange(long from, long to) {
         if (to > meilleur) {
             meilleur = to;
-            binding.bestScoreText.setText("" + meilleur);
+            binding.bestScoreText.setText(String.valueOf(meilleur));
         }
-        binding.scoreText.setText("" + to);
+
+        binding.scoreText.setText(String.valueOf(to));
 
         numMoves = binding.gameView.getNumMoves();
         binding.movesText.setText(numMoves + " " + getString(R.string.coups));
@@ -95,23 +112,35 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         binding.scoreText.setText("0");
     }
 
+    // ================= GAME OVER =================
     public void OnGameOver(long dureeMillis) {
+
         if (isSaving) return;
         isSaving = true;
+
+        playSound();
+
         SauvegardePartie("Perdu", dureeMillis);
+
         clearSavedGame();
         pauseTimers();
+
         displayEndMenu("GAME OVER", "Perdu", dureeMillis);
     }
 
     @Override
     public void OnGameWon(long dureeMillis) {
-       SauvegardePartie("Partie gagné", dureeMillis);
+
+        playSound();
+
+        SauvegardePartie("Gagné", dureeMillis);
 
         clearSavedGame();
         pauseTimers();
+
         displayEndMenu("VICTOIRE !", "Gagné", dureeMillis);
     }
+
 
     public void SauvegardePartie(String resultat, long dureeMillis){
 
@@ -127,8 +156,6 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         }
 
         GameView gameView = binding.gameView;
-
-
         long maxTile = gameView.getMaxTile();
 
         dba.insertScore(
@@ -140,90 +167,94 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
                 dureeMillis
         );
     }
-
-    private void ouvrirStatistiques() {
-        Intent intent = new Intent(OneUserGameActivity.this, StatistiqueActivity.class);
-        startActivity(intent);
-        finish();
+    // ================= SON =================
+    private void playSound() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(this, R.raw.lose);
+            mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    // ================= POPUP =================
     private void displayEndMenu(String titre, String resultat, long dureeMillis) {
+
         binding.endGameMenuSolo.setVisibility(android.view.View.VISIBLE);
         binding.gameView.setPaused(true);
 
         binding.tvEndStatus.setText(titre);
 
         String scoreStr = binding.scoreText.getText().toString();
+
         String message = getText(R.string.partage_score) + " : " + scoreStr + "\n" +
                 getText(R.string.partage_coups) + " : " + numMoves + "\n" +
                 getText(R.string.partage_duree) + " : " + (dureeMillis / 1000) + " sec";
 
         binding.endMessageSolo.setText(message);
 
-        // Bouton Rejouer
         binding.replayButtonSolo.setOnClickListener(v -> {
             isSaving = false;
             numMoves = 0;
+            elapsedTimeMillis = 0;
+
             binding.endGameMenuSolo.setVisibility(android.view.View.GONE);
+
             binding.gameView.setPaused(false);
             binding.gameView.initGame();
+
             startTimer();
         });
 
-        // Bouton Statistiques
         binding.btnStatsSolo.setOnClickListener(v -> {
-            ouvrirStatistiques();
+            startActivity(new Intent(this, StatistiqueActivity.class));
         });
-
 
         binding.btnShareSolo.setOnClickListener(v -> {
-            long maxTileValue = binding.gameView.getMaxTile();
-            String messageSMS = getString(R.string.partage_entete) + " :\n" +
-                    getString(R.string.partage_score) + ": " + scoreStr + "\n" +
-                    getString(R.string.partage_tuile_meilleur) + " : " + maxTileValue + "\n" +
-                    getString(R.string.partage_coups) + " : " + numMoves + "\n\n";
 
-            ouvrirApplicationMessage(messageSMS);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+
+            startActivity(Intent.createChooser(intent, "Partager via"));
         });
     }
-    private void ouvrirApplicationMessage(String message) {
-        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
-        intent.setData(android.net.Uri.parse("smsto:"));
-        intent.putExtra("sms_body", message);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            android.widget.Toast.makeText(this, "Application SMS introuvable", android.widget.Toast.LENGTH_SHORT).show();
-        }
-    }
 
+    // ================= TIMER =================
     private void startTimer() {
-        pauseTimers(); // cancel existing timers
+
+        pauseTimers();
 
         if (mode == GameMode.TimeLimit) {
+
             countDownTimer = new CountDownTimer(settingsHelper.getSingleTimeLimit(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    elapsedTimeMillis = settingsHelper.getSingleTimeLimit() - millisUntilFinished;
-                    updateTimerText(millisUntilFinished);
+                    elapsedTimeMillis =
+                            settingsHelper.getSingleTimeLimit() - millisUntilFinished;
+
+                    binding.timerText.setText(String.valueOf(millisUntilFinished / 1000));
                 }
 
                 @Override
                 public void onFinish() {
-                    elapsedTimeMillis = settingsHelper.getSingleTimeLimit();
-                    binding.timerText.setText("0");
-                    binding.gameView.setPaused(true);
                     OnGameOver(elapsedTimeMillis);
                 }
             }.start();
+
         } else {
-            // Target score mode: count up
+
+            long startOffset = elapsedTimeMillis;
+
             countUpTimer = new CountUpTimer() {
                 @Override
                 public void onTick(long millis) {
-                    elapsedTimeMillis = millis;
-                    updateTimerText();
+                    elapsedTimeMillis = startOffset + millis;
+                    binding.timerText.setText(String.valueOf(elapsedTimeMillis / 1000));
                 }
             };
+
             countUpTimer.start();
         }
     }
@@ -233,43 +264,14 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         if (countUpTimer != null) countUpTimer.stop();
     }
 
-    private void updateTimerText() {
-        Log.d("GAME2048", "updateTimerText: updating timer...");
-        binding.timerText.setText(String.valueOf(elapsedTimeMillis / 1000));
-    }
-
-    private void updateTimerText(long millisRemaining) {
-        binding.timerText.setText(String.valueOf(millisRemaining / 1000));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        pauseTimers();
-        saveGame();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("GAME2048", "onStop: lifecycle stop... Saving game");
-        super.onStop();
-        pauseTimers();
-        saveGame();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        pauseTimers();
-        saveGame();
-    }
-
+    // ================= SAVE =================
     private void saveGame() {
         try (FileOutputStream fos = openFileOutput("save.dat", MODE_PRIVATE);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
             SavedGameView save = SavedGameView.fromGameView(binding.gameView);
             save.setElapsedTime(elapsedTimeMillis);
+
             oos.writeObject(save);
 
         } catch (Exception e) {
@@ -282,18 +284,18 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
              ObjectInputStream ois = new ObjectInputStream(fis)) {
 
             SavedGameView save = (SavedGameView) ois.readObject();
+
             save.applyTo(binding.gameView);
+
             elapsedTimeMillis = save.getElapsedTime();
-            updateTimerText();
 
         } catch (Exception e) {
-            binding.gameView.initGame(); // fallback
+            binding.gameView.initGame();
         }
     }
 
     private void clearSavedGame() {
         deleteFile("save.dat");
         elapsedTimeMillis = 0;
-        updateTimerText();
     }
 }

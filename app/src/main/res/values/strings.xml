@@ -100,7 +100,21 @@
     <string name="joueur">Joueur</string>
     <string name="multi_fin">Duel 2048 terminé</string>
 
+
+    <string name="mode_solo">Mode solo</string>
+    <string name="mode_multi">Mode Multi-Joueur</string>
+    <string name="texte_animation">Animation tuile</string>
+    <string name="score_atteindre">Score à atteindre</string>
+    <string name="temps_min">Definir le temps en min</string>
+    <string name="temps_hint">Cliquez ici pour saisir le temps</string>
+    <string name="taille_gride">Definir la taille de la grille</string>
+    <string name="taille_hint_col">Saisir le nombre de colonnes</string>
+    <string name="taille_hint_lig">Saisir le nombre de lignes</string>
+
     <string name="text_renitialisé">Réinitialisation</string>
     <string name="message">Voulez vous renitialiser la page ?</string>
     <string name="suppimer">Renitialiser</string>
+
+
+
 </resources>

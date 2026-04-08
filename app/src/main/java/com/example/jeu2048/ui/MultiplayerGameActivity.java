@@ -1,10 +1,14 @@
 package com.example.jeu2048.ui;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import android.content.Intent;
+import android.net.Uri;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -163,6 +167,7 @@ public class MultiplayerGameActivity extends FontActivity {
 
     private void triggerWin(int numPlayer) {
         clearSavedGames();
+        playEndSound();
 
         gameP1.setPaused(true);
         gameP2.setPaused(true);
@@ -191,7 +196,7 @@ public class MultiplayerGameActivity extends FontActivity {
                     "• " + getString(R.string.joueur) + "2 : " + gameP2.getScore() + " pts (" + getString(R.string.stat_tuile_max) + ": " + gameP2.getMaxTile() + ")\n" +
                     "Durée : " + dureeSec + " sec";
 
-            ouvrirApplicationMessage(messageSMS);
+            partagerTexte(messageSMS);
         });
 
         binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
@@ -269,6 +274,16 @@ public class MultiplayerGameActivity extends FontActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            FileOutputStream fosTime = openFileOutput("time.dat", MODE_PRIVATE);
+            ObjectOutputStream oosTime = new ObjectOutputStream(fosTime);
+            oosTime.writeLong(remainingTimeMillis);
+            oosTime.close();
+            fosTime.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadGames() {
@@ -289,18 +304,29 @@ public class MultiplayerGameActivity extends FontActivity {
             ois2.close();
             fis2.close();
 
-            // startTimer(saveP1.getElapsedTime(), this::onTimeUp);
+            try {
+                FileInputStream fisTime = openFileInput("time.dat");
+                ObjectInputStream oisTime = new ObjectInputStream(fisTime);
+                remainingTimeMillis = oisTime.readLong();
+                oisTime.close();
+                fisTime.close();
+            } catch (Exception e) {
+                remainingTimeMillis = gameDurationMillis;
+            }
 
-            // Pause until user resumes
+            startTimer(remainingTimeMillis, this::onTimeUp);
+
+            // UI
+            updateTimerUI();
+
             gameP1.setPaused(false);
             gameP2.setPaused(false);
 
         } catch (Exception e) {
             e.printStackTrace();
-            startGames(); // fallback fresh game
+            startGames();
         }
     }
-
     private void clearSavedGames() {
         deleteFile("saveP1.dat");
         deleteFile("saveP2.dat");
@@ -350,14 +376,18 @@ public class MultiplayerGameActivity extends FontActivity {
         );
     }
 
-    private void ouvrirApplicationMessage(String message) {
-        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
-        intent.setData(android.net.Uri.parse("smsto:"));
-        intent.putExtra("sms_body", message);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            android.widget.Toast.makeText(this, "Application SMS introuvable", android.widget.Toast.LENGTH_SHORT).show();
+    private void partagerTexte(String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(intent, "Partager avec"));
+    }
+    private void playEndSound() {
+        try {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.lose);
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -287,7 +287,6 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -301,29 +300,305 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/font"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/statistique"
                 app:tint="?android:textColorPrimary"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/polices"
+                android:text="Mode Solo"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:textColor="?android:textColorPrimary"/>
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/texte_animation"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupAnimationSolo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioAnimationSoloOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/son_activer"
+                android:textSize="14sp"
+                android:checked="true"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?attr/colorControlActivated"/>
+
+            <RadioButton
+                android:id="@+id/radioAnimationSoloOff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/son_desactiver"
+                android:textSize="14sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?attr/colorControlActivated"/>
+        </RadioGroup>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_atteindre"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
         <Spinner
-            android:id="@+id/spinnerPolice"
+            android:id="@+id/spinnerScoreSolo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/temps_min"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <TextView
+            android:id="@+id/tvTempsMinSolo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/temps_hint"
+            android:textColor="?android:textColorSecondary"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taille_gride"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvGrilleColonneSolo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taille_hint_col"
+                android:textColor="?android:textColorSecondary"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"/>
+
+            <TextView
+                android:id="@+id/tvGrilleLigneSolo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taille_hint_lig"
+                android:textColor="?android:textColorSecondary"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"/>
+        </LinearLayout>
     </LinearLayout>
-    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/carte_background"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/statistique"
+                app:tint="?android:textColorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mode_multi"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"
+                android:textColor="?android:textColorPrimary"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/texte_animation"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupAnimationMulti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioAnimationMultiOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/son_activer"
+                android:textSize="14sp"
+                android:checked="true"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?attr/colorControlActivated"/>
+
+            <RadioButton
+                android:id="@+id/radioAnimationMultiOff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/son_desactiver"
+                android:textSize="14sp"
+                android:textColor="?android:textColorPrimary"
+                android:buttonTint="?attr/colorControlActivated"/>
+        </RadioGroup>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_atteindre"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <Spinner
+            android:id="@+id/spinnerScoreMulti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/temps_min"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <TextView
+            android:id="@+id/tvTempsMinMulti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/temps_hint"
+            android:textColor="?android:textColorSecondary"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taille_gride"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvGrilleColonneMulti"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taille_hint_col"
+                android:textColor="?android:textColorSecondary"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"/>
+
+            <TextView
+                android:id="@+id/tvGrilleLigneMulti"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/taille_hint_lig"
+                android:textColor="?android:textColorSecondary"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

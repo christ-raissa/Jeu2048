@@ -8,12 +8,12 @@
     android:padding="16dp">
 
     <ImageView
-    android:id="@+id/logoApp"
-    android:layout_width="32dp"
-    android:layout_height="32dp"
-    android:src="@mipmap/ic_launcher"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/logoApp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/signature"
@@ -181,6 +181,27 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/centerControlArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toBottomOf="@id/gameInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"> <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimation"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="15dp"
+        app:lottie_rawRes="@raw/sablier"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/endGameMenuSolo"
         android:layout_width="wrap_content"
@@ -227,38 +248,43 @@
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/endMessageSolo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
                 android:id="@+id/btnStatsSolo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="6dp"
-                android:src="@drawable/statistique"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/button_color_light"
                 android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:backgroundTint="@color/button_color_light" />
+                android:src="@drawable/statistique"
+                android:tint="@android:color/white" />
 
             <ImageButton
                 android:id="@+id/replayButtonSolo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="6dp"
-                android:src="@drawable/restart"
-                android:padding="15dp"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:backgroundTint="@color/button_color_light" />
+                android:src="@drawable/restart"
+                android:tint="@android:color/white" />
 
             <ImageButton
                 android:id="@+id/btnShareSolo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_margin="6dp"
-                android:src="@drawable/baseline_share_24"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/button_color_light"
                 android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:backgroundTint="@color/button_color_light" />
+                android:src="@drawable/baseline_share_24"
+                android:tint="@android:color/white" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

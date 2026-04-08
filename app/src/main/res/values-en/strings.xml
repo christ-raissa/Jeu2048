@@ -106,4 +106,14 @@
     <string name="suppimer">Reset this page</string>
 
 
+    <string name="mode_solo">Solo Mode</string>
+    <string name="mode_multi">Multi-players Mode</string>
+    <string name="texte_animation">Tuile Animation</string>
+    <string name="score_atteindre">Score à atteindre</string>
+    <string name="temps_min">Definir le temps en min</string>
+    <string name="temps_hint">Cliquez ici pour saisir le temps</string>
+    <string name="taille_gride">Definir la taille de la grille</string>
+    <string name="taille_hint_col">Saisir le nombre de colonnes</string>
+    <string name="taille_hint_lig">Saisir le nombre de lignes</string>
+
 </resources>

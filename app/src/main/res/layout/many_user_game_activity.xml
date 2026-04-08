@@ -127,7 +127,7 @@
             android:padding="12dp"
             android:scaleType="fitCenter"
             android:src="@drawable/restart"
-            android:contentDescription="Régler le temps" />
+            android:tint="@android:color/white" />
 
 
 
@@ -263,8 +263,12 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/statistique"
+                android:background="@drawable/rounded_bg"
                 android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/statistique"
+                android:tint="@android:color/white"
                 android:contentDescription="Stats" />
 
             <ImageButton
@@ -272,8 +276,12 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/restart"
+                android:background="@drawable/rounded_bg"
                 android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/restart"
+                android:tint="@android:color/white"
                 android:contentDescription="Replay" />
 
             <ImageButton
@@ -281,8 +289,12 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/baseline_share_24"
+                android:background="@drawable/rounded_bg"
                 android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_share_24"
+                android:tint="@android:color/white"
                 android:contentDescription="Partager" />
         </LinearLayout>
 

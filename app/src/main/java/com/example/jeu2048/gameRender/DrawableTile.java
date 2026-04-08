@@ -12,6 +12,9 @@ public class DrawableTile {
 
     private long value;
 
+    // ✅ AJOUT
+    private float scale = 1f;
+
     public DrawableTile(float x, float y, float width, float height, long value) {
         this.x = x;
         this.y = y;
@@ -77,6 +80,13 @@ public class DrawableTile {
     public void setAnimateY(float animateY) {
         this.animateY = animateY;
     }
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 
     @Override
     public String toString() {
@@ -88,6 +98,7 @@ public class DrawableTile {
                 ", width=" + width +
                 ", height=" + height +
                 ", value=" + value +
+                ", scale=" + scale +
                 '}';
     }
 }

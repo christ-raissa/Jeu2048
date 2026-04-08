@@ -38,7 +38,6 @@ public class SavedGameView implements Serializable {
 
     public void applyTo(GameView view) {
 
-        // 🔥 restore game
         game.initRandom(); // VERY IMPORTANT after deserialization
 
         view.setGame(game);
