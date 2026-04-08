@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@drawable/carte_background">
+
+    <TextView
+    android:id="@+id/tvConfirmTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="PARTAGER CETTE PARTIE ?"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textColor="?android:attr/textColorPrimary" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/separateur"
+        android:layout_marginVertical="16dp" />
+
+    <TextView
+        android:id="@+id/tvDetailsGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="6dp"
+        android:text="Score : 2048\nCoups : 150\nTemps : 05:30"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnCancelShare"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ANNULER"
+            android:background="@drawable/bouton_outline"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <Space android:layout_width="16dp" android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmActionShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENVOYER"
+            android:background="@drawable/bouton_filled"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            app:cornerRadius="20dp" />
+
+    </LinearLayout>
+</LinearLayout>
