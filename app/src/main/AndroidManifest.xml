@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="smsto" />
+        </intent>
+    </queries>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,48 +17,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeu2048">
 
+
+        <!-- Splash Screen -->
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Jeu2048.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false"
-            android:launchMode="singleTop" />
-
-        <activity
-            android:name=".ui.PartageActivity"
-            android:exported="false"
-            android:label="Partager une partie" />
-
+        </activity> <!-- Démo du jeu -->
         <activity
             android:name=".ui.DemoActivity"
+            android:exported="false" /> <!-- Page principale -->
+        <activity
+            android:name=".ui.MainActivity"
             android:exported="false" />
-
+      
         <activity
             android:name=".ui.StatistiqueActivity"
-            android:exported="false" />
+            android:exported="false"/>
 
         <activity
             android:name=".ui.SettingActivity"
-            android:exported="false" />
+            android:exported="false"/>
+     
 
-        <activity
-            android:name=".ui.OneUserGameActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+        <activity android:name=".ui.OneUserGameActivity"
+            android:exported="false"/>
 
-        <activity
-            android:name=".ui.MultiplayerGameActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
+        <activity android:name=".ui.MultiplayerGameActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

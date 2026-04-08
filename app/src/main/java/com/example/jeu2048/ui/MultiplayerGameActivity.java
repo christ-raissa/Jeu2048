@@ -113,6 +113,7 @@ public class MultiplayerGameActivity extends FontActivity {
             startGames();
         });
 
+
         loadGames();
     }
 
@@ -175,8 +176,18 @@ public class MultiplayerGameActivity extends FontActivity {
             intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
+        binding.btnShare.setOnClickListener( v->{
+            String gagnant = (numPlayer == 1) ? "Joueur 1" : "Joueur 2";
 
+            String messageSMS = "🎮 Duel 2048 terminé !\n" +
+                    "Vainqueur : " + gagnant + "\n\n" +
+                    "Détails :\n" +
+                    "• J1 : " + gameP1.getScore() + " pts (Tuile: " + gameP1.getMaxTile() + ")\n" +
+                    "• J2 : " + gameP2.getScore() + " pts (Tuile: " + gameP2.getMaxTile() + ")\n" +
+                    "Durée : " + dureeSec + " sec";
 
+            ouvrirApplicationMessage(messageSMS);
+        });
 
         binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
 
@@ -330,5 +341,16 @@ public class MultiplayerGameActivity extends FontActivity {
                 gameP2.getMaxTile(),
                 gameDurationMillis
         );
+    }
+
+    private void ouvrirApplicationMessage(String message) {
+        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+        intent.setData(android.net.Uri.parse("smsto:"));
+        intent.putExtra("sms_body", message);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            android.widget.Toast.makeText(this, "Application SMS introuvable", android.widget.Toast.LENGTH_SHORT).show();
+        }
     }
 }

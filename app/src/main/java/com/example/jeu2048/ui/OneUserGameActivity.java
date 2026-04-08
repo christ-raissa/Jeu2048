@@ -147,7 +147,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         finish();
     }
     private void displayEndMenu(String titre, String resultat, long dureeMillis) {
-        binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
+        binding.endGameMenuSolo.setVisibility(android.view.View.VISIBLE);
         binding.gameView.setPaused(true);
 
         binding.tvEndStatus.setText(titre);
@@ -160,27 +160,40 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         binding.endMessageSolo.setText(message);
 
         // Bouton Rejouer
-        binding.replayButton.setOnClickListener(v -> {
+        binding.replayButtonSolo.setOnClickListener(v -> {
             isSaving = false;
             numMoves = 0;
-            binding.endGameMenu.setVisibility(android.view.View.GONE);
+            binding.endGameMenuSolo.setVisibility(android.view.View.GONE);
             binding.gameView.setPaused(false);
             binding.gameView.initGame();
             startTimer(); // Relancer le chrono
         });
 
         // Bouton Statistiques
-        binding.btnStats.setOnClickListener(v -> {
+        binding.btnStatsSolo.setOnClickListener(v -> {
             ouvrirStatistiques();
         });
 
 
-        binding.btnShare.setOnClickListener(v -> {
-            android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Mon score au 2048 : " + scoreStr);
-            startActivity(android.content.Intent.createChooser(shareIntent, "Partager mon score"));
+        binding.btnShareSolo.setOnClickListener(v -> {
+            long maxTileValue = binding.gameView.getMaxTile();
+            String messageSMS = "Salut ! Regarde ma partie sur 2048 :\n" +
+                    "Score : " + scoreStr + "\n" +
+                    "Tuile Max : " + maxTileValue + "\n" +
+                    "Mouvements : " + numMoves + "\n\n";
+
+            ouvrirApplicationMessage(messageSMS);
         });
+    }
+    private void ouvrirApplicationMessage(String message) {
+        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SENDTO);
+        intent.setData(android.net.Uri.parse("smsto:"));
+        intent.putExtra("sms_body", message);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            android.widget.Toast.makeText(this, "Application SMS introuvable", android.widget.Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startTimer() {
