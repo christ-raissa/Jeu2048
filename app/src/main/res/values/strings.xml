@@ -18,7 +18,7 @@
     <!-- Jeu solo -->
     <string name="score">SCORE</string>
     <string name="meilleur_score">MEILLEUR SCORE</string>
-    <string name="coups">%d COUPS</string>
+    <string name="coups">COUPS</string>
 
     <!-- Jeu à deux -->
     <string name="timer_p1">TIMER P1</string>
@@ -28,6 +28,7 @@
     <string name="player1_won">PLAYER 1 WON!</string>
 
     <!-- Paramètres -->
+    <string name="titre_acceuil">Acceuil</string>
     <string name="titre_parametres">Paramètres</string>
     <string name="titre_statistiques">Statistiques</string>
     <string name="stats_avertissement">Les parties en cours ne sont pas comptabilisées</string>
@@ -76,4 +77,17 @@
     <string name="premier">Premier</string>
     <string name="deuxieme">Deuxième</string>
     <string name="troisieme">Troisième</string>
+    <string name="cliquez_ici_pour_saisir_votre_nom">Cliquez ici pour saisir votre nom</string>
+    <string name="les_parties_en_cours_ne_sont_pas_comptabilis_es">Les parties en cours ne sont pas comptabilisées</string>
+    <string name="partager_cette_partie">PARTAGER CETTE PARTIE ?</string>
+    <string name="taper_votre_nom_ici">Taper votre nom ici ...</string>
+    <string name="partie_termine">PARTIE TERMINÉE</string>
+
+    <string name="partage_score">Score</string>
+    <string name="partage_coups">Coups</string>
+    <string name="partage_duree">Durée</string>
+
+
+    <string name="parametre_pseudo_pre">Salut : </string>
+    <string name="parametre_changer_nom">Choisissez votre nom : </string>
 </resources>
