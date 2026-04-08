@@ -118,7 +118,7 @@
             android:background="@color/separateur" />
 
         <ImageButton
-            android:id="@+id/btnSetTimer"
+            android:id="@+id/btnRestartMulti"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
@@ -126,8 +126,10 @@
             android:backgroundTint="@color/button_color_light"
             android:padding="12dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/bouton_filled"
+            android:src="@drawable/restart"
             android:contentDescription="Régler le temps" />
+
+
 
     </LinearLayout>
 

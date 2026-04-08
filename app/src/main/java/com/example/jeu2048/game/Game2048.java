@@ -11,12 +11,13 @@ import com.example.jeu2048.game.result.TilePop;
 import com.example.jeu2048.game.result.TileSpawn;
 import com.example.jeu2048.game.result.TileUpgrade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Game2048 {
+public class Game2048 implements Serializable {
     private static class LineAndResult {
         public long[] line;
         public MoveResult result = new MoveResult();

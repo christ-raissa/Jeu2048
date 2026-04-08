@@ -86,11 +86,17 @@
     <string name="partage_score">Score</string>
     <string name="partage_coups">Coups</string>
     <string name="partage_duree">Durée</string>
-
+    <string name="partage_tuile_meilleur">Meilleure tuile</string>
 
     <string name="parametre_pseudo_pre">Salut : </string>
     <string name="parametre_changer_nom">Choisissez votre nom : </string>
 
     <string name="partage_entete">Mon score au 2048 : </string>
     <string name="partage_valider">Partager mon score</string>
+
+    <string name="resultat_multi">Resultat</string>
+    <string name="multi_victoire">Victoire</string>
+    <string name="multi_defaite">Defaite</string>
+    <string name="joueur">Joueur</string>
+    <string name="multi_fin">Duel 2048 terminé</string>
 </resources>

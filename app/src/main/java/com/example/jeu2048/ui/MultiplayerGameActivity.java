@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.ManyUserGameActivityBinding;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
@@ -113,6 +114,10 @@ public class MultiplayerGameActivity extends FontActivity {
             startGames();
         });
 
+        binding.btnRestartMulti.setOnClickListener(v -> {
+            startGames();
+        });
+
 
         loadGames();
     }
@@ -163,12 +168,12 @@ public class MultiplayerGameActivity extends FontActivity {
         gameP2.setPaused(true);
         if (gameTimer != null) gameTimer.cancel();
 
-        String resP1 = (numPlayer == 1) ? "GAGNÉ" : "PERDU";
-        String resP2 = (numPlayer == 2) ? "GAGNÉ" : "PERDU";
+        String resP1 = (numPlayer == 1) ? getString(R.string.multi_victoire) : getString(R.string.multi_defaite);
+        String resP2 = (numPlayer == 2) ? getString(R.string.multi_victoire) : getString(R.string.multi_defaite);
         long dureeSec = gameDurationMillis / 1000;
 
-        binding.endMessageP1.setText("Résultat : " + resP1 + "\nScore : " + gameP1.getScore() + "\nDurée : " + dureeSec + "s");
-        binding.endMessageP2.setText("Résultat : " + resP2 + "\nScore : " + gameP2.getScore() + "\nDurée : " + dureeSec + "s");
+        binding.endMessageP1.setText(getString(R.string.resultat_multi) + " : " + resP1 + "\n" + getString(R.string.score) + " : " + gameP1.getScore() + "\n" + getString(R.string.partage_duree) + " : " + dureeSec + "s");
+        binding.endMessageP2.setText(getString(R.string.resultat_multi) + " : " + resP2 + "\n" + getString(R.string.score) + " : " + gameP2.getScore() + "\n" + getString(R.string.partage_duree) + " : " + dureeSec + "s");
 
         binding.btnStats.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(this, StatistiqueActivity.class);
@@ -177,13 +182,13 @@ public class MultiplayerGameActivity extends FontActivity {
             startActivity(intent);
         });
         binding.btnShare.setOnClickListener( v->{
-            String gagnant = (numPlayer == 1) ? "Joueur 1" : "Joueur 2";
+            String gagnant = (numPlayer == 1) ? getString(R.string.joueur) + " 1" : getString(R.string.joueur) + " 2";
 
-            String messageSMS = "🎮 Duel 2048 terminé !\n" +
-                    "Vainqueur : " + gagnant + "\n\n" +
-                    "Détails :\n" +
-                    "• J1 : " + gameP1.getScore() + " pts (Tuile: " + gameP1.getMaxTile() + ")\n" +
-                    "• J2 : " + gameP2.getScore() + " pts (Tuile: " + gameP2.getMaxTile() + ")\n" +
+            String messageSMS = getString(R.string.multi_fin) + "\n" +
+                    getString(R.string.multi_victoire) + " : " + gagnant + "\n\n" +
+                    getString(R.string.resultat_multi) + " :\n" +
+                    "• " + getString(R.string.joueur) + "1 : " + gameP1.getScore() + " pts (" + getString(R.string.stat_tuile_max) + " : " + gameP1.getMaxTile() + ")\n" +
+                    "• " + getString(R.string.joueur) + "2 : " + gameP2.getScore() + " pts (" + getString(R.string.stat_tuile_max) + ": " + gameP2.getMaxTile() + ")\n" +
                     "Durée : " + dureeSec + " sec";
 
             ouvrirApplicationMessage(messageSMS);
@@ -284,9 +289,11 @@ public class MultiplayerGameActivity extends FontActivity {
             ois2.close();
             fis2.close();
 
+            // startTimer(saveP1.getElapsedTime(), this::onTimeUp);
+
             // Pause until user resumes
-            gameP1.setPaused(true);
-            gameP2.setPaused(true);
+            gameP1.setPaused(false);
+            gameP2.setPaused(false);
 
         } catch (Exception e) {
             e.printStackTrace();

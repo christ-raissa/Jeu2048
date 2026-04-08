@@ -132,7 +132,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         long maxTile = gameView.getMaxTile();
 
         dba.insertScore(
-                settingsHelper.getSingleUsername(),
+                settingsHelper.getUsername(),
                 scoreFinal,
                 numMoves,
                 resultat,
@@ -177,10 +177,10 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
 
         binding.btnShareSolo.setOnClickListener(v -> {
             long maxTileValue = binding.gameView.getMaxTile();
-            String messageSMS = "Salut ! Regarde ma partie sur 2048 :\n" +
-                    "Score : " + scoreStr + "\n" +
-                    "Tuile Max : " + maxTileValue + "\n" +
-                    "Mouvements : " + numMoves + "\n\n";
+            String messageSMS = getString(R.string.partage_entete) + " :\n" +
+                    getString(R.string.partage_score) + ": " + scoreStr + "\n" +
+                    getString(R.string.partage_tuile_meilleur) + " : " + maxTileValue + "\n" +
+                    getString(R.string.partage_coups) + " : " + numMoves + "\n\n";
 
             ouvrirApplicationMessage(messageSMS);
         });
@@ -251,6 +251,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
 
     @Override
     protected void onStop() {
+        Log.d("GAME2048", "onStop: lifecycle stop... Saving game");
         super.onStop();
         pauseTimers();
         saveGame();
