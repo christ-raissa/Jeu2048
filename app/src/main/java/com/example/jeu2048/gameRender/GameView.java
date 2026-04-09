@@ -118,15 +118,29 @@ public class GameView extends View {
         init(true);
     }
 
-    private void init(boolean solo) {
+    public void init(boolean solo) {
         // Log.d("GAME2048", "GameView: Creating gameView!");
         settingsHelper = new SettingsHelper(this.getContext());
+
+        animating = false;
 
         isSolo = solo;
 
         initGame();
         initDraw();
         initSwipe();
+    }
+
+    private void updateGridRect(int w, int h) {
+        if (game == null) return;
+
+        int cellSize = Math.min(w / game.getWidth(), h / game.getWidth());
+        cellWidth = cellSize;
+        cellHeight = cellSize;
+
+        int gridW = cellSize * game.getWidth();
+        int gridH = cellSize * game.getHeight();
+        gridRect.set(0, 0, gridW, gridH);
     }
 
     @Override
@@ -155,6 +169,8 @@ public class GameView extends View {
         gameStartTime = System.currentTimeMillis();
         gameEndTime = 0;
 
+        updateGridRect(getWidth(), getHeight());
+
         MoveResult spawnResult = game.spawnValues(2);
         startTilesAnimation(spawnResult);
         emitStart();
@@ -164,14 +180,11 @@ public class GameView extends View {
         theme = settingsHelper.getTheme(this.getContext());
 
         if (settingsHelper.areAnimationsEnabled()) {
-
-            // Durée totale idéale ~180ms
-            long total = (long) (settingsHelper.getAnimationSpeed() * 280);
-
-            firstMoveTimeMillis = (long) (total * 0.65);  // deplacement
-            middleTimeMillis = (long) (total * 0.15);
-            lastMoveTimeMillis = (long) (total * 0.05);
-            endTimeMillis = (long) (total * 0.15);     // apparition
+            Log.d("GAME2048", "initDraw: animation ok : " + settingsHelper.getAnimationSpeed());
+            firstMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);  // deplacement
+            middleTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+            lastMoveTimeMillis = (long) (settingsHelper.getAnimationSpeed() * 1000);
+            endTimeMillis = (long) (settingsHelper.getAnimationSpeed()) * 1000;     // apparition
 
         } else {
             firstMoveTimeMillis = 0;
@@ -248,16 +261,6 @@ public class GameView extends View {
         updateGridRect(w, h);
     }
 
-    private void updateGridRect(int w, int h) {
-        if (game == null) return;
-        int cellSize = (Math.min(w, h)) / game.getWidth();
-        cellWidth = cellSize;
-        cellHeight = cellSize;
-        int gridW = cellSize * game.getWidth();
-        int gridH = cellSize * game.getHeight();
-        gridRect.set(0, 0, gridW, gridH);
-    }
-
     private void updateAfterMove(MoveResult results) {
         // Log.d("GAME2048", "updateAfterMove: \n" + game.toString());
         startTilesAnimation(results);
@@ -301,10 +304,10 @@ public class GameView extends View {
         long max = 0;
         long[][] grid = game.getGrid();
 
-        for (int x = 0; x < game.getWidth(); x++) {
-            for (int y = 0; y < game.getHeight(); y++) {
-                if (grid[x][y] > max) {
-                    max = grid[x][y];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] > max) {
+                    max = grid[i][j];
                 }
             }
         }
@@ -405,16 +408,16 @@ public class GameView extends View {
         }
     }
 
-     void syncTiles() {
+    void syncTiles() {
         if (game == null) return;
 
         drawableTiles = new ArrayList<>();
 
         long[][] grid = game.getGrid();
-        for (int y = 0; y < game.getHeight(); y++) {
-            for (int x = 0; x < game.getWidth(); x++) {
-                if (grid[x][y] > 0) {
-                    drawableTiles.add(new DrawableTile(x * cellWidth, y * cellHeight, cellWidth, cellHeight, grid[x][y]));
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] > 0) {
+                    drawableTiles.add(new DrawableTile(i * cellWidth, j * cellHeight, cellWidth, cellHeight, grid[i][j]));
                 }
             }
         }
@@ -483,5 +486,9 @@ public class GameView extends View {
 
     public void setMode(GameMode mode) {
         this.mode = mode;
+    }
+
+    public void setSolo(boolean isSolo) {
+        this.isSolo = isSolo;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jeu2048.ui;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -7,18 +8,17 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import android.content.Intent;
-import android.net.Uri;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.ManyUserGameActivityBinding;
+import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
 import com.example.jeu2048.gameRender.SavedGameView;
 import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SettingsHelper;
+import com.example.jeu2048.utils.CountUpTimer;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,6 +30,7 @@ public class MultiplayerGameActivity extends FontActivity {
     ManyUserGameActivityBinding binding;
 
     private CountDownTimer gameTimer;
+    private CountUpTimer countUpTimer;
 
     TextView timerP1;
     TextView timerP2;
@@ -39,12 +40,15 @@ public class MultiplayerGameActivity extends FontActivity {
 
     ImageButton replayButton;
 
-    long gameDurationMillis = 60_000;
-    long remainingTimeMillis;
+    private SettingsHelper settingsHelper;
+    private GameMode mode;
+
+    long gameDurationMillis;
+    long elapsedTimeMillis = 0;
 
     Dbhelper dba;
 
-
+    private boolean gameFinished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,10 @@ public class MultiplayerGameActivity extends FontActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
+
+        settingsHelper = new SettingsHelper(this);
+        mode = settingsHelper.getMultiMode();
+        gameDurationMillis = settingsHelper.getMultiTimeLimit() * 1000L;
 
         timerP1 = binding.timerP1;
         timerP2 = binding.timerP2;
@@ -69,16 +77,18 @@ public class MultiplayerGameActivity extends FontActivity {
         gameP1.sub(new GameViewListener() {
             @Override
             public void OnScoreChange(long from, long to) {
-                if (to > Long.parseLong(binding.p1Best.getText().toString())) {
-                    binding.p1Best.setText("" + to);
+                long currentBest = 0;
+                try {
+                    currentBest = Long.parseLong(binding.p1Best.getText().toString());
+                } catch (NumberFormatException ignored) {}
+                if (to > currentBest) {
+                    binding.p1Best.setText(String.valueOf(to));
                 }
-                binding.p1Score.setText("" + to);
+                binding.p1Score.setText(String.valueOf(to));
             }
 
             @Override
-            public void OnStart() {
-
-            }
+            public void OnStart() {}
 
             @Override
             public void OnGameOver(long dureeMillis) {
@@ -94,10 +104,14 @@ public class MultiplayerGameActivity extends FontActivity {
         gameP2.sub(new GameViewListener() {
             @Override
             public void OnScoreChange(long from, long to) {
-                if (to > Long.parseLong(binding.p2Best.getText().toString())) {
-                    binding.p2Best.setText("" + to);
+                long currentBest = 0;
+                try {
+                    currentBest = Long.parseLong(binding.p2Best.getText().toString());
+                } catch (NumberFormatException ignored) {}
+                if (to > currentBest) {
+                    binding.p2Best.setText(String.valueOf(to));
                 }
-                binding.p2Score.setText("" + to);
+                binding.p2Score.setText(String.valueOf(to));
             }
 
             @Override
@@ -114,50 +128,95 @@ public class MultiplayerGameActivity extends FontActivity {
             }
         });
 
-        replayButton.setOnClickListener(v -> {
-            startGames();
-        });
-
-        binding.btnRestartMulti.setOnClickListener(v -> {
-            startGames();
-        });
-
+        replayButton.setOnClickListener(v -> startGames());
+        binding.btnRestartMulti.setOnClickListener(v -> startGames());
 
         loadGames();
     }
 
-    private void startTimer(long durationMillis, Runnable onFinish) {
-        remainingTimeMillis = durationMillis;
+    // ================= TIMERS =================
+    private void startTimer() {
+        pauseTimers();
 
-        gameTimer = new CountDownTimer(durationMillis, 1000) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                remainingTimeMillis = millisUntilFinished;
-
-                updateTimerUI();
+        if (mode == GameMode.TimeLimit) {
+            long remainingMs = gameDurationMillis - elapsedTimeMillis;
+            if (remainingMs <= 0) {
+                onTimeUp();
+                return;
             }
 
-            @Override
-            public void onFinish() {
-                remainingTimeMillis = 0;
+            gameTimer = new CountDownTimer(remainingMs, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    elapsedTimeMillis = gameDurationMillis - millisUntilFinished;
+                    updateTimerUI(millisUntilFinished / 1000);
+                }
 
-                timerP1.setText("0");
-                timerP2.setText("0");
-                onFinish.run();
-            }
-        }.start();
+                @Override
+                public void onFinish() {
+                    elapsedTimeMillis = gameDurationMillis;
+                    updateTimerUI(0);
+                    gameTimer = null;
+                    onTimeUp();
+                }
+            }.start();
+
+        } else {
+            // Mode ScoreObjective : count up, pas de fin automatique
+            long startOffset = elapsedTimeMillis;
+
+            countUpTimer = new CountUpTimer() {
+                @Override
+                public void onTick(long millis) {
+                    elapsedTimeMillis = startOffset + millis;
+                    updateTimerUI(elapsedTimeMillis / 1000);
+                }
+            };
+            countUpTimer.start();
+        }
     }
 
+    private void pauseTimers() {
+        if (gameTimer != null) {
+            gameTimer.cancel();
+            gameTimer = null;
+        }
+        if (countUpTimer != null) {
+            countUpTimer.stop();
+            countUpTimer = null;
+        }
+    }
+
+    private void updateTimerUI(long seconds) {
+        timerP1.setText(String.valueOf(seconds));
+        timerP2.setText(String.valueOf(seconds));
+    }
+
+    // ================= GAME FLOW =================
     private void startGames() {
-        gameP1.initGame();
-        gameP2.initGame();
+        gameFinished = false;
+        elapsedTimeMillis = 0;
+
+        gameP1.init(false);
+        gameP2.init(false);
         gameP1.setPaused(false);
         gameP2.setPaused(false);
 
-        startTimer(gameDurationMillis, this::onTimeUp);
+        startTimer();
 
         binding.endGameMenu.setVisibility(ConstraintLayout.GONE);
+    }
+
+    private void pauseGame() {
+        pauseTimers();
+        gameP1.setPaused(true);
+        gameP2.setPaused(true);
+    }
+
+    private void resumeGame() {
+        gameP1.setPaused(false);
+        gameP2.setPaused(false);
+        startTimer();
     }
 
     private void setEndMessagesText(String text) {
@@ -166,27 +225,35 @@ public class MultiplayerGameActivity extends FontActivity {
     }
 
     private void triggerWin(int numPlayer) {
+        if (gameFinished) return;
+        gameFinished = true;
+
         clearSavedGames();
         playEndSound();
 
         gameP1.setPaused(true);
         gameP2.setPaused(true);
-        if (gameTimer != null) gameTimer.cancel();
+        pauseTimers();
 
         String resP1 = (numPlayer == 1) ? getString(R.string.multi_victoire) : getString(R.string.multi_defaite);
         String resP2 = (numPlayer == 2) ? getString(R.string.multi_victoire) : getString(R.string.multi_defaite);
-        long dureeSec = gameDurationMillis / 1000;
+        long dureeSec = elapsedTimeMillis / 1000;
 
-        binding.endMessageP1.setText(getString(R.string.resultat_multi) + " : " + resP1 + "\n" + getString(R.string.score) + " : " + gameP1.getScore() + "\n" + getString(R.string.partage_duree) + " : " + dureeSec + "s");
-        binding.endMessageP2.setText(getString(R.string.resultat_multi) + " : " + resP2 + "\n" + getString(R.string.score) + " : " + gameP2.getScore() + "\n" + getString(R.string.partage_duree) + " : " + dureeSec + "s");
+        binding.endMessageP1.setText(getString(R.string.resultat_multi) + " : " + resP1 + "\n"
+                + getString(R.string.score) + " : " + gameP1.getScore() + "\n"
+                + getString(R.string.partage_duree) + " : " + dureeSec + "s");
+        binding.endMessageP2.setText(getString(R.string.resultat_multi) + " : " + resP2 + "\n"
+                + getString(R.string.score) + " : " + gameP2.getScore() + "\n"
+                + getString(R.string.partage_duree) + " : " + dureeSec + "s");
 
         binding.btnStats.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(this, StatistiqueActivity.class);
+            Intent intent = new Intent(this, StatistiqueActivity.class);
             intent.putExtra("MODE_JEU", "MULTI");
-            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
-        binding.btnShare.setOnClickListener( v->{
+
+        binding.btnShare.setOnClickListener(v -> {
             String gagnant = (numPlayer == 1) ? getString(R.string.joueur) + " 1" : getString(R.string.joueur) + " 2";
 
             String messageSMS = getString(R.string.multi_fin) + "\n" +
@@ -199,7 +266,7 @@ public class MultiplayerGameActivity extends FontActivity {
             partagerTexte(messageSMS);
         });
 
-        binding.endGameMenu.setVisibility(android.view.View.VISIBLE);
+        binding.endGameMenu.setVisibility(View.VISIBLE);
 
         saveMultiplayerScores(numPlayer);
     }
@@ -231,31 +298,11 @@ public class MultiplayerGameActivity extends FontActivity {
         }
     }
 
-    private void updateTimerUI() {
-        long seconds = remainingTimeMillis / 1000;
-        timerP1.setText(String.valueOf(seconds));
-        timerP2.setText(String.valueOf(seconds));
-    }
-
-    private void pauseGame() {
-        if (gameTimer != null) gameTimer.cancel();
-
-        gameP1.setPaused(true);
-        gameP2.setPaused(true);
-    }
-
-    private void resumeGame() {
-        gameP1.setPaused(false);
-        gameP2.setPaused(false);
-
-        startTimer(remainingTimeMillis, this::onTimeUp);
-    }
-
+    // ================= SAVE / LOAD =================
     private void pauseAndSaveGames() {
         pauseGame();
 
         try {
-            // Save Player 1
             SavedGameView saveP1 = SavedGameView.fromGameView(gameP1);
             FileOutputStream fos1 = openFileOutput("saveP1.dat", MODE_PRIVATE);
             ObjectOutputStream oos1 = new ObjectOutputStream(fos1);
@@ -263,7 +310,6 @@ public class MultiplayerGameActivity extends FontActivity {
             oos1.close();
             fos1.close();
 
-            // Save Player 2
             SavedGameView saveP2 = SavedGameView.fromGameView(gameP2);
             FileOutputStream fos2 = openFileOutput("saveP2.dat", MODE_PRIVATE);
             ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
@@ -278,7 +324,7 @@ public class MultiplayerGameActivity extends FontActivity {
         try {
             FileOutputStream fosTime = openFileOutput("time.dat", MODE_PRIVATE);
             ObjectOutputStream oosTime = new ObjectOutputStream(fosTime);
-            oosTime.writeLong(remainingTimeMillis);
+            oosTime.writeLong(elapsedTimeMillis);
             oosTime.close();
             fosTime.close();
         } catch (Exception e) {
@@ -288,7 +334,6 @@ public class MultiplayerGameActivity extends FontActivity {
 
     private void loadGames() {
         try {
-            // Load Player 1
             FileInputStream fis1 = openFileInput("saveP1.dat");
             ObjectInputStream ois1 = new ObjectInputStream(fis1);
             SavedGameView saveP1 = (SavedGameView) ois1.readObject();
@@ -296,7 +341,6 @@ public class MultiplayerGameActivity extends FontActivity {
             ois1.close();
             fis1.close();
 
-            // Load Player 2
             FileInputStream fis2 = openFileInput("saveP2.dat");
             ObjectInputStream ois2 = new ObjectInputStream(fis2);
             SavedGameView saveP2 = (SavedGameView) ois2.readObject();
@@ -307,31 +351,31 @@ public class MultiplayerGameActivity extends FontActivity {
             try {
                 FileInputStream fisTime = openFileInput("time.dat");
                 ObjectInputStream oisTime = new ObjectInputStream(fisTime);
-                remainingTimeMillis = oisTime.readLong();
+                elapsedTimeMillis = oisTime.readLong();
                 oisTime.close();
                 fisTime.close();
             } catch (Exception e) {
-                remainingTimeMillis = gameDurationMillis;
+                elapsedTimeMillis = 0;
             }
-
-            startTimer(remainingTimeMillis, this::onTimeUp);
-
-            // UI
-            updateTimerUI();
 
             gameP1.setPaused(false);
             gameP2.setPaused(false);
+
+            startTimer();
 
         } catch (Exception e) {
             e.printStackTrace();
             startGames();
         }
     }
+
     private void clearSavedGames() {
         deleteFile("saveP1.dat");
         deleteFile("saveP2.dat");
+        deleteFile("time.dat");
     }
 
+    // ================= LIFECYCLE =================
     @Override
     protected void onPause() {
         super.onPause();
@@ -339,52 +383,47 @@ public class MultiplayerGameActivity extends FontActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        pauseAndSaveGames();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (gameTimer != null) gameTimer.cancel();
+        pauseTimers();
     }
 
-    // Sauvergarde dans la base de donnée
+    // ================= DB =================
     private void saveMultiplayerScores(int winnerNum) {
         String p1Status = (winnerNum == 1) ? "Gagné (Multi)" : "Perdu (Multi)";
         String p2Status = (winnerNum == 2) ? "Gagné (Multi)" : "Perdu (Multi)";
 
-        // Sauvegarde pour le Joueur 1
         dba.insertScore(
                 "Joueur 1",
                 gameP1.getScore(),
                 gameP1.getNumMoves(),
                 p1Status,
                 gameP1.getMaxTile(),
-                gameDurationMillis
+                elapsedTimeMillis
         );
 
-        // Sauvegarde pour le Joueur 2
         dba.insertScore(
                 "Joueur 2",
                 gameP2.getScore(),
                 gameP2.getNumMoves(),
                 p2Status,
                 gameP2.getMaxTile(),
-                gameDurationMillis
+                elapsedTimeMillis
         );
     }
 
+    // ================= UTILS =================
     private void partagerTexte(String message) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(intent, "Partager avec"));
     }
+
     private void playEndSound() {
         try {
             MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.lose);
+            mediaPlayer.setOnCompletionListener(MediaPlayer::release);
             mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,10 +3,13 @@ package com.example.jeu2048.ui;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -24,7 +27,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 
 import com.example.jeu2048.R;
+import com.example.jeu2048.databinding.ActivitySettingBinding;
+import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.settings.FontActivity;
+
+import java.util.Arrays;
+import java.util.List;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
@@ -42,6 +50,7 @@ public class SettingActivity extends FontActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_setting);
 
         getWindow().getDecorView().setSystemUiVisibility(
@@ -59,6 +68,9 @@ public class SettingActivity extends FontActivity {
         setupLanguageSpinner();
         // setupPoliceSpinner();
         setupMusicSpinner();
+        setupScoreSpinners();
+        setupModeSpinners();
+        setupInputTexts();
     }
 
     // methode gestion de la boite de dialogue
@@ -321,6 +333,228 @@ public class SettingActivity extends FontActivity {
         });
     }
 
+    private void setupScoreSpinners() {
+        Spinner spinner1 = findViewById(R.id.spinnerScoreSolo);
+        Spinner spinner2 = findViewById(R.id.spinnerScoreMulti);
+        List<String> options = Arrays.asList("2048", "1024", "512", "256", "128");
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, options);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter1);
+        spinner2.setAdapter(adapter2);
+
+        int soloIndex = options.indexOf(String.valueOf(settingsHelper.getSingleTargetScore()));
+        if (soloIndex < 0) soloIndex = 0;
+        spinner1.setSelection(soloIndex, false);
+
+        int multiIndex = options.indexOf(String.valueOf(settingsHelper.getMultiTargetScore()));
+        if (multiIndex < 0) multiIndex = 0;
+        spinner2.setSelection(multiIndex, false);
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choix = options.get(position);
+                int score = Integer.parseInt(choix);
+                settingsHelper.setSingleTargetScore(score);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                settingsHelper.setSingleTargetScore(2048);
+            }
+        });
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choix = options.get(position);
+                int score = Integer.parseInt(choix);
+                settingsHelper.setMultiTargetScore(score);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                settingsHelper.setSingleTargetScore(2048);
+            }
+        });
+    }
+
+    private void setupModeSpinners() {
+        Spinner spinner1 = findViewById(R.id.spinnerModeSolo);
+        Spinner spinner2 = findViewById(R.id.spinnerModeMulti);
+        List<String> options = Arrays.asList("Score", "Chrono");
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, options);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter1);
+        spinner2.setAdapter(adapter2);
+
+        switch (settingsHelper.getSingleMode()) {
+            case TimeLimit:
+                spinner1.setSelection(1, false);
+                break;
+            case ScoreObjective:
+                spinner1.setSelection(0, false);
+                break;
+            default:
+                spinner1.setSelection(0, false);
+                break;
+        }
+
+        switch (settingsHelper.getMultiMode()) {
+            case TimeLimit:
+                spinner2.setSelection(1, false);
+                break;
+            case ScoreObjective:
+                spinner2.setSelection(0, false);
+                break;
+            default:
+                spinner2.setSelection(1, false);
+                break;
+        }
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choix = options.get(position);
+                if (choix.equals("Chrono")) {
+                    settingsHelper.setSingleMode(GameMode.TimeLimit);
+                } else if (choix.equals("Chrono")) {
+                    settingsHelper.setSingleMode(GameMode.ScoreObjective);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                settingsHelper.setSingleMode(GameMode.ScoreObjective);
+            }
+        });
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String choix = options.get(position);
+                if (choix.equals("Chrono")) {
+                    settingsHelper.setSingleMode(GameMode.TimeLimit);
+                } else if (choix.equals("Chrono")) {
+                    settingsHelper.setMultiMode(GameMode.ScoreObjective);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                settingsHelper.setMultiMode(GameMode.TimeLimit);
+            }
+        });
+    }
+
+    public void setupInputTexts() {
+        EditText timeSingle = findViewById(R.id.tvTempsMinSolo);
+        EditText timeMulti = findViewById(R.id.tvTempsMinMulti);
+
+        EditText widthSolo = findViewById(R.id.tvGrilleColonneSolo);
+        EditText heightSolo = findViewById(R.id.tvGrilleLigneSolo);
+
+        EditText widthMulti = findViewById(R.id.tvGrilleColonneMulti);
+        EditText heightMulti = findViewById(R.id.tvGrilleLigneMulti);
+
+        Log.d("GAME2048", "setupInputTexts: \n" + timeSingle + "\n" + timeMulti + "\n" + widthSolo + "\n" + heightSolo + "\n" + widthMulti + "\n" + heightMulti);
+
+        timeSingle.setText(String.valueOf(settingsHelper.getSingleTimeLimit()));
+        timeMulti.setText(String.valueOf(settingsHelper.getMultiTimeLimit()));
+
+        widthSolo.setText(String.valueOf(settingsHelper.getSingleCols()));
+        heightSolo.setText(String.valueOf(settingsHelper.getSingleRows()));
+
+        widthMulti.setText(String.valueOf(settingsHelper.getMultiCols()));
+        heightMulti.setText(String.valueOf(settingsHelper.getMultiRows()));
+
+        timeSingle.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int timeMin = Integer.parseInt(s.toString());
+                    settingsHelper.setSingleTimeLimit(timeMin);
+                } catch (Exception e) {
+                }
+            }
+        });
+
+        timeMulti.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int timeMin = Integer.parseInt(s.toString());
+                    settingsHelper.setMultiTimeLimit(timeMin);
+                } catch (Exception e) {
+                }
+            }
+        });
+
+        widthSolo.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int width = Integer.parseInt(s.toString());
+                    settingsHelper.setSingleGridSize(settingsHelper.getSingleRows(), width);
+                } catch (Exception e) {
+                }
+            }
+        });
+
+        heightSolo.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int height = Integer.parseInt(s.toString());
+                    settingsHelper.setSingleGridSize(height, settingsHelper.getSingleCols());
+                } catch (Exception e) {
+                }
+            }
+        });
+
+        widthMulti.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int width = Integer.parseInt(s.toString());
+                    settingsHelper.setMultiGridSize(settingsHelper.getMultiRows(), width);
+                } catch (Exception e) {
+                }
+            }
+        });
+
+        heightMulti.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int height = Integer.parseInt(s.toString());
+                    settingsHelper.setSingleGridSize(height, settingsHelper.getMultiCols());
+                } catch (Exception e) {
+                }
+            }
+        });
+    }
+}
+
     /*
     // methode pour la gestion de la police
     private void setupPoliceSpinner() {
@@ -341,4 +575,3 @@ public class SettingActivity extends FontActivity {
         });
     }
     */
-}

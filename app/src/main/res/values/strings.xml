@@ -105,7 +105,7 @@
     <string name="mode_multi">Mode Multi-Joueur</string>
     <string name="texte_animation">Animation tuile</string>
     <string name="score_atteindre">Score à atteindre</string>
-    <string name="temps_min">Definir le temps en min</string>
+    <string name="temps_min">Definir le temps en secondes</string>
     <string name="temps_hint">Cliquez ici pour saisir le temps</string>
     <string name="taille_gride">Definir la taille de la grille</string>
     <string name="taille_hint_col">Saisir le nombre de colonnes</string>
@@ -114,7 +114,7 @@
     <string name="text_renitialisé">Réinitialisation</string>
     <string name="message">Voulez vous renitialiser la page ?</string>
     <string name="suppimer">Renitialiser</string>
-
+    <string name="choisir_mode">Choisissez le mode</string>
 
 
 </resources>

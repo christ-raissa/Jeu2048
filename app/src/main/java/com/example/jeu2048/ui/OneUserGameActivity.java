@@ -65,7 +65,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
             numMoves = 0;
             elapsedTimeMillis = 0;
 
-            gameView.initGame();
+            gameView.init(true);
             startTimer();
         });
 
@@ -90,7 +90,15 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
     @Override
     protected void onResume() {
         super.onResume();
-        startTimer();
+        if (binding.endGameMenuSolo.getVisibility() != android.view.View.VISIBLE) {
+            startTimer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pauseTimers();
     }
 
     // ================= SCORE =================
@@ -118,7 +126,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         if (isSaving) return;
         isSaving = true;
 
-        playSound();
+        playSound(R.raw.lose);
 
         SauvegardePartie("Perdu", dureeMillis);
 
@@ -130,8 +138,10 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
 
     @Override
     public void OnGameWon(long dureeMillis) {
+        if (isSaving) return;
+        isSaving = true;
 
-        playSound();
+        playSound(R.raw.winner);
 
         SauvegardePartie("Gagné", dureeMillis);
 
@@ -168,9 +178,10 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         );
     }
     // ================= SON =================
-    private void playSound() {
+    private void playSound(int resId) {
         try {
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.lose);
+            MediaPlayer mp = MediaPlayer.create(this, resId);
+            mp.setOnCompletionListener(MediaPlayer::release); // libérer la mémoire
             mp.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +212,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
             binding.endGameMenuSolo.setVisibility(android.view.View.GONE);
 
             binding.gameView.setPaused(false);
-            binding.gameView.initGame();
+            binding.gameView.init(true);
 
             startTimer();
         });
@@ -223,28 +234,33 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
 
     // ================= TIMER =================
     private void startTimer() {
-
         pauseTimers();
 
         if (mode == GameMode.TimeLimit) {
+            long totalTimeMs = settingsHelper.getSingleTimeLimit() * 1000L; // secondes → ms
+            long remainingMs = totalTimeMs - elapsedTimeMillis;
 
-            countDownTimer = new CountDownTimer(settingsHelper.getSingleTimeLimit(), 1000) {
+            if (remainingMs <= 0) {
+                OnGameOver(elapsedTimeMillis);
+                return;
+            }
+
+            countDownTimer = new CountDownTimer(remainingMs, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    elapsedTimeMillis =
-                            settingsHelper.getSingleTimeLimit() - millisUntilFinished;
-
+                    elapsedTimeMillis = totalTimeMs - millisUntilFinished;
                     binding.timerText.setText(String.valueOf(millisUntilFinished / 1000));
                 }
 
                 @Override
                 public void onFinish() {
+                    elapsedTimeMillis = totalTimeMs;
+                    binding.timerText.setText("0");
                     OnGameOver(elapsedTimeMillis);
                 }
             }.start();
 
         } else {
-
             long startOffset = elapsedTimeMillis;
 
             countUpTimer = new CountUpTimer() {
@@ -290,7 +306,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
             elapsedTimeMillis = save.getElapsedTime();
 
         } catch (Exception e) {
-            binding.gameView.initGame();
+            binding.gameView.init(true);
         }
     }
 

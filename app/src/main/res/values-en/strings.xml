@@ -108,12 +108,13 @@
 
     <string name="mode_solo">Solo Mode</string>
     <string name="mode_multi">Multi-players Mode</string>
-    <string name="texte_animation">Tuile Animation</string>
-    <string name="score_atteindre">Score à atteindre</string>
-    <string name="temps_min">Definir le temps en min</string>
-    <string name="temps_hint">Cliquez ici pour saisir le temps</string>
-    <string name="taille_gride">Definir la taille de la grille</string>
-    <string name="taille_hint_col">Saisir le nombre de colonnes</string>
-    <string name="taille_hint_lig">Saisir le nombre de lignes</string>
+    <string name="texte_animation">Tile animation</string>
+    <string name="score_atteindre">Score to reach</string>
+    <string name="temps_min">Time in secs</string>
+    <string name="temps_hint">Click here to select time</string>
+    <string name="taille_gride">Size of the grid</string>
+    <string name="taille_hint_col">Number of columns</string>
+    <string name="taille_hint_lig">Number of lines</string>
+    <string name="choisir_mode">Choose mode</string>
 
 </resources>

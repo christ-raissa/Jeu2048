@@ -363,6 +363,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/choisir_mode"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <Spinner
+            android:id="@+id/spinnerModeSolo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/score_atteindre"
             android:textStyle="bold"
             android:textSize="16sp"
@@ -388,11 +407,11 @@
             android:layout_marginStart="8dp"
             android:textColor="?android:textColorPrimary"/>
 
-        <TextView
+        <EditText
             android:id="@+id/tvTempsMinSolo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/temps_hint"
+            android:hint="@string/temps_hint"
             android:textColor="?android:textColorSecondary"
             android:clickable="true"
             android:focusable="true"
@@ -418,24 +437,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/tvGrilleColonneSolo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/taille_hint_col"
+                android:inputType="number"
+                android:hint="@string/taille_hint_col"
                 android:textColor="?android:textColorSecondary"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="8dp"
                 android:background="?attr/selectableItemBackground"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tvGrilleLigneSolo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/taille_hint_lig"
+                android:inputType="number"
+                android:hint="@string/taille_hint_lig"
                 android:textColor="?android:textColorSecondary"
                 android:clickable="true"
                 android:focusable="true"
@@ -520,6 +541,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/choisir_mode"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="?android:textColorPrimary"/>
+
+        <Spinner
+            android:id="@+id/spinnerModeMulti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/separateur"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/score_atteindre"
             android:textStyle="bold"
             android:textSize="16sp"
@@ -545,11 +585,11 @@
             android:layout_marginStart="8dp"
             android:textColor="?android:textColorPrimary"/>
 
-        <TextView
+        <EditText
             android:id="@+id/tvTempsMinMulti"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/temps_hint"
+            android:hint="@string/temps_hint"
             android:textColor="?android:textColorSecondary"
             android:clickable="true"
             android:focusable="true"
@@ -575,24 +615,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/tvGrilleColonneMulti"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/taille_hint_col"
+                android:inputType="number"
+                android:hint="@string/taille_hint_col"
                 android:textColor="?android:textColorSecondary"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="8dp"
                 android:background="?attr/selectableItemBackground"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/tvGrilleLigneMulti"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/taille_hint_lig"
+                android:inputType="number"
+                android:hint="@string/taille_hint_lig"
                 android:textColor="?android:textColorSecondary"
                 android:clickable="true"
                 android:focusable="true"
