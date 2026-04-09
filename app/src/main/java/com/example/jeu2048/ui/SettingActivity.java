@@ -68,6 +68,7 @@ public class SettingActivity extends FontActivity {
         setupLanguageSpinner();
         // setupPoliceSpinner();
         setupMusicSpinner();
+        setupAnimationSettings();
         setupScoreSpinners();
         setupModeSpinners();
         setupInputTexts();
@@ -364,7 +365,6 @@ public class SettingActivity extends FontActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                settingsHelper.setSingleTargetScore(2048);
             }
         });
 
@@ -377,8 +377,42 @@ public class SettingActivity extends FontActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                settingsHelper.setSingleTargetScore(2048);
             }
+        });
+    }
+
+    // Section animation
+    private void setupAnimationSettings() {
+        RadioGroup radioGroupAnimationSolo = findViewById(R.id.radioGroupAnimationSolo);
+        RadioButton radioAnimationSoloOn = findViewById(R.id.radioAnimationSoloOn);
+        RadioButton radioAnimationSoloOff = findViewById(R.id.radioAnimationSoloOff);
+
+        RadioGroup radioGroupAnimationMulti = findViewById(R.id.radioGroupAnimationMulti);
+        RadioButton radioAnimationMultiOn = findViewById(R.id.radioAnimationMultiOn);
+        RadioButton radioAnimationMultiOff = findViewById(R.id.radioAnimationMultiOff);
+
+        int colorRose = ContextCompat.getColor(this, R.color.bottom_filled_dark);
+        CompoundButtonCompat.setButtonTintList(radioAnimationSoloOn, android.content.res.ColorStateList.valueOf(colorRose));
+        CompoundButtonCompat.setButtonTintList(radioAnimationSoloOff, android.content.res.ColorStateList.valueOf(colorRose));
+        CompoundButtonCompat.setButtonTintList(radioAnimationMultiOn, android.content.res.ColorStateList.valueOf(colorRose));
+        CompoundButtonCompat.setButtonTintList(radioAnimationMultiOff, android.content.res.ColorStateList.valueOf(colorRose));
+
+        // Etat initial solo
+        boolean soloAnimEnabled = settingsHelper.areAnimationsEnabled();
+        radioAnimationSoloOn.setChecked(soloAnimEnabled);
+        radioAnimationSoloOff.setChecked(!soloAnimEnabled);
+
+        // Etat initial multi
+        boolean multiAnimEnabled = settingsHelper.areAnimationsEnabled();
+        radioAnimationMultiOn.setChecked(multiAnimEnabled);
+        radioAnimationMultiOff.setChecked(!multiAnimEnabled);
+
+        radioGroupAnimationSolo.setOnCheckedChangeListener((group, checkedId) -> {
+            settingsHelper.setAnimationsEnabled(checkedId == R.id.radioAnimationSoloOn);
+        });
+
+        radioGroupAnimationMulti.setOnCheckedChangeListener((group, checkedId) -> {
+            settingsHelper.setAnimationsEnabled(checkedId == R.id.radioAnimationMultiOn);
         });
     }
 
@@ -426,13 +460,12 @@ public class SettingActivity extends FontActivity {
                 String choix = options.get(position);
                 if (choix.equals("Chrono")) {
                     settingsHelper.setSingleMode(GameMode.TimeLimit);
-                } else if (choix.equals("Chrono")) {
+                } else if (choix.equals("Score")) {
                     settingsHelper.setSingleMode(GameMode.ScoreObjective);
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                settingsHelper.setSingleMode(GameMode.ScoreObjective);
             }
         });
 
@@ -441,14 +474,13 @@ public class SettingActivity extends FontActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String choix = options.get(position);
                 if (choix.equals("Chrono")) {
-                    settingsHelper.setSingleMode(GameMode.TimeLimit);
-                } else if (choix.equals("Chrono")) {
+                    settingsHelper.setMultiMode(GameMode.TimeLimit);
+                } else if (choix.equals("Score")) {
                     settingsHelper.setMultiMode(GameMode.ScoreObjective);
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                settingsHelper.setMultiMode(GameMode.TimeLimit);
             }
         });
     }
@@ -547,7 +579,7 @@ public class SettingActivity extends FontActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     int height = Integer.parseInt(s.toString());
-                    settingsHelper.setSingleGridSize(height, settingsHelper.getMultiCols());
+                    settingsHelper.setMultiGridSize(height, settingsHelper.getMultiCols());
                 } catch (Exception e) {
                 }
             }
