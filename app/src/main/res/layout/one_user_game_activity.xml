@@ -251,18 +251,6 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
-                android:id="@+id/btnStatsSolo"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="6dp"
-                android:background="@drawable/rounded_bg"
-                android:backgroundTint="@color/button_color_light"
-                android:padding="12dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/statistique"
-                android:tint="@android:color/white" />
-
-            <ImageButton
                 android:id="@+id/replayButtonSolo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -272,6 +260,18 @@
                 android:padding="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/restart"
+                android:tint="@android:color/white" />
+
+            <ImageButton
+                android:id="@+id/btnStatsSolo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/statistique"
                 android:tint="@android:color/white" />
 
             <ImageButton
@@ -285,6 +285,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/baseline_share_24"
                 android:tint="@android:color/white" />
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

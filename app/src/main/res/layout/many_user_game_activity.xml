@@ -259,19 +259,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
-                android:id="@+id/btnStats"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/rounded_bg"
-                android:backgroundTint="@color/button_color_light"
-                android:padding="12dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/statistique"
-                android:tint="@android:color/white"
-                android:contentDescription="Stats" />
-
-            <ImageButton
                 android:id="@+id/replayButton"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -283,6 +270,19 @@
                 android:src="@drawable/restart"
                 android:tint="@android:color/white"
                 android:contentDescription="Replay" />
+
+            <ImageButton
+                android:id="@+id/btnStats"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded_bg"
+                android:backgroundTint="@color/button_color_light"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/statistique"
+                android:tint="@android:color/white"
+                android:contentDescription="Stats" />
 
             <ImageButton
                 android:id="@+id/btnShare"

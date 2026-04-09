@@ -587,23 +587,3 @@ public class SettingActivity extends FontActivity {
     }
 }
 
-    /*
-    // methode pour la gestion de la police
-    private void setupPoliceSpinner() {
-        spinnerPolice = findViewById(R.id.spinnerPolice);
-        String[] polices = {"Roboto","Montserrat","Fredoka","Comic"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, polices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPolice.setAdapter(adapter);
-        spinnerPolice.setSelection(settingsHelper.getPoliceIndex());
-        spinnerPolice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            boolean first = true;
-            @Override public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                if(first){ first=false; return; }
-                settingsHelper.setPoliceIndex(pos);
-                refreshFont();
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
-    }
-    */
