@@ -22,25 +22,27 @@ public class Dbhelper extends SQLiteOpenHelper {
     public static final String COLUMN_MAX_TILE = "max_tile";
     public static final String COLUMN_DATE = "date_score";
 
-    private static final String CREATE_TABLE_SCORES =
-            "CREATE TABLE " + TABLE_SCORES + " (" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_PLAYER_NAME + " TEXT, " +
-                    COLUMN_SCORE + " INTEGER, " +
-                    COLUMN_STATUT + " TEXT, " +
-                    COLUMN_COUT + " INTEGER, " +
-                    COLUMN_DUREE + " INTEGER, " +
-                    COLUMN_MAX_TILE + " INTEGER, " +
-                    COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
-                    ");";
+
 
     public Dbhelper(Context context) {
+
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_SCORES);
+
+        String createTableQuery = "CREATE TABLE " + TABLE_SCORES + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_PLAYER_NAME + " TEXT, " +
+                COLUMN_SCORE + " INTEGER, " +
+                COLUMN_STATUT + " TEXT, " +
+                COLUMN_COUT + " INTEGER, " +
+                COLUMN_DUREE + " INTEGER, " +
+                COLUMN_MAX_TILE + " INTEGER, " +
+                COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                ");";
+        db.execSQL(createTableQuery);
     }
 
     @Override
