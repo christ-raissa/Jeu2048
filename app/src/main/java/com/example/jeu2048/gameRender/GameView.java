@@ -14,6 +14,7 @@ import com.example.jeu2048.game.GameMoveDirection;
 import com.example.jeu2048.game.result.MoveResult;
 import com.example.jeu2048.settings.SettingsHelper;
 import com.example.jeu2048.theme.Theme;
+import java.util.LinkedList;
 
 import java.util.ArrayList;
 
@@ -75,6 +76,9 @@ public class GameView extends View {
     private int gameHeight = 4;
 
     private boolean isSolo = true;
+
+    private static final int MAX_UNDO = 5;
+    private final LinkedList<UndoState> undoStack = new LinkedList<>();
 
     private final ArrayList<GameViewListener> subs = new ArrayList<>();
 
@@ -153,6 +157,8 @@ public class GameView extends View {
     }
 
     public void initGame() {
+        undoStack.clear();
+        
         gameWidth = isSolo ? settingsHelper.getSingleCols() : settingsHelper.getMultiCols();
         gameHeight = isSolo ? settingsHelper.getSingleRows() : settingsHelper.getMultiRows();
         mode = isSolo ? settingsHelper.getSingleMode() : settingsHelper.getMultiMode();
@@ -198,9 +204,10 @@ public class GameView extends View {
         lastMoveThreshold = middleThreshold + lastMoveTimeMillis;
         endThreshold = lastMoveThreshold + endTimeMillis;
     }
-    private void onSwipeLeft()  {
+    private void onSwipeLeft() {
         if (game.isGameOver()) return;
         Log.d("GAME2048", "Swipe LEFT");
+        saveUndoState();
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.LEFT);
         updateAfterMove(result);
@@ -208,18 +215,23 @@ public class GameView extends View {
 
     private void onSwipeRight() {
         Log.d("GAME2048", "Swipe RIGHT");
+        saveUndoState();
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.RIGHT);
         updateAfterMove(result);
     }
-    private void onSwipeUp()    {
+
+    private void onSwipeUp() {
         Log.d("GAME2048", "Swipe UP");
+        saveUndoState();
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.UP);
         updateAfterMove(result);
     }
-    private void onSwipeDown()  {
+
+    private void onSwipeDown() {
         Log.d("GAME2048", "Swipe DOWN");
+        saveUndoState();
         oldScore = game.getScore();
         MoveResult result = game.makeMove(GameMoveDirection.DOWN);
         updateAfterMove(result);
@@ -490,5 +502,52 @@ public class GameView extends View {
 
     public void setSolo(boolean isSolo) {
         this.isSolo = isSolo;
+    }
+
+    private void saveUndoState() {
+        if (undoStack.size() >= MAX_UNDO) {
+            undoStack.removeFirst(); // supprime le plus ancien
+        }
+        undoStack.addLast(new UndoState(game));
+    }
+
+    public boolean undo() {
+        if (undoStack.isEmpty()) return false;
+        if (animating) return false;
+
+        UndoState state = undoStack.removeLast();
+
+        // Restaurer la grille
+        game.setGrid(state.grid);
+        game.setScore(state.score);
+        game.setNumMoves(state.numMoves);
+
+        // Mettre à jour l'affichage
+        oldScore = state.score;
+        emitScoreChange(0, state.score);
+        syncTiles();
+        invalidate();
+
+        return true;
+    }
+
+    public int getUndoCount() {
+        return undoStack.size();
+    }
+
+    private static class UndoState {
+        final long[][] grid;
+        final long score;
+        final int numMoves;
+
+        UndoState(Game2048 game) {
+            long[][] original = game.getGrid();
+            this.grid = new long[original.length][original[0].length];
+            for (int i = 0; i < original.length; i++) {
+                System.arraycopy(original[i], 0, this.grid[i], 0, original[i].length);
+            }
+            this.score = game.getScore();
+            this.numMoves = game.getNumMoves();
+        }
     }
 }

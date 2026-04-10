@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -67,6 +68,15 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
 
             gameView.init(true);
             startTimer();
+        });
+
+        binding.btnCancel.setOnClickListener(v -> {
+            boolean success = binding.gameView.undo();
+            if (!success) {
+                Toast.makeText(this, getText(R.string.cancel_coup_impossible), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getText(R.string.cancel_coup), Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.btnClassement.setOnClickListener(v -> {

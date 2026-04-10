@@ -117,4 +117,8 @@
     <string name="choisir_mode">Choisissez le mode</string>
 
 
+    <string name="cancel_coup_impossible">Impossible d\'annuler le dernier coup…</string>
+    <string name="cancel_coup">Dernier coup annulé!</string>
+
+
 </resources>

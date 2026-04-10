@@ -118,4 +118,8 @@
     <string name="taille_hint_lig">Number of lines</string>
     <string name="choisir_mode">Choose mode</string>
 
+    <string name="cancel_coup_impossible">Impossible to cancel the last move…</string>
+    <string name="cancel_coup">Last move canceled!</string>
+
+
 </resources>
