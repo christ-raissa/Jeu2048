@@ -6,17 +6,16 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.jeu2048.R;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
 
-public class DemoActivity extends FontActivity {
+public class DemoActivity extends SoundActivity {
 
     private VideoView videoView;
     private MaterialButton btnNext;
@@ -38,9 +37,7 @@ public class DemoActivity extends FontActivity {
             // Applique la langue déjà sauvegardée pour être sûr que l'UI suit
             applyLocale(currentLang);
         }
-
         setContentView(R.layout.activity_demo);
-
         videoView = findViewById(R.id.tutorialVideo);
         messageText = findViewById(R.id.messageText);
         btnNext = findViewById(R.id.btnNext);
@@ -60,7 +57,7 @@ public class DemoActivity extends FontActivity {
         setupVideo();
     }
 
-    // --- NOUVELLE MÉTHODE POUR APPLIQUER LA LOCALE SANS REDÉMARRER ---
+    // -appliquer la langue locale
     private void applyLocale(String langCode) {
         Locale locale = new Locale(langCode);
         Locale.setDefault(locale);

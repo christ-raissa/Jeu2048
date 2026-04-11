@@ -12,10 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import com.example.jeu2048.R;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 import java.util.ArrayList;
 
-public class PartageActivity extends FontActivity {
+public class PartageActivity extends SoundActivity {
 
     private ListView listParties;
     private Button btnPartager;

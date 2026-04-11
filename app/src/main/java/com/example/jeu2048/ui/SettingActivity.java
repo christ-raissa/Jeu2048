@@ -27,16 +27,15 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.CompoundButtonCompat;
 
 import com.example.jeu2048.R;
-import com.example.jeu2048.databinding.ActivitySettingBinding;
 import com.example.jeu2048.gameRender.GameMode;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 
 import java.util.Arrays;
 import java.util.List;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
-public class SettingActivity extends FontActivity {
+public class SettingActivity extends SoundActivity {
 
     private RadioGroup radioGroupSoundStatus, radioGroupTheme;
     private RadioButton radioLight, radioDark, radioSystem, radioSoundOn, radioSoundOff;
@@ -44,7 +43,7 @@ public class SettingActivity extends FontActivity {
     private TextView tvUsername, tvAvatarStatus;
     private ImageView imgAvatar, ivEditUsername, ivChangeAvatar;
 
-    private Spinner spinnerLang, spinnerSound, spinnerPolice;
+    private Spinner spinnerLang, spinnerSound;
     private AnimatedBottomBar bottomNavigation;
 
     @Override
@@ -66,7 +65,6 @@ public class SettingActivity extends FontActivity {
         setupUsernameSettings();
         setupAvatarSettings();
         setupLanguageSpinner();
-        // setupPoliceSpinner();
         setupMusicSpinner();
         setupAnimationSettings();
         setupScoreSpinners();

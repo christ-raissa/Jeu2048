@@ -16,7 +16,7 @@ import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
 import com.example.jeu2048.gameRender.SavedGameView;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 import com.example.jeu2048.settings.SettingsHelper;
 import com.example.jeu2048.utils.CountUpTimer;
 
@@ -25,7 +25,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class MultiplayerGameActivity extends FontActivity {
+public class MultiplayerGameActivity extends SoundActivity {
 
     ManyUserGameActivityBinding binding;
 
@@ -89,12 +89,10 @@ public class MultiplayerGameActivity extends FontActivity {
 
             @Override
             public void OnStart() {}
-
             @Override
             public void OnGameOver(long dureeMillis) {
                 triggerWin(2);
             }
-
             @Override
             public void OnGameWon(long dureeMillis) {
                 triggerWin(1);
@@ -134,7 +132,7 @@ public class MultiplayerGameActivity extends FontActivity {
         loadGames();
     }
 
-    // ================= TIMERS =================
+    // timers
     private void startTimer() {
         pauseTimers();
 
@@ -192,7 +190,7 @@ public class MultiplayerGameActivity extends FontActivity {
         timerP2.setText(String.valueOf(seconds));
     }
 
-    // ================= GAME FLOW =================
+    // Game flow
     private void startGames() {
         gameFinished = false;
         elapsedTimeMillis = 0;
@@ -298,7 +296,7 @@ public class MultiplayerGameActivity extends FontActivity {
         }
     }
 
-    // ================= SAVE / LOAD =================
+    // save and load
     private void pauseAndSaveGames() {
         pauseGame();
 
@@ -375,7 +373,7 @@ public class MultiplayerGameActivity extends FontActivity {
         deleteFile("time.dat");
     }
 
-    // ================= LIFECYCLE =================
+    // cycle de vie
     @Override
     protected void onPause() {
         super.onPause();
@@ -388,7 +386,7 @@ public class MultiplayerGameActivity extends FontActivity {
         pauseTimers();
     }
 
-    // ================= DB =================
+    // base de données
     private void saveMultiplayerScores(int winnerNum) {
         String p1Status = (winnerNum == 1) ? "Gagné (Multi)" : "Perdu (Multi)";
         String p2Status = (winnerNum == 2) ? "Gagné (Multi)" : "Perdu (Multi)";
@@ -412,7 +410,7 @@ public class MultiplayerGameActivity extends FontActivity {
         );
     }
 
-    // ================= UTILS =================
+    // utils
     private void partagerTexte(String message) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");

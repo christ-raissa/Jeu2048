@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.jeu2048.R;
-import com.example.jeu2048.settings.FontActivity;
 import com.example.jeu2048.storage.ThemeManager;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,12 +24,9 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         SplashScreen.installSplashScreen(this)
                 .setKeepOnScreenCondition(() -> false);
-
         ThemeManager.applyTheme(this);
-
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(
@@ -43,12 +39,8 @@ public class SplashActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
 
-
-        // Charge le layout XML de cette activité
         setContentView(R.layout.activity_splash);
-
         ImageView logo = findViewById(R.id.logo);
-
         int cornerRadius = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 15,

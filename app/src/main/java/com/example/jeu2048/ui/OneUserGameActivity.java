@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.OneUserGameActivityBinding;
@@ -15,7 +13,7 @@ import com.example.jeu2048.gameRender.GameMode;
 import com.example.jeu2048.gameRender.GameView;
 import com.example.jeu2048.gameRender.GameViewListener;
 import com.example.jeu2048.gameRender.SavedGameView;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 import com.example.jeu2048.settings.SettingsHelper;
 import com.example.jeu2048.utils.CountUpTimer;
 
@@ -24,7 +22,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class OneUserGameActivity extends FontActivity implements GameViewListener {
+public class OneUserGameActivity extends SoundActivity implements GameViewListener {
 
     OneUserGameActivityBinding binding;
 
@@ -111,7 +109,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         pauseTimers();
     }
 
-    // ================= SCORE =================
+    // section score
     @Override
     public void OnScoreChange(long from, long to) {
         if (to > meilleur) {
@@ -130,7 +128,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         binding.scoreText.setText("0");
     }
 
-    // ================= GAME OVER =================
+    // Game over
     public void OnGameOver(long dureeMillis) {
 
         if (isSaving) return;
@@ -187,7 +185,8 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
                 dureeMillis
         );
     }
-    // ================= SON =================
+
+    //Son
     private void playSound(int resId) {
         try {
             MediaPlayer mp = MediaPlayer.create(this, resId);
@@ -198,7 +197,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         }
     }
 
-    // ================= POPUP =================
+    // popup
     private void displayEndMenu(String titre, String resultat, long dureeMillis) {
 
         binding.endGameMenuSolo.setVisibility(android.view.View.VISIBLE);
@@ -252,7 +251,7 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
         startActivity(Intent.createChooser(intent, "Partager via"));
     }
 
-    // ================= TIMER =================
+    //Timer
     private void startTimer() {
         pauseTimers();
 
@@ -294,13 +293,11 @@ public class OneUserGameActivity extends FontActivity implements GameViewListene
             countUpTimer.start();
         }
     }
-
     private void pauseTimers() {
         if (countDownTimer != null) countDownTimer.cancel();
         if (countUpTimer != null) countUpTimer.stop();
     }
-
-    // ================= SAVE =================
+    //Save
     private void saveGame() {
         try (FileOutputStream fos = openFileOutput("save.dat", MODE_PRIVATE);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {

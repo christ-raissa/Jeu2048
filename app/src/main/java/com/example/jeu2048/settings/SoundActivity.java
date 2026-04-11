@@ -3,23 +3,18 @@ package com.example.jeu2048.settings;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.example.jeu2048.R;
 
 import java.util.Locale;
 
-public class FontActivity extends AppCompatActivity {
+public class SoundActivity extends AppCompatActivity {
 
     protected SettingsHelper settingsHelper;
 
@@ -111,39 +106,4 @@ public class FontActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    // --- SECTION POLICE ---
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        final View root = getWindow().getDecorView().getRootView();
-        root.post(this::refreshFont);
-    }
-
-    protected void refreshFont() {
-        View root = getWindow().getDecorView().getRootView();
-        applyFontToView(root);
-    }
-
-    private void applyFontToView(View view) {
-        int[] fonts = {R.font.robotomono_regular, R.font.montserrat_regular, R.font.fredoka_regular, R.font.comicneue_regular};
-        int index = settingsHelper.getPoliceIndex();
-        if (index < 0 || index >= fonts.length) index = 0;
-        try {
-            Typeface typeface = ResourcesCompat.getFont(this, fonts[index]);
-            applyRecursively(view, typeface);
-            view.invalidate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void applyRecursively(View view, Typeface typeface) {
-        if (view instanceof TextView) { ((TextView) view).setTypeface(typeface); }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
-            for (int i = 0; i < group.getChildCount(); i++) { applyRecursively(group.getChildAt(i), typeface); }
-        }
-    }
-    */
 }

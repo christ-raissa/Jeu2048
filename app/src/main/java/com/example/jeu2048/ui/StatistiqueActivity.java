@@ -4,18 +4,15 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import com.example.jeu2048.R;
 import com.example.jeu2048.databinding.ActivityStatistiqueBinding;
-import com.example.jeu2048.databinding.OneUserGameActivityBinding;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 
-public class StatistiqueActivity extends FontActivity {
+public class StatistiqueActivity extends SoundActivity {
 
     AnimatedBottomBar bottomNavigation;
     Dbhelper dba = new Dbhelper(this);

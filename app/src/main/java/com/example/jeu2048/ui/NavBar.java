@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import nl.joery.animatedbottombar.AnimatedBottomBar;
 import com.example.jeu2048.R;
-import com.example.jeu2048.settings.FontActivity;
+import com.example.jeu2048.settings.SoundActivity;
 
-public class NavBar extends FontActivity {
+public class NavBar extends SoundActivity {
 
     public static void setupBottomNavigation(
             Activity activity,
